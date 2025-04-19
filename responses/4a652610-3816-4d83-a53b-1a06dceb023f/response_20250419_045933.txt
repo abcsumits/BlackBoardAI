@@ -1,0 +1,17 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        self.camera.background_color = "#212121"
+
+        install_text = Text(
+            "> pip install rich",
+            font="Monospace",
+            color="#FFFFFF",
+            font_size=48
+        )
+
+        self.play(Write(install_text), run_time=2)
+        self.wait(1)
+```

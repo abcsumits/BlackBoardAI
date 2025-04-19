@@ -1,0 +1,72 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        grey_color = "#808080"  # GREY
+        black_color = "#000000"  # BLACK
+        white_color = "#FFFFFF"  # WHITE
+        blue_color = "#0000FF"   # BLUE
+        green_color = "#00FF00"  # GREEN
+        # yellow_color = "#FFFF00" # YELLOW - Not needed for this text
+
+        # Left side (Plain)
+        left_text_str = "hello {data: [one, two, three], status: ok}"
+        left_text = Text(left_text_str, font_size=24, color=white_color)
+
+        left_rect = Rectangle(
+            width=left_text.width + 0.5,
+            height=left_text.height + 0.5,
+            color=grey_color,      # Border color
+            fill_color=grey_color, # Fill color
+            fill_opacity=1.0       # Make fill solid
+        )
+        # Group rectangle and text, then position
+        left_group = VGroup(left_rect, left_text)
+        left_group.move_to(LEFT * 3.5) # Position group to the left
+
+        # Right side (Colored)
+        right_text_str = "hello {data: [one, two, three], status: ok}"
+        right_text = Text(right_text_str, font_size=24, color=white_color) # Default color white
+
+        # Apply colors to specific parts of the Text object using slices
+        # Keys (Blue)
+        right_text[7:11].set_color(blue_color)  # "data"
+        right_text[33:39].set_color(blue_color) # "status"
+
+        # Strings (Green)
+        right_text[14:17].set_color(green_color) # "one"
+        right_text[19:22].set_color(green_color) # "two"
+        right_text[24:29].set_color(green_color) # "three"
+        right_text[41:43].set_color(green_color) # "ok"
+
+        right_rect = Rectangle(
+            width=right_text.width + 0.5,
+            height=right_text.height + 0.5,
+            color=black_color,      # Border color
+            fill_color=black_color, # Fill color
+            fill_opacity=1.0       # Make fill solid
+        )
+        # Group rectangle and text, then position
+        right_group = VGroup(right_rect, right_text)
+        right_group.move_to(RIGHT * 3.5) # Position group to the right
+
+        # Animation Sequence
+        # Create rectangles first
+        self.play(
+            Create(left_rect),
+            Create(right_rect),
+            run_time=1.5
+        )
+        # Then write the text inside the rectangles
+        self.play(
+            Write(left_text),
+            Write(right_text),
+            run_time=2.0
+        )
+
+        # Hold the final scene for a moment
+        self.wait(2)
+
+```

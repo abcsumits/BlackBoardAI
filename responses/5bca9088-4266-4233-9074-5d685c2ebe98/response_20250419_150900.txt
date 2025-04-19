@@ -1,0 +1,24 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Assuming previous bullet points might be positioned above
+        # Position the fourth bullet point and text accordingly
+        # Adjust vertical position if needed based on context (e.g., previous elements)
+        vertical_position = 0.5  # Example: Place slightly above center vertically
+
+        # Create the fourth bullet point (Dot)
+        bullet_point_4 = Dot(point=LEFT * 4 + UP * vertical_position, radius=0.08, color="#FFFFFF")
+
+        # Create the text for the fourth bullet point
+        text_4 = Text("Dedicated Communities: Build Persistent Worlds", font_size=28, color="#FFFFFF")
+        text_4.next_to(bullet_point_4, RIGHT, buff=0.3) # Place text to the right of the dot
+
+        # Animate the appearance of the fourth bullet point and text
+        self.play(Create(bullet_point_4), Write(text_4), run_time=1.5)
+
+        # Keep the elements on screen
+        self.wait(2)
+
+```

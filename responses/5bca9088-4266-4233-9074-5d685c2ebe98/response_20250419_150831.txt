@@ -1,0 +1,22 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define the third bullet point components
+        dot3 = Dot(color="#FFFFFF")
+        text3 = Text("Server Management: Kick, Ban, Permissions", font_size=28, color="#FFFFFF")
+
+        # Group the dot and text
+        bullet_point3 = VGroup(dot3, text3).arrange(RIGHT, buff=0.3, aligned_edge=LEFT)
+
+        # Position the bullet point group (assuming it's the third point, place it slightly below center)
+        bullet_point3.shift(DOWN * 1)
+
+        # Animate the appearance
+        self.play(FadeIn(dot3, shift=RIGHT*0.2), run_time=0.5)
+        self.play(Write(text3), run_time=1.5)
+
+        # Hold the final frame
+        self.wait(2)
+```

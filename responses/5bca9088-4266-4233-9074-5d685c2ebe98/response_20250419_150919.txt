@@ -1,0 +1,91 @@
+```python
+from manim import *
+import math
+
+class Frame(Scene):
+    def construct(self):
+        # Colors
+        text_color = "#FFFFFF"
+        gear_color = "#A9A9A9"
+        paper_color = "#F0EAD6"
+        gavel_color = "#8B4513" # Brown
+        stroke_color = "#AAAAAA"
+
+        # Create Title Text
+        title = Text("Requires Modding", color=text_color).scale(0.9)
+        title.shift(UP * 2.5)
+
+        # Create Complexity Icon (Interlocking Gears)
+        # Gear 1
+        gear1_center = ORIGIN
+        outer_radius1 = 0.5
+        inner_radius1 = 0.2
+        num_teeth1 = 8
+        gear1_body = Annulus(inner_radius=inner_radius1, outer_radius=outer_radius1, color=gear_color, fill_opacity=1, stroke_width=1, stroke_color=stroke_color)
+        gear1_teeth = VGroup()
+        tooth_width_angle = math.pi / num_teeth1 * 0.8
+        tooth_outer_radius = outer_radius1 + 0.1
+        for i in range(num_teeth1):
+            angle = 2 * math.pi * i / num_teeth1
+            start_angle = angle - tooth_width_angle / 2
+            tooth = AnnularSector(inner_radius=outer_radius1 - 0.05, outer_radius=tooth_outer_radius, angle=tooth_width_angle, start_angle=start_angle, color=gear_color, fill_opacity=1, stroke_width=1, stroke_color=stroke_color)
+            gear1_teeth.add(tooth)
+        gear1 = VGroup(gear1_body, gear1_teeth).move_to(gear1_center)
+
+        # Gear 2 (slightly offset and smaller)
+        gear2_center = gear1_center + RIGHT * (outer_radius1 - 0.1) + DOWN * 0.1
+        outer_radius2 = 0.4
+        inner_radius2 = 0.15
+        num_teeth2 = 7
+        gear2_body = Annulus(inner_radius=inner_radius2, outer_radius=outer_radius2, color=gear_color, fill_opacity=1, stroke_width=1, stroke_color=stroke_color)
+        gear2_teeth = VGroup()
+        tooth_width_angle2 = math.pi / num_teeth2 * 0.8
+        tooth_outer_radius2 = outer_radius2 + 0.08
+        for i in range(num_teeth2):
+            angle = 2 * math.pi * i / num_teeth2 + math.pi / num_teeth2 # Offset teeth
+            start_angle = angle - tooth_width_angle2 / 2
+            tooth = AnnularSector(inner_radius=outer_radius2 - 0.04, outer_radius=tooth_outer_radius2, angle=tooth_width_angle2, start_angle=start_angle, color=gear_color, fill_opacity=1, stroke_width=1, stroke_color=stroke_color)
+            gear2_teeth.add(tooth)
+        gear2 = VGroup(gear2_body, gear2_teeth).move_to(gear2_center)
+
+        complexity_icon = VGroup(gear1, gear2).scale(0.7)
+
+        # Create Warranty Void Icon (Torn Paper Polygon)
+        paper_points = [
+            [-0.7, 0.6, 0], [-0.7, -0.6, 0],
+            [-0.6, -0.5, 0], [-0.5, -0.6, 0],
+            [-0.4, -0.4, 0], [-0.3, -0.6, 0],
+            [-0.1, -0.5, 0], [0.1, -0.6, 0],
+            [0.2, -0.4, 0], [0.3, -0.6, 0],
+            [0.4, -0.5, 0], [0.5, -0.6, 0],
+            [0.7, -0.5, 0], [0.7, 0.6, 0],
+            [0.6, 0.5, 0], [0.5, 0.6, 0], # Top edge tear
+            [0.4, 0.4, 0], [0.3, 0.6, 0],
+            [0.1, 0.5, 0], [-0.1, 0.6, 0],
+            [-0.2, 0.4, 0], [-0.3, 0.6, 0],
+            [-0.5, 0.5, 0], [-0.6, 0.6, 0]
+        ]
+        warranty_icon = Polygon(*paper_points, color=paper_color, fill_opacity=1, stroke_width=1.5, stroke_color=stroke_color).scale(0.7)
+
+
+        # Create ToS Violation Icon (Gavel Polygon)
+        gavel_head = Polygon(
+            [-0.6, 0.2, 0], [0.6, 0.2, 0],
+            [0.7, -0.2, 0], [-0.7, -0.2, 0],
+            color=gavel_color, fill_opacity=1, stroke_width=1.5, stroke_color=stroke_color
+        )
+        gavel_handle = Rectangle(height=0.9, width=0.18, color=gavel_color, fill_opacity=1, stroke_width=1.5, stroke_color=stroke_color)
+        gavel_handle.next_to(gavel_head, DOWN, buff=-0.05) # Slight overlap for solid look
+        tos_icon = VGroup(gavel_head, gavel_handle).scale(0.6)
+
+        # Group and Position Icons
+        icons = VGroup(complexity_icon, warranty_icon, tos_icon)
+        icons.arrange(RIGHT, buff=1.2)
+        icons.next_to(title, DOWN, buff=0.8)
+
+        # Animations
+        self.play(Write(title))
+        self.wait(0.5)
+        self.play(FadeIn(icons, shift=UP*0.2)) # Fade in icons simultaneously with slight upward shift
+        self.wait(2) # Keep elements on screen
+```

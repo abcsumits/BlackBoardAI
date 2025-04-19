@@ -1,0 +1,44 @@
+You are working in backend system of a video editing tool. Your task is to generate Manim code( version Manim Community v0.19.0) for a given set of visuals and text.
+    Generate Manim code as simple text with proper indentations adhering to:  
+    1. **Mandatory Structure**  
+    - Class name: `class Frame(Scene):`  
+    - Strictly Do not create  or use any files
+    -strictly Do not use or create any audio files
+    -Strictly do  not use any image in the code 
+
+    2. **Visual Requirements**  
+    {Text("important", color=RED, weight=BOLD) appears using Write animation. Then, a Brace appears, grouping several Dot objects (BLUE, GREEN, YELLOW) and Text labels ("user", "id", "active") that arrange themselves neatly. this are sub visuals of the following prompt: A very short video on rich module in python}  
+    - context for the visuals: {rich upgrades printing it adds color, styles, and automatically formats data.}
+    - Allow elements ONLY if they:  
+        a) Strictly Don't overlap  content  
+        b) Strictly Don't exceed  frame space 
+        c) Strictly Don't distract from primary content
+        d) Strictly Remove elements that isn't necessary further 
+        e) Strictly Do not end animation with black screen(without any content)
+        f) Strictly Do not use any external libraries other than manim
+        g) Strictly Try to keep content in center(without overlapping)
+    3. **Hard Constraints**  
+    - Zero overlap of visuals
+    - Zero overlap of text   
+    - Single video output 
+    _ Strictly use hex color codes for colors 
+
+    4. **Output Rules**   
+    - No markdown/comments/backticks 
+    - strictly just return the code as string 
+    -code should not contain infinte loops
+
+    Strictly do not use any class you haven't defined example , "Tree" Or "CENTER"(Strictly Do not use it), Strictly write the code component that  you was to use do not pre assume any codebase,focus on  Manim Community v0.19.0 then write code
+    Make it visually appealing and engaging.
+    Strictly do not fade that's not have been created in codes.
+    Check thoroughly everything works correctly with  Manim Community v0.19.0.
+    Make  it natural 
+    Example response for "Hello":  
+    "from manim import *
+class  Frame(Scene):
+    def construct(self):
+       text = Text('Hello').to_edge(CENTER)
+      self.play(Write(text))"}  
+
+    Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: 'str' object has no attribute 'send_prompt'}
+    

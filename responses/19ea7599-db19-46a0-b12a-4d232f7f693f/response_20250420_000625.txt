@@ -1,0 +1,90 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        brown_color = "#8B4513"  # SaddleBrown
+        green_color = "#228B22"  # ForestGreen
+        symbol_color = "#D3D3D3" # Light Gray
+
+        # Create grass block parts
+        # Using Rectangle for potential aspect ratio adjustments, but keeping it square
+        dirt_block = Rectangle(width=2.0, height=1.0, color=brown_color, fill_opacity=1.0)
+        grass_layer = Rectangle(width=2.0, height=1.0, color=green_color, fill_opacity=1.0)
+        dirt_block.set_stroke(width=0) # Remove border stroke
+        grass_layer.set_stroke(width=0) # Remove border stroke
+
+
+        # Position parts relative to each other
+        grass_layer.next_to(dirt_block, UP, buff=0) # Place green directly on top of brown
+
+        # Group the block
+        grass_block = VGroup(dirt_block, grass_layer)
+        grass_block.move_to(ORIGIN) # Center the combined block on the screen
+
+        # Create code symbols (curly braces) using Arc
+        brace_radius = 0.3
+        brace_scale = 1.2 # Slightly smaller braces
+        brace_buff = 0.05 # Tighter spacing within brace parts
+
+        # Left Brace
+        left_brace_top = Arc(radius=brace_radius, angle=PI, start_angle=PI/2, color=symbol_color)
+        left_brace_bottom = Arc(radius=brace_radius, angle=PI, start_angle=-PI/2, color=symbol_color)
+        left_brace = VGroup(left_brace_top, left_brace_bottom).arrange(DOWN, buff=brace_buff)
+        left_brace.scale(brace_scale)
+
+        # Right Brace (Create like left, then flip horizontally)
+        right_brace_top = Arc(radius=brace_radius, angle=PI, start_angle=PI/2, color=symbol_color)
+        right_brace_bottom = Arc(radius=brace_radius, angle=PI, start_angle=-PI/2, color=symbol_color)
+        # Need to apply flip before grouping if individual arcs need flipping, but flipping the VGroup is easier
+        right_brace = VGroup(right_brace_top.copy(), right_brace_bottom.copy()).arrange(DOWN, buff=brace_buff)
+        right_brace.scale(brace_scale)
+        right_brace.flip(axis=UP) # Flip horizontally
+
+        # Position symbols next to the grass block
+        left_brace.next_to(grass_block, LEFT, buff=0.8)
+        right_brace.next_to(grass_block, RIGHT, buff=0.8)
+
+        symbols = VGroup(left_brace, right_brace)
+
+        # --- Animation Sequence ---
+
+        # 1. Appear grass block
+        self.play(GrowFromCenter(grass_block), run_time=1.5)
+        self.wait(0.5)
+
+        # 2. Appear code symbols
+        self.play(FadeIn(symbols, shift=DOWN*0.5), run_time=1.0)
+        self.wait(0.5)
+
+        # 3. Floating animation for symbols (simple up/down motion)
+        float_distance = 0.2
+        float_duration = 2.0 # Duration for one full up-down cycle
+
+        self.play(
+            symbols.animate.shift(UP * float_distance),
+            run_time=float_duration / 2,
+            rate_func=rate_functions.ease_in_out_sine
+        )
+        self.play(
+            symbols.animate.shift(DOWN * float_distance),
+            run_time=float_duration / 2,
+            rate_func=rate_functions.ease_in_out_sine
+        )
+
+        # Repeat float cycle for visual appeal
+        self.play(
+            symbols.animate.shift(UP * float_distance),
+            run_time=float_duration / 2,
+            rate_func=rate_functions.ease_in_out_sine
+        )
+        self.play(
+            symbols.animate.shift(DOWN * float_distance),
+            run_time=float_duration / 2,
+            rate_func=rate_functions.ease_in_out_sine
+        )
+
+        # 4. Hold the final scene state
+        self.wait(2)
+```

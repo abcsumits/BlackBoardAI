@@ -1,0 +1,46 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Colors
+        gear_color = "#AAAAAA" # Light Gray
+        text_color = "#FFFFFF" # White
+
+        # Create gears using Cog
+        gear1 = Cog(outer_radius=0.8, inner_radius=0.4, n_teeth=10, color=gear_color)
+        gear2 = Cog(outer_radius=0.5, inner_radius=0.25, n_teeth=7, color=gear_color)
+
+        # Position gears relative to each other
+        gear1.move_to(LEFT * 1.5)
+        gear2.next_to(gear1, RIGHT, buff=0.05) # Position slightly overlapping
+        gear2.shift(DOWN * 0.6) # Adjust vertical position for better interlocking look
+
+        gears = VGroup(gear1, gear2)
+
+        # Create text
+        text = Text(
+            "Similar to Bukkit/Spigot",
+            font_size=36,
+            color=text_color
+        )
+
+        # Position text near gears
+        text.next_to(gears, DOWN, buff=0.7)
+
+        # Group all elements
+        content_group = VGroup(gears, text)
+        content_group.center() # Center the whole group on the screen
+
+        # Animation
+        self.play(Create(gear1), Create(gear2), run_time=1.5)
+        self.play(
+            Rotate(gear1, angle=PI/5, about_point=gear1.get_center()),
+            Rotate(gear2, angle=-PI/3.5, about_point=gear2.get_center()), # Rotate opposite direction
+            run_time=1.5
+        )
+        self.play(Write(text), run_time=1.5)
+
+        # Keep final state visible
+        self.wait(2)
+```

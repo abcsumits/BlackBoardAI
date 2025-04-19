@@ -1,0 +1,31 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Configuration
+        logo_color = "#1A237E" # Dark blue color for the logo
+        text_color = "#FFFFFF" # White color for the text
+        logo_scale = 0.9
+        text_font_size = 38
+
+        # Create the Vita logo representation (Dark Blue Polygon)
+        # Using a hexagon as a stylized representation
+        vita_logo = RegularPolygon(n=6, color=logo_color, fill_opacity=1).scale(logo_scale)
+
+        # Position the logo slightly above the center
+        vita_logo.shift(UP * 1.0)
+
+        # Create the Text label
+        label = Text("Legacy Console Editions", font_size=text_font_size, color=text_color)
+
+        # Position the label below the logo
+        label.next_to(vita_logo, DOWN, buff=0.6)
+
+        # Animations
+        self.play(FadeIn(vita_logo, scale=0.5)) # Logo appears
+        self.play(Write(label)) # Text appears below
+
+        # Keep the final frame visible for a moment
+        self.wait(2)
+```

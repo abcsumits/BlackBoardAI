@@ -1,0 +1,91 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Console Square Outline
+        console_square = Square(side_length=4.5, color='#B0B0B0', fill_opacity=0.0, stroke_width=3)
+        console_square.move_to(np.array([0, 0.2, 0])) # Slightly above center to make space for text
+
+        # 2. Pixelated Landscape (inside the square)
+        pixel_size = 0.20 # Size of each 'pixel'
+        # Calculate max pixels fitting inside, leaving a small margin
+        inner_side_length = console_square.side_length - pixel_size * 2 # Margin on both sides
+        cols = int(inner_side_length / pixel_size)
+        rows = int(inner_side_length / pixel_size)
+
+        landscape_group = VGroup()
+
+        # Calculate the bottom-left corner for the pixel grid relative to the square's center
+        grid_width = cols * pixel_size
+        grid_height = rows * pixel_size
+        bottom_left_corner = console_square.get_center() + \
+                             np.array([-grid_width / 2, -grid_height / 2, 0])
+
+        # Sky (Blue pixels)
+        sky_color = '#87CEEB' # Light Sky Blue
+        sky_rows_start = rows // 2 # Start sky from midpoint up
+        for r in range(sky_rows_start, rows):
+             for c in range(cols):
+                 pixel = Square(side_length=pixel_size, fill_color=sky_color, fill_opacity=1.0, stroke_width=0)
+                 pixel.move_to(bottom_left_corner + \
+                               np.array([(c + 0.5) * pixel_size, (r + 0.5) * pixel_size, 0]))
+                 landscape_group.add(pixel)
+
+        # Ground (Green pixels)
+        ground_color = '#2E8B57' # Sea Green
+        ground_rows_end = rows // 2 # Ground occupies the bottom half
+        for r in range(ground_rows_end):
+             for c in range(cols):
+                 pixel = Square(side_length=pixel_size, fill_color=ground_color, fill_opacity=1.0, stroke_width=0)
+                 pixel.move_to(bottom_left_corner + \
+                               np.array([(c + 0.5) * pixel_size, (r + 0.5) * pixel_size, 0]))
+                 landscape_group.add(pixel)
+
+        # Simple Tree (placed near center on the ground)
+        trunk_color = '#A0522D' # Sienna
+        leaves_color = '#006400' # Dark Green
+        tree_base_c = cols // 2 # Center column index
+        ground_top_r = ground_rows_end - 1 # Row index of the top of the ground
+
+        # Trunk (3 pixels high, starting from the ground up)
+        trunk_height = 3
+        for r_offset in range(trunk_height):
+             current_r = ground_top_r - trunk_height + 1 + r_offset # Calculate row index for trunk pixel
+             if current_r < 0: continue # Avoid drawing below row 0
+             pixel = Square(side_length=pixel_size, fill_color=trunk_color, fill_opacity=1.0, stroke_width=0)
+             pixel.move_to(bottom_left_corner + \
+                           np.array([(tree_base_c + 0.5) * pixel_size, (current_r + 0.5) * pixel_size, 0]))
+             landscape_group.add(pixel) # Add trunk pixel (will draw over ground/sky)
+
+        # Leaves (approx 3x2 block on top of trunk)
+        leaves_bottom_r = ground_top_r + 1 # Row index right above the calculated trunk top
+        leaves_height = 2
+        leaves_width = 3 # Centered around tree_base_c (-1, 0, 1)
+        for r_offset in range(leaves_height):
+            current_r = leaves_bottom_r + r_offset
+            if current_r >= rows: continue # Avoid drawing above top row
+            for c_offset in range(-(leaves_width // 2), (leaves_width // 2) + 1):
+                current_c = tree_base_c + c_offset
+                if current_c < 0 or current_c >= cols: continue # Avoid drawing outside columns
+
+                pixel = Square(side_length=pixel_size, fill_color=leaves_color, fill_opacity=1.0, stroke_width=0)
+                pixel.move_to(bottom_left_corner + \
+                              np.array([(current_c + 0.5) * pixel_size, (current_r + 0.5) * pixel_size, 0]))
+                landscape_group.add(pixel) # Add leaves pixel
+
+        # 3. Text
+        vanilla_text = Text("Vanilla Game", color='#FFFFFF', font_size=48)
+        # Position below the square
+        vanilla_text.next_to(console_square, DOWN, buff=0.5)
+
+        # 4. Animation
+        self.play(Create(console_square), run_time=1.0)
+        self.play(LaggedStart(*[Create(pixel) for pixel in landscape_group], lag_ratio=0.005, run_time=3.0)) # Create pixels with lag
+        self.wait(0.5)
+        self.play(FadeIn(vanilla_text), run_time=1.0)
+        self.wait(2.0) # Hold text visibility
+        self.play(FadeOut(vanilla_text), run_time=1.0)
+        self.wait(2.5) # Keep landscape visible before ending
+```

@@ -1,0 +1,116 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Colors
+        padlock_body_color = '#B0B0B0' # Grey
+        padlock_shackle_color = '#808080' # Darker Grey
+        key_color = '#FFBF00' # Goldish
+        keyhole_color = '#404040' # Dark Grey
+
+        # Dimensions and Positions
+        body_size = 1.5
+        shackle_thickness = 10
+        keyhole_radius = 0.1
+        key_scale = 0.6
+
+        # Define positions using relative positioning, avoiding explicit CENTER
+        padlock_center = 1.0 * RIGHT # Position padlock 1 unit right of origin
+        key_start_pos = 2.5 * LEFT   # Position key 2.5 units left of origin
+
+        # Create Padlock Body (using Square)
+        padlock_body = Square(
+            side_length=body_size,
+            color=padlock_body_color,
+            fill_color=padlock_body_color,
+            fill_opacity=0.9,
+            stroke_width=2
+        ).move_to(padlock_center)
+
+        # Create Keyhole (using Circle)
+        keyhole = Circle(
+            radius=keyhole_radius,
+            color=keyhole_color,
+            fill_color=keyhole_color,
+            fill_opacity=1.0,
+            stroke_width=0
+            # Position relative to padlock body's center
+        ).move_to(padlock_body.get_center() + DOWN * (body_size / 6))
+
+        # Define Shackle points based on the created body corners
+        # Adjust points slightly for better visual connection
+        shackle_start_point = padlock_body.get_corner(UL) + UP * 0.05 + RIGHT * 0.1
+        shackle_end_point = padlock_body.get_corner(UR) + UP * 0.05 + LEFT * 0.1
+
+        # Create Shackle using ArcBetweenPoints for a U-shape
+        shackle = ArcBetweenPoints(
+            start=shackle_start_point,
+            end=shackle_end_point,
+            angle=-PI * 0.8, # Creates a curved arc pointing downwards (visually upwards U-shape)
+            color=padlock_shackle_color,
+            stroke_width=shackle_thickness
+        )
+        # The pivot point for rotation will be the starting point of the arc (left side)
+        shackle_pivot_point = shackle.get_start()
+
+        # Create Key using Polygon
+        # Define points relative to ORIGIN for the key shape
+        key_points = [
+            # Head (Approximation of a circle)
+            (-0.8, 0.4, 0), (-0.6, 0.6, 0), (-0.2, 0.6, 0), (0.0, 0.4, 0),
+            # Shaft Top Edge
+            (0.6, 0.1, 0),
+            # Teeth Area
+            (0.6, -0.3, 0), (0.8, -0.3, 0), (0.8, -0.2, 0), (1.0, -0.2, 0), (1.0, 0.1, 0),
+            # Shaft Bottom Edge near Head
+            (0.0, -0.1, 0),
+            # Head Bottom
+            (-0.2, -0.6, 0), (-0.6, -0.6, 0), (-0.8, -0.4, 0)
+            # Polygon automatically closes the shape
+        ]
+
+        key = Polygon(*key_points, color=key_color, fill_color=key_color, fill_opacity=0.9, stroke_width=1, stroke_color='#DAA520') # Added slight stroke for definition
+        key.scale(key_scale) # Scale the key down
+        key.move_to(key_start_pos) # Position the key initially
+
+        # Calculate target position for the key's center so its tip enters the keyhole
+        # Approximate tip offset from the key's center (half its width)
+        key_tip_offset = RIGHT * key.width / 2
+        # Target position aims the tip towards the keyhole center
+        target_key_center = keyhole.get_center() + LEFT * (key.width / 2) * 0.8 # Shift key left relative to keyhole
+
+        # --- Animation Sequence ---
+
+        # 1. Create Padlock (Body and Keyhole first, then Shackle)
+        self.play(Create(padlock_body), Create(keyhole), run_time=1.0)
+        self.play(Create(shackle), run_time=0.7)
+        self.wait(0.3)
+
+        # 2. Create Key
+        self.play(Create(key), run_time=0.7)
+        self.wait(0.5)
+
+        # 3. Move Key to Padlock Keyhole
+        self.play(key.animate.move_to(target_key_center), run_time=1.2)
+        self.wait(0.2)
+
+        # 4. Rotate Key (Simulating turning the lock)
+        # Rotate the key around the keyhole's center point
+        key_rotation_point = keyhole.get_center()
+        key_rotation_angle = -PI / 4 # Clockwise rotation (negative angle)
+        self.play(Rotate(key, angle=key_rotation_angle, about_point=key_rotation_point), run_time=0.6)
+        self.wait(0.2)
+
+        # 5. Rotate Shackle Open (Simulating unlocking)
+        # Rotate the shackle around its starting point (left connection)
+        shackle_rotation_angle = PI * 0.6 # Counter-clockwise opening angle (positive angle)
+        self.play(Rotate(shackle, angle=shackle_rotation_angle, about_point=shackle_pivot_point), run_time=0.9)
+        self.wait(0.2)
+
+        # 6. Optional: Move key slightly away after unlocking
+        self.play(key.animate.shift(LEFT * 0.3 + DOWN * 0.1), run_time=0.4)
+
+        # 7. Hold the final frame to prevent ending on a black screen
+        self.wait(2)
+```

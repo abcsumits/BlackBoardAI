@@ -1,0 +1,61 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Simulate the initial 'right rectangle'
+        # Since the prompt implies it comes from a previous state,
+        # we create it here to be transformed.
+        initial_rect = Rectangle(
+            width=config.frame_width / 2,
+            height=config.frame_height,
+            color="#4CAF50", # A distinct green color
+            fill_opacity=0.8,
+            stroke_width=0  # No border
+        )
+        # Position it on the right half of the screen
+        initial_rect.move_to(RIGHT * config.frame_width / 4)
+        # Add it to the scene instantly so Transform has a starting object
+        self.add(initial_rect)
+
+        # 2. Define the target full-screen rectangle
+        final_rect = Rectangle(
+            width=config.frame_width,
+            height=config.frame_height,
+            color="#1B5E20", # A darker green for the final background
+            fill_opacity=1.0, # Fully opaque
+            stroke_width=0 # No border
+        )
+        # Center the final rectangle (it fills the screen)
+        final_rect.move_to(ORIGIN)
+
+        # 3. Animate the rectangle expansion using Transform
+        # The initial_rect morphs into the final_rect
+        self.play(Transform(initial_rect, final_rect), run_time=1.5)
+        # At this point, initial_rect effectively *is* the full screen background
+
+        # 4. Create the stylized "rich" text
+        rich_text = Text(
+            "rich",
+            font_size=180,       # Make it large and impactful
+            color="#FFEB3B",     # A bright, rich yellow color
+            font="Monospace"     # A font often associated with terminals
+        )
+        # Center the text on the screen
+        rich_text.move_to(ORIGIN)
+
+        # 5. Animate the appearance of the text
+        self.play(Write(rich_text), run_time=1.5)
+
+        # 6. Add a subtle glow animation using ShowPassingFlash
+        # This creates a temporary highlight sweeping across the text
+        self.play(ShowPassingFlash(
+                rich_text.copy().set_color("#FFFFFF"), # Use white for the flash color
+                time_width=0.6,   # How long the flash effect lingers on each part
+                run_time=1.2,     # Total duration of the flash animation
+                )
+           )
+
+        # 7. Hold the final frame for a moment
+        self.wait(2)
+```

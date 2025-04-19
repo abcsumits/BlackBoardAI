@@ -1,0 +1,35 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors for the gradient background
+        color_top = "#1f2633"  # Dark blueish grey
+        color_bottom = "#4a5568"  # Lighter greyish blue
+
+        # Create a background rectangle covering the whole frame
+        background = Rectangle(
+            width=config.frame_width,
+            height=config.frame_height,
+            stroke_width=0,
+            fill_opacity=1,
+        )
+        # Apply a vertical gradient fill
+        background.set_fill(color=[color_top, color_bottom], opacity=1)
+        background.set_sheen_direction(np.array([0., 1., 0.])) # Gradient runs vertically (bottom to top)
+        self.add(background) # Add background first so it's behind other elements
+
+        # Create the text mobject
+        main_text = Text('MCP Server?', font_size=72, color="#FFFFFF") # White text for contrast
+
+        # Position the text exactly at the center of the screen
+        center_point = np.array([0., 0., 0.])
+        main_text.move_to(center_point)
+
+        # Animate the text appearing with a subtle zoom-in effect from the center
+        self.play(GrowFromCenter(main_text), run_time=1.5)
+
+        # Hold the final scene for a short duration
+        self.wait(2)
+```

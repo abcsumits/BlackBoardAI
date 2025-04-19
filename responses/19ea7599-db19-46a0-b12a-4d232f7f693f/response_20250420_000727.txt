@@ -1,0 +1,87 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Configuration
+        brain_color = '#A9A9A9'
+        brain_stroke_color = '#808080'
+        flash_color = '#FFFF00'
+        bubble_color = '#E0E0E0'
+        bubble_stroke_color = '#444444'
+        text_color = '#000000'
+        title_color = '#FFFFFF'
+        bubble_font_size = 24
+
+        # Title Text (optional, provides context)
+        # title = Text("MCP Server allows:", font_size=36, color=title_color)
+        # title.to_edge(UP, buff=0.5)
+        # self.play(Write(title))
+        # self.wait(0.5)
+
+        # Adjust positions (assuming no title, center content more)
+        brain_pos = [-2.0, 0, 0]
+        bubble1_pos = [2.0, 1.0, 0]
+        bubble2_pos = [2.0, -1.0, 0]
+
+        # 1. Define Brain Shape (Polygon)
+        # Simple schematic brain outline points
+        brain_points = [
+            [-1, 1, 0], [-0.5, 1.5, 0], [0.5, 1.5, 0], [1, 1, 0], # Top curve
+            [1.2, 0.5, 0], [1, 0.2, 0],                              # Right upper indent
+            [1.2, -0.5, 0], [1, -1, 0], [0.5, -1.5, 0], [-0.5, -1.5, 0], [-1, -1, 0], # Bottom curve
+            [-1.2, -0.5, 0], [-1, -0.2, 0],                           # Left lower indent
+            [-1.2, 0.5, 0]                                            # Left upper indent closing the loop
+        ]
+        brain = Polygon(*brain_points, color=brain_color, fill_opacity=0.6, stroke_color=brain_stroke_color, stroke_width=2)
+        brain.scale(1.2)
+        brain.move_to(brain_pos)
+
+        # 2. Show Brain
+        self.play(Create(brain), run_time=1.0)
+        self.wait(0.3)
+
+        # 3. Light Up Brain Animation (Flash)
+        self.play(Flash(brain, color=flash_color, flash_radius=1.8, line_length=0.2, num_lines=30, time_width=0.6))
+        self.wait(0.3)
+
+        # 4. Create Text Bubbles (RoundedRectangle + Text)
+        # Bubble 1: Understand Code
+        text1 = Text("Understand Code", font_size=bubble_font_size, color=text_color)
+        bubble1_shape = RoundedRectangle(
+            corner_radius=0.2,
+            height=text1.height + 0.5,
+            width=text1.width + 0.7,
+            color=bubble_color,
+            fill_opacity=0.9,
+            stroke_width=1.5,
+            stroke_color=bubble_stroke_color
+        )
+        bubble1 = VGroup(bubble1_shape, text1) # Group shape and text
+        bubble1.move_to(bubble1_pos)
+
+        # Bubble 2: Create Mods!
+        text2 = Text("Create Mods!", font_size=bubble_font_size, color=text_color)
+        bubble2_shape = RoundedRectangle(
+            corner_radius=0.2,
+            height=text2.height + 0.5,
+            width=text2.width + 0.7,
+            color=bubble_color,
+            fill_opacity=0.9,
+            stroke_width=1.5,
+            stroke_color=bubble_stroke_color
+        )
+        bubble2 = VGroup(bubble2_shape, text2) # Group shape and text
+        bubble2.move_to(bubble2_pos)
+
+        # 5. Animate Bubbles Popping Out (GrowFromCenter)
+        self.play(
+            GrowFromCenter(bubble1),
+            GrowFromCenter(bubble2),
+            run_time=0.9
+        )
+
+        # 6. Hold final frame
+        self.wait(2)
+
+```

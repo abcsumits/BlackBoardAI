@@ -1,0 +1,70 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Create terminal rectangle
+        terminal = Rectangle(
+            width=9,
+            height=2.0,
+            stroke_color="#BBBBBB",  # Light grey border
+            stroke_width=2,
+            fill_color="#1E1E1E",  # Dark grey fill
+            fill_opacity=1
+        )
+        terminal.move_to(UP * 1.2) # Position slightly above center
+
+        # 2. Create installation text elements
+        prompt_str = "$ "
+        install_text_str = "pip install rich"
+
+        prompt = Text(
+            prompt_str,
+            font="Monospace",
+            color="#FFFFFF", # White text
+            weight=BOLD
+        ).scale(0.7)
+
+        install_text = Text(
+            install_text_str,
+            font="Monospace",
+            color="#FFFFFF" # White text
+        ).scale(0.7)
+
+        # Group prompt and text, position inside terminal
+        # Align prompt first, then place text next to it
+        prompt.align_to(terminal, UL).shift(RIGHT * 0.3 + DOWN * 0.4)
+        install_text.next_to(prompt, RIGHT, buff=0.15)
+        command_line = VGroup(prompt, install_text) # Group for easier animation
+
+
+        # 3. Create import text (below terminal)
+        import_text = Text(
+            "from rich import print",
+            font="Monospace",
+            color="#EAEAEA" # Slightly off-white text
+        ).scale(0.8)
+        import_text.next_to(terminal, DOWN, buff=0.8) # Position below terminal
+
+        # --- Animations ---
+
+        # Animate terminal appearance
+        self.play(DrawBorderThenFill(terminal), run_time=1.2)
+
+        # Animate typing
+        self.play(Write(prompt), run_time=0.3) # Show prompt
+        # Use Write with a specific run_time to simulate typing speed
+        self.play(
+            Write(install_text, run_time=len(install_text_str) * 0.08),
+            )
+        self.wait(1.5) # Pause after typing
+
+        # Fade out command line (prompt and install text together)
+        self.play(FadeOut(command_line), run_time=0.7)
+
+        # Fade in import text
+        self.play(FadeIn(import_text, shift=UP*0.2), run_time=1) # Subtle upward shift on fade in
+
+        # Keep terminal and import text on screen at the end
+        self.wait(2.5)
+```

@@ -1,0 +1,69 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define background color maybe? Default is black. Let's keep it default.
+        # Hex Colors
+        console_color = "#888888" # Grey
+        label_color = "#FFFF00" # Yellow
+        wrench_color = "#AAAAAA" # Light Grey
+        wrench_stroke_color = "#DDDDDD" # Lighter Grey
+        text_color = "#FFFFFF" # White
+
+        # 1. Define visual elements
+        # Square representing the console
+        console = Square(side_length=2.0, color=console_color, fill_opacity=1.0)
+
+        # 'MODDED' label
+        modded_label = Text("MODDED", color=label_color, weight=BOLD).scale(0.7)
+
+        # Simple Polygon Wrench Vertices
+        wrench_vertices = [
+            [0.3, 0.25, 0], [0.0, 0.25, 0], [-0.1, 0.15, 0], # Top jaw part
+            [-0.1, 0.05, 0], [-0.5, 0.05, 0], [-0.5, -0.05, 0], # Handle part
+            [-0.1, -0.05, 0], [-0.1, -0.15, 0], [0.0, -0.25, 0], # Bottom jaw part
+            [0.3, -0.25, 0], [0.35, -0.15, 0], [0.35, 0.15, 0]  # Back closing shape
+        ]
+        # Create the Polygon object for the wrench
+        wrench = Polygon(*wrench_vertices, color=wrench_color, fill_opacity=1.0, stroke_width=1.5, stroke_color=wrench_stroke_color).scale(1.2)
+
+        # Contextual text
+        context_text = Text(
+            "Players needed a modded console to connect.",
+            font_size=28,
+            color=text_color
+        ).scale(0.9) # Slightly scale text to ensure fit
+
+        # 2. Position elements to avoid overlap
+        # Group the main visual elements (console, label, wrench)
+        visual_group = VGroup(console, modded_label, wrench)
+
+        # Position label above console
+        modded_label.next_to(console, UP, buff=0.2)
+        # Position wrench next to console
+        wrench.next_to(console, RIGHT, buff=0.3)
+
+        # Center the visual group slightly above the middle
+        visual_group.move_to([0, 0.7, 0])
+
+        # Position context text below the visual group
+        context_text.next_to(visual_group, DOWN, buff=0.5)
+
+
+        # 3. Animate the appearance of elements
+        # Animate the console appearing first
+        self.play(Create(console), run_time=1.0)
+        # Animate the label and wrench appearing next
+        self.play(
+            Write(modded_label),
+            Create(wrench),
+            run_time=1.2
+        )
+        # Animate the context text appearing
+        self.play(Write(context_text), run_time=1.5)
+
+        # 4. Hold the final scene
+        # Wait for a few seconds before the scene ends
+        self.wait(3)
+```

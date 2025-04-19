@@ -4,7 +4,7 @@ __pycache__/
 /token.json
 /media
 /output/
-/prompts/
-/responses/
+# /prompts/
+# /responses/
 /trash/
 /temp/

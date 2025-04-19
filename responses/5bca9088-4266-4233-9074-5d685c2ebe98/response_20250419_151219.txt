@@ -1,0 +1,68 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        white = "#FFFFFF"
+        blue = "#4285F4" # Blue for highlighting thumbs up
+
+        # Create Thumbs Up Icon using basic shapes
+        fist = Rectangle(width=0.6, height=0.7, color=white, fill_opacity=1).round_corners(0.15)
+        # Define thumb polygon vertices
+        thumb_points = [ORIGIN, [0.4, 0, 0], [0.4, 0.4, 0], [0.2, 0.5, 0]]
+        thumb = Polygon(*thumb_points, color=white, fill_opacity=1)
+        # Position thumb relative to fist
+        thumb.move_to(fist.get_corner(UR) + [-0.1, 0.1, 0]).rotate(-PI / 5, about_point=fist.get_center() + [0.1, 0.1, 0])
+        thumbs_up_icon = VGroup(fist, thumb).scale(1.2)
+        # Set initial color and position
+        thumbs_up_icon.set_color(white)
+        thumbs_up_icon.move_to(LEFT * 3 + UP * 1)
+
+        # Create Bell Icon using basic shapes
+        # Define bell body polygon vertices
+        bell_body_points = [[-0.4, 0.5, 0], [0.4, 0.5, 0], [0.5, -0.3, 0], [-0.5, -0.3, 0]]
+        bell_body = Polygon(*bell_body_points, color=white, fill_opacity=1)
+        # Define the bottom lip of the bell using ArcBetweenPoints
+        start_lip = bell_body.get_points()[-1] # Use the last point of the polygon base
+        end_lip = bell_body.get_points()[-2] # Use the second to last point of the polygon base
+        bell_lip = ArcBetweenPoints(start_lip, end_lip, angle=-PI * 0.8, color=white)
+        # Define the clapper
+        bell_clapper = Circle(radius=0.08, color=white, fill_opacity=1).move_to(bell_body.get_center() + DOWN * 0.45)
+        bell_icon = VGroup(bell_body, bell_lip, bell_clapper).scale(1.2)
+        # Set initial color and position
+        bell_icon.set_color(white)
+        bell_icon.move_to(RIGHT * 3 + UP * 1)
+
+        # Create Text based on the sub-visual context provided
+        text = Text(
+            "If you found this video informative give it a thumbs up,\nand consider subscribing for more content.",
+            font_size=24,
+            line_spacing=1,
+            color=white
+        )
+        # Position text below the icons
+        text.move_to(DOWN * 1.5)
+
+        # Animation sequence
+        self.play(Write(text), run_time=2)
+        self.wait(0.5)
+
+        # Create icons simultaneously
+        self.play(Create(thumbs_up_icon), Create(bell_icon), run_time=1)
+        self.wait(0.5)
+
+        # Animate Thumbs Up: Highlight blue
+        self.play(thumbs_up_icon.animate.set_color(blue), run_time=0.8)
+        self.wait(0.5)
+
+        # Animate Bell: Ringing motion
+        # Define the pivot point for rotation slightly above the bell's top center
+        anchor_point = bell_icon.get_critical_point(UP)
+        self.play(
+            Rotate(bell_icon, angle=PI / 12, about_point=anchor_point, rate_func=wiggle, run_time=1.5)
+        )
+
+        # Keep the final frame visible for a while
+        self.wait(2)
+```

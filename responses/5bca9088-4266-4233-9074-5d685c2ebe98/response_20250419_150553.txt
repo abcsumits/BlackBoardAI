@@ -1,0 +1,52 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Set background color
+        self.camera.background_color = "#000000"
+
+        # Create the locked console representation (a simple square)
+        console_box = Square(
+            side_length=1.5,
+            color="#888888",  # Grey color for the square
+            fill_color="#444444", # Darker grey fill
+            fill_opacity=0.6
+        )
+
+        # Create the text labels
+        text_color = "#FFFFFF" # White color for text
+        font_size = 32
+
+        text1 = Text('No Custom Servers', font_size=font_size, color=text_color)
+        text2 = Text('No Mods', font_size=font_size, color=text_color)
+        text3 = Text('No Plugins', font_size=font_size, color=text_color)
+
+        # Group the text labels vertically
+        text_group = VGroup(text1, text2, text3).arrange(
+            DOWN,
+            buff=0.4,      # Buffer between text lines
+            aligned_edge=LEFT # Align text to the left
+        )
+
+        # Group the console box and the text group horizontally
+        final_group = VGroup(console_box, text_group).arrange(
+            RIGHT,
+            buff=0.7 # Buffer between the box and the text group
+        )
+
+        # Center the entire group on the screen
+        final_group.move_to([0,0,0])
+
+        # Animate the appearance
+        self.play(Create(console_box), run_time=1.0)
+        self.wait(0.5)
+        self.play(Write(text1), run_time=0.8)
+        self.wait(0.2)
+        self.play(Write(text2), run_time=0.8)
+        self.wait(0.2)
+        self.play(Write(text3), run_time=0.8)
+
+        # Hold the final scene for a moment
+        self.wait(2)
+```

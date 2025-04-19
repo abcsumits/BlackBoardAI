@@ -1,0 +1,100 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Set background color slightly off-black for better visibility if needed
+        # self.camera.background_color = "#111111"
+
+        # 1. PC Representation
+        pc_screen = Rectangle(width=4.5, height=2.8, color="#FFFFFF", fill_opacity=0.1, stroke_width=2)
+        pc_label = Text("MCP Server Software", font_size=28, color="#FFFFFF").next_to(pc_screen, DOWN, buff=0.3)
+        pc_group = VGroup(pc_screen, pc_label).move_to([0, 0.5, 0]) # Position group slightly above center
+
+        self.play(Create(pc_screen), Write(pc_label))
+        self.wait(0.5)
+
+        # 2. Gear Icons
+        # Function to create a simple gear VMobject
+        def create_gear(radius=0.3, num_teeth=8, color="#CCCCCC", inner_hole_color="#333333"):
+            outer_radius = radius
+            inner_radius = radius * 0.6  # Radius of the main body circle
+            tooth_height = radius * 0.25 # How far teeth extend
+            angle_step = TAU / num_teeth
+            # Angles to define tooth shape (adjust for appearance)
+            half_angle_tooth_base = angle_step * 0.25 # Angle for the base width of the tooth
+            half_angle_tooth_tip = angle_step * 0.15  # Angle for the tip width of the tooth
+
+            # Main body
+            gear_body = Annulus(
+                inner_radius=inner_radius,
+                outer_radius=outer_radius,
+                color=color,
+                fill_opacity=1.0,
+                stroke_width=0
+            )
+
+            # Teeth using Polygon
+            teeth = VGroup()
+            for i in range(num_teeth):
+                angle = i * angle_step
+                # Points for a trapezoidal tooth
+                # Base points on the outer radius
+                p1 = outer_radius * (np.cos(angle - half_angle_tooth_base) * RIGHT + np.sin(angle - half_angle_tooth_base) * UP)
+                p2 = outer_radius * (np.cos(angle + half_angle_tooth_base) * RIGHT + np.sin(angle + half_angle_tooth_base) * UP)
+                # Tip points extending outwards
+                tip_radius = outer_radius + tooth_height
+                p3 = tip_radius * (np.cos(angle + half_angle_tooth_tip) * RIGHT + np.sin(angle + half_angle_tooth_tip) * UP)
+                p4 = tip_radius * (np.cos(angle - half_angle_tooth_tip) * RIGHT + np.sin(angle - half_angle_tooth_tip) * UP)
+
+                # Create the polygon for the tooth
+                tooth = Polygon(p1, p2, p3, p4, color=color, fill_opacity=1.0, stroke_width=0)
+                teeth.add(tooth)
+
+            # Center hole
+            center_hole = Circle(
+                radius=inner_radius * 0.5,
+                color=inner_hole_color, # Use background or contrasting color
+                fill_opacity=1.0,
+                stroke_width=0
+             )
+
+            # Combine parts and scale
+            gear = VGroup(gear_body, teeth, center_hole).scale(0.5) # Scale the final gear
+            return gear
+
+        # Create two gears with slightly different colors and sizes
+        gear1 = create_gear(color="#C0C0C0", num_teeth=8, radius=0.4)
+        gear2 = create_gear(color="#A9A9A9", num_teeth=6, radius=0.35) # Smaller, fewer teeth
+
+        # Position gears near the 'MCP Server Software' label, slightly overlapping visually but distinct
+        # Place them to the right of the label
+        gear1.next_to(pc_label, RIGHT, buff=0.4).shift(UP*0.15)
+        gear2.next_to(gear1, RIGHT, buff=-0.1).shift(DOWN*0.1) # Slight overlap and offset for visual effect
+
+        # Animate gears appearing
+        self.play(GrowFromCenter(gear1), GrowFromCenter(gear2), run_time=0.7)
+        self.wait(0.3)
+
+        # 3. 'Plugins' Text
+        plugins_text = Text("Plugins", font_size=38, color="#FFFF00", weight=BOLD) # Yellow, bold
+        # Position below the gears
+        plugins_text.next_to(VGroup(gear1, gear2), DOWN, buff=0.4)
+
+        # Animate text appearing
+        self.play(Write(plugins_text))
+
+        # Hold the scene with text
+        self.wait(1)
+
+        # Add a subtle rotation animation to the gears
+        self.play(
+            Rotate(gear1, angle=PI, rate_func=linear, about_point=gear1.get_center()),
+            Rotate(gear2, angle=-TAU/3, rate_func=linear, about_point=gear2.get_center()),
+            run_time=3
+        )
+
+        # Hold the final scene state
+        self.wait(2.5)
+```

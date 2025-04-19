@@ -1,0 +1,33 @@
+```python
+from manim import Scene, Arrow, Text, FadeIn, GrowArrow, Wait, UP, DOWN
+
+class Frame(Scene):
+    def construct(self):
+        # Define positions using vectors relative to ORIGIN
+        arrow_start_point = 1 * UP
+        arrow_end_point = 1.5 * DOWN
+        text_location = 2.2 * DOWN
+
+        # Create the downward pointing arrow
+        arrow = Arrow(
+            start=arrow_start_point,
+            end=arrow_end_point,
+            color="#FFFFFF", # White color
+            buff=0.1 # Small buffer between start/end points and the arrow tips
+        )
+
+        # Create the text object
+        text = Text(
+            "Let me know below!",
+            color="#FFFFFF" # White color
+        ).move_to(text_location) # Position the text below the arrow
+
+        # Animate the arrow growing downwards
+        self.play(GrowArrow(arrow))
+
+        # Animate the text fading in
+        self.play(FadeIn(text))
+
+        # Wait for a second to show the final state
+        self.wait(1)
+```

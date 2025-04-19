@@ -1,0 +1,76 @@
+```python
+from manim import *
+import math
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Create console (Square)
+        console = Square(
+            side_length=3.5,
+            color="#4A4A4A", # Dark grey border
+            fill_color="#1E1E1E", # Very dark grey fill
+            fill_opacity=1.0,
+            stroke_width=3
+        )
+        console.move_to(ORIGIN) # Position console at the center
+
+        # 2. Create Lock Icon (VGroup of Rectangle and Arc)
+        lock_body_height = 1.0
+        lock_body_width = 0.8
+        lock_color_hex = "#E0E0E0" # Light grey / off-white
+        pulse_color_hex = "#FF0000" # Red
+
+        lock_body = Rectangle(
+            height=lock_body_height,
+            width=lock_body_width,
+            color=lock_color_hex,
+            fill_color=lock_color_hex,
+            fill_opacity=1.0,
+            stroke_width=3
+        )
+
+        shackle_radius = lock_body_width / 2.1
+        shackle_stroke_width = 6 # Make shackle noticeably thick
+        shackle = Arc(
+            radius=shackle_radius,
+            start_angle=math.pi, # Start from the left (-x direction)
+            angle=-math.pi,     # Go 180 degrees clockwise (creating an upward arc)
+            color=lock_color_hex,
+            stroke_width=shackle_stroke_width
+        )
+        # Position the center of the shackle arc slightly above the top edge of the lock body
+        shackle.move_to(lock_body.get_top() + UP * (shackle_radius * 0.95 ))
+
+        lock_icon = VGroup(lock_body, shackle)
+        lock_icon.scale(1.1) # Make the lock icon slightly larger
+        lock_icon.move_to(console.get_center()) # Position lock icon in the center of the console
+
+        # 3. Animate appearance
+        self.play(DrawBorderThenFill(console), run_time=1.2)
+        self.play(FadeIn(lock_icon, scale=0.5), run_time=0.8) # Fade in lock with a slight scale effect
+        self.wait(0.5)
+
+        # 4. Pulsing animation
+        num_pulses = 3
+        pulse_duration = 0.6 # Total duration for one pulse cycle (red -> original)
+
+        for _ in range(num_pulses):
+            # Animate to Red
+            self.play(
+                lock_body.animate.set_color(pulse_color_hex).set_fill(pulse_color_hex, opacity=1.0),
+                shackle.animate.set_color(pulse_color_hex),
+                run_time=pulse_duration / 2,
+                rate_func=rate_functions.ease_in_out_sine # Smooth transition
+            )
+            # Animate back to Original Color
+            self.play(
+                lock_body.animate.set_color(lock_color_hex).set_fill(lock_color_hex, opacity=1.0),
+                shackle.animate.set_color(lock_color_hex),
+                run_time=pulse_duration / 2,
+                rate_func=rate_functions.ease_in_out_sine # Smooth transition back
+            )
+            self.wait(0.05) # Tiny pause between pulses
+
+        # Keep elements on screen at the end
+        self.wait(1.5)
+```

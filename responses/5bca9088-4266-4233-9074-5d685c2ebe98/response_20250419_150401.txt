@@ -1,0 +1,156 @@
+```json
+{
+"segment1": [
+"A Text mobject displaying 'MCP Server?' appears center screen with a subtle zoom-in animation. Background is a simple gradient.",
+"hey everyone and welcome back. today we are diving into a specific piece of minecraft history."
+],
+"segment2": [
+"The text 'MCP Server?' pulses slightly. Below it, smaller text 'What is it?' fades in.",
+"many newer players might not know about it, but it was a big deal for older console players."
+],
+"segment3": [
+"The question mark transforms into an exclamation point. The text changes to 'MCP Server!'.",
+"we are talking about mcp server. lets find out what it is."
+],
+"segment4": [
+"The text 'MCP Server' moves to the top. Below it, the text 'Minecraft: Console Edition Modding Project Server' types out.",
+"so what does mcp server stand for. it means minecraft console edition modding project server."
+],
+"segment5": [
+"Logos represented by colored RegularPolygon objects (e.g., green for Xbox 360, blue for PS3, light blue for Wii U, dark blue for Vita) fade in sequence.",
+"now think back to the days of minecraft on the xbox three six zero, playstation three, and wii u."
+],
+"segment6": [
+"The Vita logo (e.g., dark blue RegularPolygon) appears next to the others. A Text label 'Legacy Console Editions' appears below the logos.",
+"even the ps vita was included. these are often called the legacy console editions."
+],
+"segment7": [
+"A Square representing a console appears. A lock icon (Polygon) is superimposed and pulses red.",
+"unlike the java edition or modern bedrock edition, these legacy versions lacked official support."
+],
+"segment8": [
+"Text labels 'No Custom Servers', 'No Mods', 'No Plugins' appear next to the locked console square.",
+"they never officially supported custom servers, mods, or plugins from the community."
+],
+"segment9": [
+"A simple, pixelated landscape appears inside the console Square. Text 'Vanilla Game' fades in briefly.",
+"you basically got the standard vanilla game as provided by the developers."
+],
+"segment10": [
+"The console Square connects via Arrows to only two other Squares labeled 'Friend'.",
+"multiplayer was limited to official services like xbox live or psn, often just playing with friends directly."
+],
+"segment11": [
+"Thought bubble Polygons appear above the console Square. Inside them, icons (simple shapes) representing minigames, tools, and custom worlds animate.",
+"but the community wanted more, they wanted the kind of customization seen on pc java servers."
+],
+"segment12": [
+"Text 'MCP Server' appears brightly, perhaps with a yellow glow effect. An Arrow points from the thought bubbles towards this text.",
+"this is where mcp server comes into the picture."
+],
+"segment13": [
+"The 'MCP Server' text is joined by subtext 'Unofficial Community Project'.",
+"it was an unofficial community driven project designed to create custom server software."
+],
+"segment14": [
+"An Arrow points from the 'MCP Server' text towards the previously shown Legacy Console logos.",
+"this software was created specifically for those legacy console editions of minecraft."
+],
+"segment15": [
+"A Rectangle labeled 'PC' appears. Inside, small gear Polygons rotate, labeled 'MCP Server Software'.",
+"how did it work. someone would run the mcp server software on a computer."
+],
+"segment16": [
+"A Square representing a legacy console appears, now with a 'MODDED' label and a wrench icon (simple Polygon shape).",
+"players wanting to connect needed a modded console, this is very important."
+],
+"segment17": [
+"An animated Arrow flows from the 'PC' Rectangle to the 'MODDED Console' Square. Text 'Custom IP' appears along the arrow.",
+"the mod allowed the console game to connect to the custom server ip address instead of official servers."
+],
+"segment18": [
+"Gear icons appear near the 'MCP Server Software' label on the PC rectangle. Text 'Plugins' appears.",
+"once connected, players could experience features added by the server owner using plugins."
+],
+"segment19": [
+"Text 'Similar to Bukkit/Spigot' appears near the plugin gears.",
+"these plugins were specifically written for the mcp server platform, similar in concept to java plugins."
+],
+"segment20": [
+"A bullet point Dot appears, followed by Text 'Plugins: Add Commands, Game Modes, Economy'.",
+"mcp server allowed for plugins to add commands, custom game modes, or economy systems."
+],
+"segment21": [
+"A second bullet point Dot appears, followed by Text 'Custom Worlds: Play Unique Maps'.",
+"it allowed players to explore custom worlds not normally available on those consoles."
+],
+"segment22": [
+"A third bullet point Dot appears, followed by Text 'Server Management: Kick, Ban, Permissions'.",
+"server owners had management tools like kicking players, banning users, and setting permissions."
+],
+"segment23": [
+"A fourth bullet point Dot appears, followed by Text 'Dedicated Communities: Build Persistent Worlds'.",
+"it helped build dedicated communities with persistent worlds beyond simple friend invites."
+],
+"segment24": [
+"A large Text mobject summarizes: 'MCP Server: PC-style servers for Legacy Consoles (Modding Required)'.",
+"so in simple terms mcp server was a way to bring pc style servers to old consoles, but it required modding."
+],
+"segment25": [
+"A yellow Warning Sign Triangle shape fades in. Text 'Important Points' appears next to it.",
+"now it is important to remember a few things about this project."
+],
+"segment26": [
+"Text 'Unofficial' appears prominently. Faded Mojang/Microsoft logos (simple shapes) appear with a red 'X' Polygon over them.",
+"this was completely unofficial, it was not supported by mojang or microsoft."
+],
+"segment27": [
+"Text 'Requires Modding' appears. Icons for complexity (interlocking gears), warranty void (torn paper Polygon), and ToS violation (gavel Polygon) fade in.",
+"it required modding your console, which could be complex, void warranties, or violate terms of service."
+],
+"segment28": [
+"Text 'LEGACY CONSOLES ONLY' in bold red font. Faded newer console logos (e.g., simple Squares for PS5, Xbox Series, Switch) appear with a red 'X'.",
+"remember it is for legacy console editions only, not modern bedrock servers."
+],
+"segment29": [
+"Clear logos/shapes for modern consoles appear. Text 'Bedrock Dedicated Server / Realms' appears below them.",
+"modern platforms like ps five, xbox series, or switch use the official bedrock dedicated server or realms."
+],
+"segment30": [
+"A line graph using Axes and a Line graph plot shows activity starting high and decreasing sharply over time.",
+"like many community projects for older platforms, mcp server activity has significantly decreased."
+],
+"segment31": [
+"A book icon (Polygon) opens, revealing the simple diagram: PC Rectangle -> Arrow -> Modded Console Square.",
+"so while you might not use mcp server today, it represents a fascinating time in minecrafts history."
+],
+"segment32": [
+"A lightbulb icon (Circle with rays) illuminates next to the diagram in the book.",
+"the community found creative ways to expand the game beyond its official limitations on locked platforms."
+],
+"segment33": [
+"Text recap: 'MCP Server: Unofficial, Community-Made, Custom Servers for Legacy Minecraft'.",
+"and thats mcp server in a nutshell an unofficial community solution for custom servers."
+],
+"segment34": [
+"Text 'A Cool Piece of Modding History!' appears with a slight sparkle animation.",
+"it remains a very cool piece of minecraft modding history."
+],
+"segment35": [
+"A controller icon (Polygon) appears next to a large Question Mark.",
+"did you ever play on an mcp server back in the day."
+],
+"segment36": [
+"An Arrow points downwards towards where comments usually appear. Text 'Let me know below!' fades in.",
+"let me know in the comments below if you have memories of it."
+],
+"segment37": [
+"A Thumbs Up icon (Polygon) highlights blue. A Bell icon (Polygon) animates as if ringing.",
+"if you found this video informative give it a thumbs up, and consider subscribing for more content."
+],
+"segment38": [
+"Final text 'Thanks for Watching!' appears center screen.",
+"thanks for watching, and i will see you in the next one."
+]
+}
+```

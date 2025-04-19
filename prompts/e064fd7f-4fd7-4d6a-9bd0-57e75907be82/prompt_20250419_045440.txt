@@ -1,0 +1,106 @@
+Your task is to convert narrative input into timed 5-15 second multimedia segments(Strictly each segment should have its own independent meaning,so that if  segment is missing it should not effect the whole video)..Most important and strictly All dialogues should be carry meaning together as well as alone. For each segment provide:
+    
+   
+     
+    Visual description: Manim-compatible scene description (geometric primitives, mobjects, animations)(No constraints on visual description use whatever suits fine for the story)
+
+    Speech text:  Strictly contains words to be spoken only in lower case latin letters words and "," or "." or "?",(if you want to use numbers or mathematical operation use words only example five plus two equals seven,use phi or theta etc for their symbols etc ),strictly no symbols or special characters
+
+    Format strictly as plain-text JSON:
+    {"segment1": ["visual description", "speech text"], "segment2": ["...", "..."], ...}
+
+    Requirements:
+
+    Use ONLY segment1, segment2 sequential numbering
+
+    Visuals must use explicit Manim elements:
+    ✓ Parametric shapes (Polygon, Arrow, Dot)
+    ✓ Mathematical surfaces (Surface, 3DAxes)
+    ✓ Color codes (HEX/RGB)
+    ✓ Transform animations (Create, FadeIn, Rotate)
+    ✓ No mention about commands or actions just the text that is to be spoken
+    ✓ No mention of the audio or the flow
+    Striclty do not add any code in visuals or audio(you can ignore that part of story)
+
+    Speech text requirements:
+    ✓ No contractions ("do not" not "don't")
+    ✓ Max 1 comma per sentence
+    ✓ Oxford comma usage
+    ✓ Terminal punctuation only (.?!)
+    ✓ No mention about commands or actions just the text that is to be spoken
+    ✓ No mention of the visuals or the flow
+
+    JSON must be:
+    ✓ Wrapped in {} with double-quoted strings
+    ✓ Proper comma placement
+    ✓ No trailing commas
+    ✓ Escape characters as " if needed
+
+    Example:
+    {"segment1": ["A blue RegularPolygon(5) rotates clockwise on an orange background", "The ancient symbol begins to glow with pentagonal symmetry."]}
+
+    Input Story:
+    {Okay, here's a script breakdown for a very short YouTube video (like a Short or Reel) on Python's `rich` module.
+
+---
+
+**Video Title:** ✨ Python `rich`: BEAUTIFUL Terminal Output! ✨ #python #coding #devtools
+
+**Video Description:**
+Tired of boring Python terminal output? 😴 Discover `rich` in under 60 seconds! Make your CLI apps stunning. #python #rich #terminal #programming #shorts
+
+---
+
+**Video Script & Visual Cues:**
+
+**(0-3 seconds)**
+
+*   **VISUAL:** Fast-paced montage:
+    1.  Show standard, plain Python `print()` output of a dictionary (looks messy).
+    2.  *Quick transition (Wipe/Flash)*
+    3.  Show the *exact same* dictionary printed using `rich` (colorful, nicely formatted).
+*   **AUDIO (Voiceover - Energetic & Fast):** "Is your Python terminal output THIS boring?" (Point to plain output) "...Want THIS instead?" (Point to rich output)
+*   **SOUND:** Upbeat, techy intro music starts. Maybe a "ding!" sound on the rich output reveal.
+*   **TEXT OVERLAY:** Plain Output vs ✨ Rich Output ✨
+
+**(3-8 seconds)**
+
+*   **VISUAL:** Show a terminal window. Type `pip install rich` quickly. Then show the import: `from rich import print`
+*   **AUDIO (Voiceover):** "Meet `rich`! Install it fast." (Sound of keyboard typing) "Then just import `print` from `rich`..."
+*   **TEXT OVERLAY:** `pip install rich` then `from rich import print`
+
+**(8-15 seconds)**
+
+*   **VISUAL:** Show code snippet:
+    ```python
+    data = {"name": "Gadget", "value": 123.45, "tags": ["tech", "cool", "v2"]}
+    print(data) # Rich print!
+    print("[bold red]ERROR:[/bold red] File not found!")
+    print("[italic blue]Status:[/italic blue] Processing...")
+    ```
+    Show the resulting *beautiful* terminal output side-by-side or immediately after the code. Highlight the formatted dict and the styled text.
+*   **AUDIO (Voiceover):** "...It automatically pretty-prints your data structures! And easily add colors and styles using simple markup!"
+*   **SOUND:** Subtle "whoosh" or "pop" sounds as styled text appears.
+
+**(15-18 seconds)**
+
+*   **VISUAL:** Quick flash of another `rich` feature, like a progress bar animating briefly or a simple `rich` Table being displayed. *Keep this VERY fast.*
+*   **AUDIO (Voiceover):** "Plus progress bars, tables, better tracebacks, and more!"
+*   **TEXT OVERLAY:** Progress Bars! Tables! Tracebacks!
+
+**(18-20 seconds)**
+
+*   **VISUAL:** End screen showing the `rich` logo or documentation URL. Maybe cycle back to the pretty-printed dictionary.
+*   **AUDIO (Voiceover - Upbeat Conclusion):** "Stop boring terminals! Try `rich` today!"
+*   **SOUND:** Music swells slightly and ends with a final flourish/sting.
+*   **TEXT OVERLAY:** `pip install rich` - Try it! (Link in description!)
+
+---
+
+**Tips for Production:**
+
+*   **Keep it FAST:** Every second counts in a short video. Use quick cuts.
+*   **Show, Don't Just Tell:** The visual difference is key. Make the "before" and "after" very clear.
+*   **Clear Text:** Ensure any code or commands shown are large and readable on mobile.
+*   **Energetic VO:** Match the fast pace with an enthusiastic voiceover.
+*   **Background Music:** Use royalty-free, upbeat tech music that doesn't overpower the voiceover.}

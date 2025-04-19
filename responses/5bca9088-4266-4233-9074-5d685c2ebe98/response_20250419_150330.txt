@@ -1,0 +1,66 @@
+Okay, here's a breakdown of "What is MCP Server?" formatted as a script for a YouTube video.
+
+---
+
+**YouTube Video Script: What is MCP Server?**
+
+**(Intro Music with Minecraft Legacy Console Edition Gameplay Footage)**
+
+**Host (Speaking to Camera):** Hey everyone, and welcome back to the channel! Today, we're diving into a specific piece of Minecraft history that many newer players might not know about, but which was a big deal for older console players. We're talking about **MCP Server**. What *is* it? Let's find out!
+
+**(Transition to Title Card: "What is MCP Server?")**
+
+**Host:** So, what does MCP Server stand for? It means **Minecraft: Console Edition Modding Project Server**.
+
+**(Visual: Text Overlay: MCP Server = Minecraft: Console Edition Modding Project Server)**
+
+**Host:** Now, think back to the days of Minecraft on the **Xbox 360, PlayStation 3, Wii U, and even the PS Vita**. These are often called the "Legacy Console Editions".
+
+**(Visual: Show logos or box art for PS3, Xbox 360, Wii U, PS Vita Minecraft editions)**
+
+**Host:** Unlike the Java Edition on PC, or the modern Bedrock Edition, these Legacy Console versions **never officially supported custom servers, mods, or plugins**. You basically got the vanilla game, and multiplayer was limited to what Mojang provided through official services like Xbox Live or PSN, often just playing with friends directly.
+
+**(Visual: Split screen - Left side showing vanilla Legacy Console gameplay, Right side showing a complex Java server with plugins/mods)**
+
+**Host:** But the community wanted more! They wanted the kind of customization seen on PC Java servers – things like custom minigames, special commands, grief protection, unique worlds, and server management tools.
+
+**Host:** This is where **MCP Server** comes in. It was an **unofficial, community-driven project** designed to create **custom server software** specifically for those **Legacy Console Editions** of Minecraft.
+
+**(Visual: Simple diagram: PC running "MCP Server Software" <--> Internet <--> Modded Console (PS3/Xbox 360 etc.) running Minecraft)**
+
+**Host:** How did it work?
+1.  Someone would run the MCP Server software on a **computer (PC)**, much like you'd run a Java server.
+2.  Players wanting to connect needed a **MODDED console**. This is crucial. You couldn't just connect from a standard, unmodified console. The mod allowed the console's game to connect to the custom server IP address instead of the official servers.
+3.  Once connected, players could experience features added by the server owner using **plugins** specifically written for the MCP Server platform (often similar in concept to Bukkit/Spigot plugins for Java).
+
+**(Visual: List on screen - What MCP Server Allowed:)**
+*   **Plugins:** Add commands, game modes, economy, etc.
+*   **Custom Worlds:** Play on maps not normally available.
+*   **Server Management:** Kick, ban, permissions.
+*   **Dedicated Communities:** Build persistent worlds beyond simple friend invites.
+
+**Host:** So, in simple terms: **MCP Server was a way for the community to bring PC-style custom servers to the old, unsupported console versions of Minecraft, but it required modding your console.**
+
+**(Visual: Text Overlay: "Unofficial" and "Requires Modded Console")**
+
+**Host (Slightly more serious tone):** Now, it's important to remember:
+*   This was **completely unofficial**. Not supported by Mojang or Microsoft.
+*   It **required modding your console**, which could be technically complex, potentially void warranties, and might violate the terms of service for platforms like Xbox Live or PSN.
+*   It's for **LEGACY** console editions only. It has nothing to do with modern Bedrock servers on PS4, PS5, Xbox One, Series X/S, or Switch. Those use the official Bedrock Dedicated Server or Realms.
+*   Like many community projects for older platforms, development and activity around MCP Server have significantly decreased as those consoles became obsolete.
+
+**(Visual: Show modern Minecraft Bedrock Edition gameplay on newer consoles)**
+
+**Host:** So, while you might not be using MCP Server today unless you're specifically tinkering with old modded consoles, it represents a fascinating time in Minecraft's history – the community finding ways to expand the game beyond its official limitations on platforms that were locked down.
+
+**(Visual: Montage of nostalgic Legacy Console Edition moments, maybe fan creations if available)**
+
+**Host (Back to camera, concluding):** And that's MCP Server in a nutshell! An unofficial, community-made solution for custom servers on Minecraft's Legacy Console Editions. A cool piece of modding history!
+
+**(Outro)**
+
+**Host:** Did you ever play on an MCP Server back in the day? Let me know in the comments below! If you found this video informative, give it a thumbs up, and consider subscribing for more Minecraft content. Thanks for watching, and I'll see you in the next one!
+
+**(Outro Music fades in, End Screen with Subscribe Button and Links)**
+
+---

@@ -1,0 +1,36 @@
+```json
+{
+"segment1": [
+"Two Rectangles side-by-side. Left Rectangle has a white background and simple black Text(\"Processing... {'key': 'value'}\"). Right Rectangle has a dark background and colorful Text(\"[bold green]Processing...[/] { 'key': '[cyan]value[/]' }\"). Animate a FadeIn effect for both.",
+"is your python terminal output bland."
+],
+"segment2": [
+"A dark Rectangle simulating a terminal appears. Text(\"pip install rich\") animates typing across it, followed by a green Checkmark shape (like RegularPolygon(3, start_angle=PI/2) rotated) fading in.",
+"meet rich a python library to make your command line apps beautiful and informative."
+],
+"segment3": [
+"Text objects appear sequentially: Text(\"ERROR: File not found!\", color=RED, weight=BOLD), then Text(\"Information: Processing complete.\", color=BLUE, slant=ITALIC), then Text(\"Supports underline, strikethrough.\", color=WHITE) with parts underlined and struck through.",
+"easily add colors and styles using simple markup tags right in your print statements."
+],
+"segment4": [
+"First, show Text(\"{'user': 'alice', 'id': onehundredtwentythree, 'active': true, 'items': [one, two, {'a':'b'}]}\", color=WHITE) plainly. Then, Transform this into neatly formatted Text with keys in one color (e.g., YELLOW) and values in another (e.g., CYAN), spread over multiple lines with indentation.",
+"it automatically pretty prints data structures making debugging way easier."
+],
+"segment5": [
+"Show the same neatly formatted Text from segment4, but add more highlighted details, perhaps using annotations or different colors for data types like integers (PURPLE) and strings (GREEN). Animate a zoom or focus effect.",
+"use inspect for even more detail on your data structures."
+],
+"segment6": [
+"A horizontal Rectangle (the progress bar track, color=GRAY). Inside it, a smaller Rectangle (the bar itself, color=BLUE) animates growing from left to right. Text(\"Processing...\") appears above the bar.",
+"need progress bars rich makes adding sleek informative ones incredibly simple."
+],
+"segment7": [
+"Display Text(\"rich.readthedocs.io\", color=BLUE). Create several small icons representing tables (Grid), markdown (Text(\"Md\")), and tracebacks (perhaps a stylized Bug shape) that FadeIn around the text.",
+"rich does tables, markdown, tracebacks, and more."
+],
+"segment8": [
+"Show Text(\"pip install rich\", color=GREEN) and next to it, a red Circle containing a white Arrow pointing upwards (like a subscribe button symbol). Animate both with a slight bounce.",
+"install it and explore the docs like and subscribe for more python tips."
+]
+}
+```

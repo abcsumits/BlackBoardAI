@@ -1,0 +1,71 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define screen center reference
+        screen_center = ORIGIN
+
+        # --- Console Shapes ---
+
+        # PS5 Representation (Abstract)
+        ps5_left = Rectangle(height=1.2, width=0.4, color="#FFFFFF", fill_opacity=1).round_corners(0.1)
+        ps5_right = Rectangle(height=1.2, width=0.4, color="#FFFFFF", fill_opacity=1).round_corners(0.1)
+        ps5_gap = Rectangle(height=1.2, width=0.1, color="#000000", fill_opacity=1)
+        # Group the PS5 parts and arrange them horizontally with no buffer
+        ps5_shape = VGroup(ps5_left, ps5_gap, ps5_right).arrange(RIGHT, buff=0)
+
+        # Xbox Series Representation (Abstract)
+        xbox_circle = Circle(radius=0.6, color="#0F7C10", fill_opacity=1)
+        # Create the 'X' using lines
+        xbox_x1 = Line(start=UP*0.4+LEFT*0.4, end=DOWN*0.4+RIGHT*0.4, color="#FFFFFF", stroke_width=8)
+        xbox_x2 = Line(start=UP*0.4+RIGHT*0.4, end=DOWN*0.4+LEFT*0.4, color="#FFFFFF", stroke_width=8)
+        xbox_x = VGroup(xbox_x1, xbox_x2)
+        # Group the circle and the 'X'
+        xbox_shape = VGroup(xbox_circle, xbox_x)
+
+        # Nintendo Switch Representation (Abstract)
+        switch_left = Rectangle(height=1.0, width=0.4, color="#E60012", fill_opacity=1).round_corners(0.1)
+        switch_center = Rectangle(height=0.8, width=1.0, color="#000000", fill_opacity=1).round_corners(0.05)
+        switch_right = Rectangle(height=1.0, width=0.4, color="#0055CC", fill_opacity=1).round_corners(0.1)
+        # Group the Switch parts and arrange them horizontally with a small buffer
+        switch_shape = VGroup(switch_left, switch_center, switch_right).arrange(RIGHT, buff=0.05)
+
+        # --- Group and Position Elements ---
+
+        # Group all console shapes together
+        console_group = VGroup(ps5_shape, xbox_shape, switch_shape)
+        # Arrange the console shapes horizontally with a larger buffer
+        console_group.arrange(RIGHT, buff=1.5)
+        # Position the group slightly above the center of the screen
+        console_group.move_to(screen_center + UP * 1.0)
+
+        # Create the text object
+        server_text = Text(
+            "Bedrock Dedicated Server / Realms",
+            font_size=36,
+            color="#FFFFFF"
+        )
+        # Position the text below the console group
+        server_text.next_to(console_group, DOWN, buff=0.7)
+
+        # --- Animations ---
+
+        # Animate the creation of the console shapes simultaneously
+        self.play(
+            Create(ps5_shape),
+            Create(xbox_shape),
+            Create(switch_shape),
+            run_time=1.5  # Duration of the animation
+        )
+        # Pause briefly
+        self.wait(0.5)
+
+        # Animate the writing of the text
+        self.play(
+            Write(server_text),
+            run_time=2.0 # Duration of the text animation
+        )
+        # Hold the final scene for a few seconds
+        self.wait(3)
+```

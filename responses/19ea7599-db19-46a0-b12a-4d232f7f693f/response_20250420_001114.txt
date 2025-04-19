@@ -1,0 +1,58 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        self.camera.background_color = "#1f1f1f"  # Dark background
+
+        # Main Text
+        end_text = Text(
+            "Thanks so much for watching\nand I will see you in the next video.",
+            font_size=36,
+            color="#FFFFFF",
+            line_spacing=1.2
+        ).shift(UP * 3)
+
+        # Placeholder Shapes
+        next_video_placeholder = Rectangle(
+            width=6.0,
+            height=3.5,
+            color="#CCCCCC",
+            stroke_width=2
+        ).shift(LEFT * 3.5 + DOWN * 0.5)
+        next_video_label = Text("Next Video", font_size=24, color="#AAAAAA").move_to(next_video_placeholder.get_center())
+
+        related_video_placeholder = Rectangle(
+            width=4.0,
+            height=2.25,
+            color="#CCCCCC",
+            stroke_width=2
+        ).shift(RIGHT * 3.5 + UP * 1.125)
+        related_video_label = Text("Related Video", font_size=20, color="#AAAAAA").move_to(related_video_placeholder.get_center())
+
+        subscribe_placeholder = Circle(
+            radius=1.0,
+            color="#CCCCCC",
+            stroke_width=2
+        ).shift(RIGHT * 3.5 + DOWN * 2.0)
+        subscribe_label = Text("Subscribe", font_size=20, color="#AAAAAA").move_to(subscribe_placeholder.get_center())
+
+        # Animations
+        self.play(Write(end_text), run_time=2)
+        self.wait(0.5)
+        self.play(
+            Create(next_video_placeholder),
+            Create(related_video_placeholder),
+            Create(subscribe_placeholder),
+            run_time=1.5
+        )
+        self.play(
+            FadeIn(next_video_label),
+            FadeIn(related_video_label),
+            FadeIn(subscribe_label),
+            run_time=1
+        )
+
+        # Hold the final screen
+        self.wait(3)
+```

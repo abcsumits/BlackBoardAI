@@ -1,0 +1,26 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Text to display
+        text = Text("A Cool Piece of Modding History!", font_size=48, color="#FFFFFF") # White color
+
+        # Position the text slightly above the center
+        text.move_to(ORIGIN)
+
+        # Animation: Appear with a sparkle effect
+        # ShowPassingFlash creates a brief highlight moving across the text
+        self.play(
+            ShowPassingFlash(
+                text.copy().set_color("#FFFF00"), # Yellow sparkle color
+                time_width=0.5, # Duration of the flash visibility
+                run_time=1.5, # Total time for the flash to pass
+                rate_func=linear
+            ),
+            Write(text, run_time=1.5) # Simultaneously write the text
+        )
+
+        # Keep the text on screen for a moment
+        self.wait(1)
+```

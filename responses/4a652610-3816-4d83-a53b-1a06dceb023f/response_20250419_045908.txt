@@ -1,0 +1,42 @@
+```python
+from manim import *
+import manim
+
+class Frame(Scene):
+    def construct(self):
+        # 1. "important" text appears
+        important_text = Text("important", color="#FF0000", weight=manim.typing.Weight.BOLD)
+        important_text.move_to(UP * 1.5) # Position slightly above the origin
+        self.play(Write(important_text))
+        self.wait(0.5)
+
+        # 2. Create Dots and Labels
+        dot_user = Dot(color="#0000FF").scale(1.2)
+        label_user = Text("user").scale(0.8)
+        item_user = VGroup(dot_user, label_user).arrange(RIGHT, buff=0.3)
+
+        dot_id = Dot(color="#00FF00").scale(1.2)
+        label_id = Text("id").scale(0.8)
+        item_id = VGroup(dot_id, label_id).arrange(RIGHT, buff=0.3)
+
+        dot_active = Dot(color="#FFFF00").scale(1.2)
+        label_active = Text("active").scale(0.8)
+        item_active = VGroup(dot_active, label_active).arrange(RIGHT, buff=0.3)
+
+        # 3. Group items and arrange them vertically
+        items_group = VGroup(item_user, item_id, item_active).arrange(DOWN, buff=0.5)
+        # Position the group below the "important" text, centered horizontally
+        items_group.next_to(important_text, DOWN, buff=0.8)
+
+        # 4. Create Brace for the group
+        brace = Brace(items_group, direction=LEFT, sharpness=1.0) # Brace positioned to the left of the group
+
+        # 5. Animate the appearance of the dots, labels, and brace
+        # Group elements that appear together
+        elements_to_appear = VGroup(items_group, brace)
+        self.play(FadeIn(elements_to_appear, shift=UP*0.2)) # Animate the group and brace together
+
+        # Keep the final scene visible for a while
+        self.wait(2)
+
+```

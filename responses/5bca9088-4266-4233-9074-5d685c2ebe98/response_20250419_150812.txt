@@ -1,0 +1,65 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        gear_color_1 = "#CCCCCC"
+        gear_color_2 = "#AAAAAA"
+        text_color = "#FFFFFF"
+        background_color = "#000000" # Black background
+
+        self.camera.background_color = background_color
+
+        # Create gears
+        gear1 = Cog(
+            outer_radius=1.0,
+            inner_radius=0.5,
+            n_teeth=10,
+            tooth_height=0.3,
+            color=gear_color_1,
+            fill_opacity=1
+        )
+        gear2 = Cog(
+            outer_radius=0.7,
+            inner_radius=0.3,
+            n_teeth=7,
+            tooth_height=0.2,
+            color=gear_color_2,
+            fill_opacity=1
+        )
+
+        # Group and position gears side-by-side
+        gears = VGroup(gear1, gear2).arrange(RIGHT, buff=0.1)
+        # Move gears slightly down to make space for text above
+        gears.shift(DOWN * 0.5)
+
+        # Create text
+        text = Text(
+            "Similar to Bukkit/Spigot",
+            font_size=36,
+            color=text_color
+        )
+        # Position text above the gears
+        text.next_to(gears, UP, buff=0.5)
+
+        # Group the gears and text together
+        final_group = VGroup(gears, text)
+        # Center the entire group on the screen
+        final_group.move_to(ORIGIN)
+
+        # Animate the creation of the gears
+        self.play(Create(gear1), Create(gear2), run_time=1.5)
+        # Animate the appearance of the text
+        self.play(Write(text), run_time=1.5)
+
+        # Add subtle rotation animation to the gears for engagement
+        self.play(
+            Rotate(gear1, angle=PI / 4, about_point=gear1.get_center(), rate_func=linear),
+            Rotate(gear2, angle=-PI / 3, about_point=gear2.get_center(), rate_func=linear),
+            run_time=2.5 # Slightly longer rotation
+        )
+
+        # Hold the final scene for a moment
+        self.wait(2)
+```

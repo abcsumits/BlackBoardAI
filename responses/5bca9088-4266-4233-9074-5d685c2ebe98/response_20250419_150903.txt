@@ -1,0 +1,34 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Configure the background color
+        self.camera.background_color = "#1f1f1f" # A dark grey background
+
+        # Create the text mobject
+        summary_text = Text(
+            'MCP Server: PC-style servers for Legacy Consoles (Modding Required)',
+            font_size=36,
+            color="#FFFFFF", # White color for the text
+            line_spacing=1,
+            should_center=True
+        )
+
+        # Scale the text to fit nicely within the frame
+        summary_text.scale_to_fit_width(self.camera.frame_width * 0.9)
+
+        # Position the text in the center of the frame
+        summary_text.move_to([0, 0, 0])
+
+        # Animate the appearance of the text
+        self.play(Write(summary_text), run_time=3)
+
+        # Keep the text on screen for a while
+        self.wait(4)
+
+        # Optional: Fade out the text at the end if needed, otherwise it stays
+        # self.play(FadeOut(summary_text), run_time=1)
+        # self.wait(1) # Ensure screen isn't black if FadeOut is used last
+
+```

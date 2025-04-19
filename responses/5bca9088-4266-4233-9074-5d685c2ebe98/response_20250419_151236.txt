@@ -1,0 +1,21 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define the final text
+        final_text = Text(
+            'Thanks for Watching!',
+            font_size=48,
+            color="#FFFFFF"  # White color
+        )
+
+        # Position the text at the center of the frame
+        final_text.move_to(ORIGIN)
+
+        # Animate the appearance of the text
+        self.play(Write(final_text))
+
+        # Keep the text on screen for a short duration
+        self.wait(2)
+```

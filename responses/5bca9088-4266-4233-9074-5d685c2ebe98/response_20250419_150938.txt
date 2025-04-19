@@ -1,0 +1,75 @@
+```python
+from manim import *
+# Manim Community v0.19.0
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        red_color = '#FF0000'
+        grey_color = '#808080'
+        text_color = '#FF0000' # Bold red for the main text
+
+        # 1. Create the main text element
+        main_text = Text(
+            'LEGACY CONSOLES ONLY',
+            weight=BOLD,
+            color=text_color
+        )
+        main_text.scale(1.1) # Scale the text slightly
+
+        # 2. Create simple placeholder visuals for newer consoles (faded)
+        # PS5-like placeholder (Vertical Rectangle)
+        ps5_placeholder = Rectangle(
+            height=1.0, width=0.4, color=grey_color,
+            fill_color=grey_color, fill_opacity=0.3
+        ).set_stroke(opacity=0.5)
+
+        # Xbox Series-like placeholder (Vertical Rectangle)
+        xbox_placeholder = Rectangle(
+            height=1.0, width=0.5, color=grey_color,
+            fill_color=grey_color, fill_opacity=0.3
+        ).set_stroke(opacity=0.5)
+
+        # Switch-like placeholder (Two small rectangles side-by-side)
+        switch_left = Rectangle(
+            height=0.6, width=0.3, color=grey_color,
+            fill_color=grey_color, fill_opacity=0.3
+        ).set_stroke(opacity=0.5)
+        switch_right = Rectangle(
+            height=0.6, width=0.3, color=grey_color,
+            fill_color=grey_color, fill_opacity=0.3
+        ).set_stroke(opacity=0.5)
+        switch_placeholder = VGroup(switch_left, switch_right).arrange(RIGHT, buff=0.1)
+
+        # Group the placeholder visuals
+        placeholders = VGroup(ps5_placeholder, xbox_placeholder, switch_placeholder)
+        # Arrange placeholders horizontally with buffer space
+        placeholders.arrange(RIGHT, buff=1.2)
+
+        # Group the main text and placeholders vertically
+        content_group = VGroup(main_text, placeholders)
+        content_group.arrange(DOWN, buff=1.0) # Arrange vertically with buffer
+        content_group.move_to(ORIGIN) # Center the entire group on the screen
+
+        # 3. Create red 'X' marks (Cross mobject) to overlay placeholders
+        ps5_cross = Cross(ps5_placeholder, stroke_color=red_color, stroke_width=8)
+        xbox_cross = Cross(xbox_placeholder, stroke_color=red_color, stroke_width=8)
+        switch_cross = Cross(switch_placeholder, stroke_color=red_color, stroke_width=8)
+        # Group the crosses for simultaneous animation
+        crosses = VGroup(ps5_cross, xbox_cross, switch_cross)
+
+        # 4. Define the animation sequence
+        # Animate the appearance of the main text
+        self.play(Write(main_text))
+        self.wait(0.5) # Pause briefly
+
+        # Animate the appearance of the faded placeholders
+        self.play(FadeIn(placeholders))
+        self.wait(0.5) # Pause briefly
+
+        # Animate the creation of the red 'X' marks over the placeholders
+        self.play(Create(crosses))
+
+        # Hold the final frame for a couple of seconds before ending
+        self.wait(2)
+```

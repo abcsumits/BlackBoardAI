@@ -1,0 +1,86 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Define Console (represents the server)
+        console = Square(side_length=1.5, color="#696969", fill_opacity=0.9, stroke_color="#FFFFFF")
+        console.move_to(np.array([0, -2.5, 0])) # Position towards the bottom
+
+        # 2. Define Thought Bubbles (Hexagons)
+        bubble_radius = 0.7
+        bubble_color = "#E0E0E0" # Light grey bubble color
+        bubble_stroke_color = "#404040" # Dark grey border
+
+        bubble1 = RegularPolygon(n=6, radius=bubble_radius, color=bubble_color, stroke_color=bubble_stroke_color, fill_opacity=0.85)
+        bubble2 = RegularPolygon(n=6, radius=bubble_radius, color=bubble_color, stroke_color=bubble_stroke_color, fill_opacity=0.85)
+        bubble3 = RegularPolygon(n=6, radius=bubble_radius, color=bubble_color, stroke_color=bubble_stroke_color, fill_opacity=0.85)
+
+        # Position bubbles above the console, spaced out
+        bubble1.move_to(np.array([-2.5, 1, 0]))
+        bubble2.move_to(np.array([0, 1.2, 0])) # Middle bubble slightly higher
+        bubble3.move_to(np.array([2.5, 1, 0]))
+
+        # 3. Define Icons inside Bubbles
+        icon_scale = 0.7 # Scale factor for icons relative to bubble radius
+
+        # Icon 1: Minigame (Pacman-like shape)
+        icon1_center = bubble1.get_center()
+        icon1 = Sector(
+            outer_radius=bubble_radius * icon_scale * 0.7, # Adjust size relative to bubble
+            inner_radius=0,
+            angle=TAU * 0.8,
+            start_angle=TAU * 0.1,
+            color="#FFD700", # Gold
+            fill_opacity=1
+        )
+        icon1.move_to(icon1_center)
+
+        # Icon 2: Tools (Simplified Wrench)
+        icon2_center = bubble2.get_center()
+        wrench_handle = Rectangle(height=bubble_radius * icon_scale * 0.8, width=bubble_radius * icon_scale * 0.2, color="#C0C0C0", fill_opacity=1, stroke_width=0)
+        wrench_head = Rectangle(height=bubble_radius * icon_scale * 0.4, width=bubble_radius * icon_scale * 0.5, color="#C0C0C0", fill_opacity=1, stroke_width=0)
+        # Position parts relative to each other before grouping
+        wrench_head.next_to(wrench_handle, UP, buff=0)
+        icon2 = VGroup(wrench_handle, wrench_head)
+        icon2.move_to(icon2_center) # Center the combined shape in the bubble
+
+        # Icon 3: Custom World (Simple House)
+        icon3_center = bubble3.get_center()
+        house_base = Square(side_length=bubble_radius * icon_scale * 0.6, color="#8B4513", fill_opacity=1, stroke_width=0) # Brown base
+        house_roof = Triangle(color="#A0522D", fill_opacity=1, stroke_width=0).scale(bubble_radius * icon_scale * 0.4) # Sienna roof
+        # Position parts relative to each other
+        house_base.move_to(icon3_center + DOWN * bubble_radius * icon_scale * 0.15) # Position base slightly lower than center
+        house_roof.next_to(house_base, UP, buff=0)
+        icon3 = VGroup(house_base, house_roof)
+        # No need to move_to icon3_center again as parts were positioned relative to it
+
+        # Ensure icons are actually inside bubbles
+        icon1.move_to(bubble1.get_center())
+        icon2.move_to(bubble2.get_center())
+        icon3.move_to(bubble3.get_center())
+
+
+        # 4. Animation Sequence
+        self.play(Create(console), run_time=1)
+        self.wait(0.3)
+
+        # Bubbles appear sequentially
+        self.play(GrowFromCenter(bubble1), run_time=0.6)
+        self.wait(0.1)
+        self.play(GrowFromCenter(bubble2), run_time=0.6)
+        self.wait(0.1)
+        self.play(GrowFromCenter(bubble3), run_time=0.6)
+        self.wait(0.5)
+
+        # Icons appear inside their respective bubbles
+        self.play(GrowFromCenter(icon1), run_time=0.7)
+        self.wait(0.2)
+        self.play(GrowFromCenter(icon2), run_time=0.7)
+        self.wait(0.2)
+        self.play(GrowFromCenter(icon3), run_time=0.7)
+
+        # Hold the final scene for a moment
+        self.wait(2)
+```

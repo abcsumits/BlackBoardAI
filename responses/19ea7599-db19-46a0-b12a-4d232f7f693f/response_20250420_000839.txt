@@ -1,0 +1,46 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        car_color = "#4682B4"  # Steel Blue
+        engine_color = "#FF6347" # Tomato Red
+        text_color = "#FFFFFF" # White
+
+        # Create Car Rectangle
+        car_rect = Rectangle(width=5.0, height=3.0, color=car_color, stroke_width=5)
+        car_label = Text("Car", font_size=48, color=text_color)
+        car_label.next_to(car_rect, DOWN, buff=0.4)
+        car_group = VGroup(car_rect, car_label)
+        car_group.move_to(ORIGIN)
+
+        # Create Engine Circle
+        engine_circle = Circle(radius=0.6, color=engine_color, fill_opacity=0.7, stroke_width=4)
+        engine_label = Text("Engine", font_size=28, color=text_color)
+        engine_group = VGroup(engine_circle, engine_label)
+        engine_group.move_to(car_rect.get_center()) # Position inside the car
+
+        # Animations
+        self.play(Create(car_rect), Write(car_label))
+        self.wait(0.5)
+        self.play(FadeIn(engine_group))
+        self.wait(0.5)
+
+        # Pulsing animation
+        pulse_scale = 1.15
+        pulse_duration = 0.7
+
+        self.play(
+            ScaleInPlace(engine_group, pulse_scale, rate_func=there_and_back, run_time=pulse_duration)
+        )
+        self.play(
+            ScaleInPlace(engine_group, pulse_scale, rate_func=there_and_back, run_time=pulse_duration)
+        )
+        self.play(
+            ScaleInPlace(engine_group, pulse_scale, rate_func=there_and_back, run_time=pulse_duration)
+        )
+
+        # Keep elements on screen
+        self.wait(2)
+```

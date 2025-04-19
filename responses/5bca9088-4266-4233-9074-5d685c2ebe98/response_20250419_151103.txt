@@ -1,0 +1,62 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Controller Icon
+        # Body using Polygon
+        body_verts = [
+            np.array([-1.2, 0.0, 0]), # Mid-left
+            np.array([-1.0, 0.5, 0]), # Top-left curve start
+            np.array([-0.6, 0.6, 0]), # Top-left curve peak
+            np.array([0.6, 0.6, 0]),  # Top-right curve peak
+            np.array([1.0, 0.5, 0]),  # Top-right curve end
+            np.array([1.2, 0.0, 0]),  # Mid-right
+            np.array([1.0, -0.5, 0]), # Bottom-right curve start
+            np.array([0.6, -0.6, 0]), # Bottom-right curve peak
+            np.array([-0.6, -0.6, 0]),# Bottom-left curve peak
+            np.array([-1.0, -0.5, 0]),# Bottom-left curve end
+            np.array([-1.2, 0.0, 0])  # Close loop
+        ]
+        controller_body = Polygon(*body_verts, color="#444444", fill_color="#666666", fill_opacity=1)
+        controller_body.scale(1.1) # Scale the body polygon
+
+        # D-pad (using Rectangles for visual clarity and simplicity)
+        dpad_v = Rectangle(width=0.2, height=0.5, color="#222222", fill_color="#444444", fill_opacity=1, stroke_width=1)
+        dpad_h = Rectangle(width=0.5, height=0.2, color="#222222", fill_color="#444444", fill_opacity=1, stroke_width=1)
+        dpad = VGroup(dpad_v, dpad_h)
+        # Position dpad relative to the scaled body's bounding box center-left
+        dpad.move_to(controller_body.get_bounding_box_point(LEFT) + RIGHT * 0.45)
+
+        # Buttons (using Circles)
+        button_radius = 0.18
+        button_color = "#444444"
+        button_stroke = "#222222"
+        button1 = Circle(radius=button_radius, color=button_stroke, fill_color=button_color, fill_opacity=1, stroke_width=1)
+        button2 = Circle(radius=button_radius, color=button_stroke, fill_color=button_color, fill_opacity=1, stroke_width=1)
+        buttons = VGroup(button1, button2).arrange(RIGHT, buff=0.15)
+        # Position buttons relative to the scaled body's bounding box center-right
+        buttons.move_to(controller_body.get_bounding_box_point(RIGHT) + LEFT * 0.45)
+
+        # Group all controller parts
+        controller_icon = VGroup(controller_body, dpad, buttons)
+        controller_icon.scale(0.9) # Apply overall scale adjustment
+
+        # Question Mark
+        question_mark = Text("?", font_size=200, color="#EEEEEE", weight=BOLD) # Large, bright question mark
+
+        # Positioning elements side-by-side, centered vertically
+        controller_icon.move_to(LEFT * 2.5) # Position controller icon to the left
+        question_mark.move_to(RIGHT * 2.0) # Position question mark to the right
+
+        # Animation: Create controller and write question mark simultaneously
+        self.play(
+            Create(controller_icon),
+            Write(question_mark),
+            run_time=1.5 # Duration of the animation
+        )
+
+        # Hold the final scene for a few seconds
+        self.wait(2.5)
+```

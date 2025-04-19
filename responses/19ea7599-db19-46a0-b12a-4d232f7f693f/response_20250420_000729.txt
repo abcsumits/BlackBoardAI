@@ -1,0 +1,80 @@
+```python
+from manim import *
+import random
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        player_color = "#4CAF50"  # Green
+        server_color = "#2196F3"  # Blue
+        mod_color = "#FFC107"    # Amber
+        arrow_color = "#FFFFFF"   # White
+        text_color = "#FFFFFF"    # White
+
+        # Define positions using scene units
+        player_pos = LEFT * 4.5
+        server_pos = RIGHT * 4.5
+
+        # Create Player elements
+        player_dot = Dot(point=player_pos, radius=0.25, color=player_color)
+        player_label = Text("Player", font_size=28, color=text_color).next_to(player_dot, DOWN, buff=0.3)
+        player_group = VGroup(player_dot, player_label)
+
+        # Create Modded Server elements (larger dot)
+        server_dot = Dot(point=server_pos, radius=0.6, color=server_color)
+        server_label = Text("Modded Server", font_size=28, color=text_color).next_to(server_dot, DOWN, buff=0.3)
+        server_group = VGroup(server_dot, server_label)
+
+        # Create connecting arrow between dot edges
+        arrow_start_point = player_dot.get_right()
+        arrow_end_point = server_dot.get_left()
+        connecting_arrow = Arrow(start=arrow_start_point, end=arrow_end_point, buff=0.1, color=arrow_color, stroke_width=6, max_tip_length_to_length_ratio=0.15)
+
+        # Create Mod dots (smaller)
+        num_mods = 6
+        mods = VGroup()
+        mod_animations = []
+
+        # Define starting areas for mods to avoid initial overlap and ensure visibility
+        start_zones = [
+            UP * 2.5 + LEFT * 1.5,
+            UP * 1.5 + LEFT * 2.5,
+            LEFT * 2,
+            DOWN * 1.5 + LEFT * 2.5,
+            DOWN * 2.5 + LEFT * 1.5,
+            UP * 0.5 + LEFT * 3.5,
+        ]
+
+        for i in range(num_mods):
+            # Place mods in distinct starting zones with slight random offset
+            start_pos = start_zones[i % len(start_zones)]
+            start_pos += (random.random() - 0.5) * 0.5 * RIGHT + (random.random() - 0.5) * 0.5 * UP
+            mod_dot = Dot(point=start_pos, radius=0.1, color=mod_color)
+            mods.add(mod_dot)
+            # Define animation: move towards the server dot's center
+            target_point = server_dot.get_center()
+            mod_animations.append(mod_dot.animate.move_to(target_point))
+
+        # --- Animation Sequence ---
+
+        # 1. Display Player and Server groups
+        self.play(FadeIn(player_group), FadeIn(server_group), run_time=1.0)
+        self.wait(0.3)
+
+        # 2. Draw the connecting arrow
+        self.play(Create(connecting_arrow), run_time=1.0)
+        self.wait(0.3)
+
+        # 3. Show the Mod dots appearing
+        self.play(FadeIn(mods, scale=0.5), run_time=0.7)
+        self.wait(0.2)
+
+        # 4. Animate mods flying towards the server concurrently with some delay variation
+        self.play(AnimationGroup(*mod_animations, lag_ratio=0.15), run_time=2.5)
+
+        # 5. Briefly highlight the server as mods arrive (optional visual cue)
+        self.play(Indicate(server_dot, color=server_color, scale_factor=1.1), run_time=0.8)
+
+        # Keep the final scene visible for a moment
+        self.wait(2)
+```

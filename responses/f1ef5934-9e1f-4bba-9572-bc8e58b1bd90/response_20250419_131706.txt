@@ -1,0 +1,24 @@
+```json
+{
+"segment1": [
+"A grey Rectangle contains several lines of dull white Text. The Rectangle and Text FadeOut. Then, three brightly colored shapes, a Circle(color=RED), a Square(color=BLUE), and a Triangle(color=GREEN), FadeIn and arrange horizontally.",
+"is your standard python output looking dull meet rich."
+],
+"segment2": [
+"Two adjacent Rectangles appear. The left Rectangle contains placeholder Text representing code. The right Rectangle shows Text mobjects: 'Hello' in RED, 'World' in BLUE, and a small yellow Triangle next to the word 'important'.",
+"import print from rich then use simple tags for bold italics colors and emojis."
+],
+"segment3": [
+"Two Rectangles are shown side-by-side. The left Rectangle contains abstract Text representing code. The right Rectangle displays structured Text with different colors for keys (BLUE) and values (GREEN), showing indentation.",
+"got complex data structures richs pretty print makes them gorgeous and readable."
+],
+"segment4": [
+"A sequence of objects FadeIn rapidly: first, a Table object with visible grid lines, second, a horizontal Rectangle with a smaller blue Rectangle inside animating from left to right like a progress bar, third, a Rectangle containing some red Text.",
+"rich also offers tables progress bars enhanced tracebacks and more."
+],
+"segment5": [
+"A large Polygon resembling a thumbs-up symbol colored GREEN and a Star shape colored YELLOW FadeIn centrally.",
+"discover the power of rich in your command line."
+]
+}
+```

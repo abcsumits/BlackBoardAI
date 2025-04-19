@@ -1,0 +1,55 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        legacy_color = "#CCCCCC"  # Light gray for legacy consoles
+        mcp_color = "#FFFF00"     # Yellow for MCP Server
+        arrow_color = "#FFFFFF"   # White for the arrow
+
+        # Create text representations for Legacy Consoles
+        # Using simple text as placeholders for logos
+        ps3_text = Text("PS3", color=legacy_color, font_size=36)
+        xbox_text = Text("Xbox 360", color=legacy_color, font_size=36)
+        wiiu_text = Text("Wii U", color=legacy_color, font_size=36)
+
+        # Group the legacy console texts
+        legacy_group = VGroup(ps3_text, xbox_text, wiiu_text).arrange(RIGHT, buff=0.7)
+
+        # Position the legacy group below the center
+        legacy_group.shift(DOWN * 1.5)
+
+        # Display the legacy console texts first
+        self.play(Write(legacy_group))
+        self.wait(0.5) # Short pause after showing legacy consoles
+
+        # Create the 'MCP Server' text
+        mcp_server_text = Text("MCP Server", color=mcp_color, font_size=48)
+
+        # Position the 'MCP Server' text above the center
+        mcp_server_text.shift(UP * 1.5)
+
+        # Display the 'MCP Server' text
+        self.play(Write(mcp_server_text))
+        self.wait(0.5) # Short pause after showing MCP Server text
+
+        # Create an arrow pointing from 'MCP Server' towards the legacy group
+        # Define arrow start point slightly below MCP Server text
+        arrow_start_point = mcp_server_text.get_bottom() + DOWN * 0.2
+        # Define arrow end point slightly above the legacy group
+        arrow_end_point = legacy_group.get_top() + UP * 0.2
+
+        arrow = Arrow(
+            start=arrow_start_point,
+            end=arrow_end_point,
+            color=arrow_color,
+            buff=0.1  # Shorten arrow slightly so it doesn't touch the text bounding boxes
+        )
+
+        # Animate the arrow growing
+        self.play(GrowArrow(arrow))
+
+        # Hold the final frame for a moment
+        self.wait(2)
+```

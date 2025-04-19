@@ -1,0 +1,26 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        white_color = "#FFFFFF"
+        green_color = "#00FF00"
+
+        # Create text elements
+        text1 = Text('9/10 Times:', color=white_color).scale(0.8)
+        text2 = Text('MCP Server ≈ Modded Minecraft Server', color=green_color).scale(0.8)
+
+        # Position text elements horizontally, centered vertically
+        text1.shift(LEFT * 3.5)
+        text2.shift(RIGHT * 2.5)
+
+        # Create arrow
+        arrow = Arrow(text1.get_right() + RIGHT * 0.2, text2.get_left() + LEFT * 0.2, buff=0.1, color=white_color)
+
+        # Animate the appearance of elements
+        self.play(Write(text1))
+        self.wait(0.5)
+        self.play(GrowArrow(arrow), Write(text2))
+        self.wait(2)
+```

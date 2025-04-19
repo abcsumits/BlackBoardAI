@@ -1,0 +1,122 @@
+Your task is to convert narrative input into timed 5-15 second multimedia segments(Strictly each segment should have its own independent meaning,so that if  segment is missing it should not effect the whole video)..Most important and strictly All dialogues should be carry meaning together as well as alone. For each segment provide:
+    
+   
+     
+    Visual description: Manim-compatible scene description (geometric primitives, mobjects, animations)(No constraints on visual description use whatever suits fine for the story)
+
+    Speech text:  Strictly contains words to be spoken only in lower case latin letters words and "," or "." or "?",(if you want to use numbers or mathematical operation use words only example five plus two equals seven,use phi or theta etc for their symbols etc ),strictly no symbols or special characters
+
+    Format strictly as plain-text JSON:
+    {"segment1": ["visual description", "speech text"], "segment2": ["...", "..."], ...}
+
+    Requirements:
+
+    Use ONLY segment1, segment2 sequential numbering
+
+    Visuals must use explicit Manim elements:
+    ✓ Parametric shapes (Polygon, Arrow, Dot)
+    ✓ Mathematical surfaces (Surface, 3DAxes)
+    ✓ Color codes (HEX/RGB)
+    ✓ Transform animations (Create, FadeIn, Rotate)
+    ✓ No mention about commands or actions just the text that is to be spoken
+    ✓ No mention of the audio or the flow
+    Striclty do not add any code in visuals or audio(you can ignore that part of story)
+
+    Speech text requirements:
+    ✓ No contractions ("do not" not "don't")
+    ✓ Max 1 comma per sentence
+    ✓ Oxford comma usage
+    ✓ Terminal punctuation only (.?!)
+    ✓ No mention about commands or actions just the text that is to be spoken
+    ✓ No mention of the visuals or the flow
+
+    JSON must be:
+    ✓ Wrapped in {} with double-quoted strings
+    ✓ Proper comma placement
+    ✓ No trailing commas
+    ✓ Escape characters as " if needed
+
+    Example:
+    {"segment1": ["A blue RegularPolygon(5) rotates clockwise on an orange background", "The ancient symbol begins to glow with pentagonal symmetry."]}
+
+    Input Story:
+    {Okay, here's a script breakdown for a YouTube video explaining "MCP Server," designed to be clear and engaging.
+
+---
+
+**YouTube Video Script: What is an MCP Server? (The Honest Truth!)**
+
+**(Video Title Suggestion: What is an MCP Server? Minecraft Modding Explained!)**
+
+**(Intro Music - Upbeat & Techy/Gaming Vibe)**
+
+**Host:** `[Appears on screen, friendly and energetic]` Hey everyone, and welcome back to the channel! Today we're tackling a term that pops up sometimes, especially in gaming communities, but can be a bit confusing: "MCP Server."
+
+**Host:** `[Leans in slightly]` You might have heard someone mention it, maybe seen it in an old forum post, and wondered... what *exactly* is that? Is it a special type of server? Does it give you superpowers?
+
+**Host:** `[Smiling]` Well, the short answer is... it's complicated, because "MCP Server" isn't really a standard, official term! But don't worry, we're going to break down what people *likely* mean when they say it. Stick around!
+
+**(Transition - Quick Graphic Wipe or Animation)**
+
+**(Scene 1: The Minecraft Connection - Most Likely Meaning)**
+
+**Host:** `[Standing next to a graphic showing the Minecraft logo and maybe some code/mod icons]` Alright, the *most common* context where you might hear "MCP" relates to **Minecraft**.
+
+**Host:** Now, crucially, MCP itself doesn't stand for a *type of server*. Historically, MCP stood for the **Mod Coder Pack** (and later Minecraft Coder Pack).
+
+`[VISUAL: Show text overlay: "MCP = Mod Coder Pack / Minecraft Coder Pack"]`
+
+**Host:** This was a hugely important set of tools, scripts, and decompiled code that allowed developers and modders to understand Minecraft's inner workings and, most importantly, **create mods**! Think new items, new creatures, new gameplay mechanics – MCP was the key that unlocked a lot of that early modding potential.
+
+`[VISUAL: Show brief clips of popular Minecraft mods in action. Maybe show an old screenshot of the MCP interface if available, or just lines of code.]`
+
+**Host:** So, where do servers come in? Well, to play *with* these mods, especially with friends, you often needed a **modded server**. These servers run special software – you've probably heard of **Forge** or **Fabric** – which allows the server *and* the connected players to load and use mods.
+
+`[VISUAL: Show logos for Forge and Fabric. Maybe a simple diagram: Player -> Modded Client -> Modded Server (Forge/Fabric) <- Mods]`
+
+**Host:** **Therefore, when someone says "MCP Server," they are *most likely* informally referring to a MODDED Minecraft server.** They might be using "MCP" as shorthand because the mods running on that server were originally made possible *thanks to* the Mod Coder Pack tools. It's referencing the *origin* of the mods, not the server software itself.
+
+`[VISUAL: Text overlay: "MCP Server" (Informal Term) ≈ Modded Minecraft Server (e.g., running Forge/Fabric)]`
+
+**Host:** Think of it like calling a car a "Gasoline Engine Car." The engine isn't the *whole* car, but it's a critical component that defines its nature. Similarly, MCP enabled the mods, which define the modded server experience.
+
+**(Transition - Subtle sound effect)**
+
+**(Scene 2: Clearing Up Potential Confusion)**
+
+**Host:** `[Slightly different angle or background]` Now, because "MCP Server" isn't official, there are a couple of other *less likely* things someone *might* be confused about:
+
+**Host:** 1.  **MCPE Server?** Sometimes, people might mistype or misremember "MCPE," which stands for Minecraft Pocket Edition (now just known as Bedrock Edition). An MCPE server is simply a server for the Bedrock version of Minecraft (phones, consoles, Windows 10/11 edition). It's different from modded Java Edition servers.
+
+`[VISUAL: Show Minecraft Bedrock Edition logo or gameplay on a phone/console.]`
+
+**Host:** 2.  **Other Tech Acronyms?** In the wider world of IT and networking, MCP *could* stand for other things, like "Management and Control Plane" in complex network systems. But unless you're deep in enterprise networking discussions, this is highly unlikely in a general gaming context.
+
+`[VISUAL: Show a generic network diagram briefly, then quickly dismiss it visually.]`
+
+**Host:** `[Back to main angle]` But honestly? 9 times out of 10, if you hear "MCP Server," think **Modded Minecraft Server**.
+
+**(Transition - Summary Graphic)**
+
+**(Scene 3: Recap & Conclusion)**
+
+**Host:** `[Summarizing]` So, let's recap!
+*   "MCP Server" is **not** an official, standard server type.
+*   MCP stands for **Mod Coder Pack / Minecraft Coder Pack**, tools used to create Minecraft mods.
+*   People likely use "MCP Server" as an **informal term** for a **Modded Minecraft Server** (running software like Forge or Fabric), referencing the historical role of MCP in enabling those mods.
+
+`[VISUAL: Bullet points summarizing the key takeaways.]`
+
+**Host:** The key takeaway is the connection to **Minecraft modding**. If you want to play Minecraft with mods online, you're looking for a Forge server, a Fabric server, or another modded server platform – not technically an "MCP Server."
+
+**Host:** `[Engaging directly with the audience]` Hopefully, that clears things up! Did you hear the term "MCP Server" somewhere specific? Let me know in the comments below – I'd love to hear the context!
+
+**Host:** If this video helped you understand this confusing term, please give it a thumbs up – it really helps the channel! And consider subscribing for more tech and gaming explainers.
+
+**(Outro Music Starts - Fades In Gently)**
+
+**Host:** Thanks so much for watching, and I'll see you in the next video!
+
+**(End Screen: Links to other videos, subscribe button, social media handles)**
+
+---}

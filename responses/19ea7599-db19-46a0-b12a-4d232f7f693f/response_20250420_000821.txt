@@ -1,0 +1,37 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define Colors using Hex codes
+        yellow_color = '#FFFF00' # YELLOW
+        green_color = '#00FF00' # GREEN
+
+        # Create Text objects
+        mcp_text = Text('MCP Server', color=yellow_color)
+        modded_text = Text('Modded Minecraft Server', color=green_color)
+
+        # Create Approximate Equals Sign using two Lines
+        line_length = 0.4
+        line_sep = 0.15
+        stroke_width = 6
+        line1 = Line(LEFT * line_length / 2, RIGHT * line_length / 2, stroke_width=stroke_width).shift(UP * line_sep / 2)
+        line2 = Line(LEFT * line_length / 2, RIGHT * line_length / 2, stroke_width=stroke_width).shift(DOWN * line_sep / 2)
+        approx_equals = VGroup(line1, line2)
+
+        # Arrange elements horizontally
+        group = VGroup(mcp_text, approx_equals, modded_text).arrange(RIGHT, buff=0.7)
+
+        # Center the entire group on the screen
+        group.move_to(ORIGIN)
+
+        # Animate the appearance of elements
+        self.play(Write(mcp_text))
+        self.wait(0.5)
+        self.play(Write(approx_equals))
+        self.wait(0.5)
+        self.play(Write(modded_text))
+
+        # Keep the final scene visible for a few seconds
+        self.wait(3)
+```

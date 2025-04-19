@@ -1,0 +1,29 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Configuration
+        text_color = '#FFFFFF'
+        bullet_color = '#FFFFFF'
+        font_size = 36
+        animation_runtime = 1.0
+        wait_time = 1.5
+
+        # Create elements
+        bullet_point = Dot(color=bullet_color)
+        text = Text('Plugins: Add Commands, Game Modes, Economy', font_size=font_size, color=text_color)
+
+        # Group elements horizontally
+        content_group = VGroup(bullet_point, text).arrange(RIGHT, buff=0.3)
+
+        # Position the group in the center
+        content_group.move_to([0, 0, 0])
+
+        # Animate the appearance
+        self.play(Create(bullet_point), run_time=animation_runtime / 2)
+        self.play(Write(text), run_time=animation_runtime)
+
+        # Hold the final frame
+        self.wait(wait_time)
+```

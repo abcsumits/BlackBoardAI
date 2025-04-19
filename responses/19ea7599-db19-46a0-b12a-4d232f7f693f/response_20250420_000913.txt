@@ -1,0 +1,89 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        phone_color = "#606060"  # Darker gray for phone body
+        screen_bg_color = "#F5F5F5" # Light gray for screen background (optional placeholder)
+        sky_color = "#87CEEB"     # Sky blue
+        grass_color = "#228B22"    # Forest green
+        dirt_color = "#A0522D"     # Sienna (brown)
+        text_color = "#0000FF"     # Blue
+
+        # Create Phone Rectangle
+        phone_height = 5.5
+        phone_width = phone_height / 2.0
+        phone_screen_outer = Rectangle(
+            height=phone_height,
+            width=phone_width,
+            color=phone_color,
+            stroke_width=8,
+            corner_radius=0.3
+        )
+        # Adjust inner screen size slightly
+        phone_screen_inner_height = phone_height * 0.92
+        phone_screen_inner_width = phone_width * 0.88
+        phone_screen_inner = Rectangle(
+            height=phone_screen_inner_height,
+            width=phone_screen_inner_width,
+            color=screen_bg_color, # Using a placeholder bg, world will draw over
+            fill_color=screen_bg_color,
+            fill_opacity=1.0,
+            stroke_width=0
+        )
+
+        # Group phone parts and position
+        phone = VGroup(phone_screen_outer, phone_screen_inner)
+        phone.move_to(ORIGIN).shift(UP * 0.5) # Position phone slightly above center
+
+        # Create Block World elements scaled to inner screen
+        world_width = phone_screen_inner_width
+        world_height = phone_screen_inner_height
+
+        sky = Rectangle(
+            height=world_height * 0.6,
+            width=world_width,
+            fill_color=sky_color,
+            fill_opacity=1,
+            stroke_width=0
+        )
+        grass = Rectangle(
+            height=world_height * 0.2,
+            width=world_width,
+            fill_color=grass_color,
+            fill_opacity=1,
+            stroke_width=0
+        )
+        dirt = Rectangle(
+            height=world_height * 0.2,
+            width=world_width,
+            fill_color=dirt_color,
+            fill_opacity=1,
+            stroke_width=0
+        )
+
+        # Position world elements vertically relative to each other
+        sky.move_to(ORIGIN) # Start at origin before grouping
+        grass.next_to(sky, DOWN, buff=0)
+        dirt.next_to(grass, DOWN, buff=0)
+
+        # Group the world elements
+        block_world = VGroup(sky, grass, dirt)
+        # Align the top of the block world with the top of the inner screen
+        block_world.move_to(phone_screen_inner.get_center())
+
+        # Create Text
+        mcpe_text = Text('MCPE / Bedrock', color=text_color)
+        mcpe_text.scale(0.9)
+        mcpe_text.next_to(phone, DOWN, buff=0.4) # Position text below phone
+
+        # Animation
+        self.play(Create(phone_screen_outer), run_time=1.0)
+        # Draw the block world inside the phone screen area
+        self.play(Create(block_world), run_time=1.5)
+        self.play(FadeIn(mcpe_text), run_time=1.0)
+
+        # Hold the final frame
+        self.wait(1.5)
+```

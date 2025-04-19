@@ -1,0 +1,28 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define the text for the checklist item
+        item_text = Text('MCP: Mod Coder Pack', color='#00FFFF')
+        item_text.scale(0.8) # Scale the text to fit well
+
+        # Position the text slightly to the left of the center
+        item_text.move_to(LEFT * 1.5)
+
+        # Create the checkmark
+        checkmark = Checkmark()
+        checkmark.scale(0.7) # Scale the checkmark
+
+        # Position the checkmark next to the text
+        checkmark.next_to(item_text, RIGHT, buff=0.5)
+
+        # Animate the appearance of the text
+        self.play(Write(item_text), run_time=1.5)
+        self.wait(0.5)
+
+        # Animate the appearance of the checkmark
+        self.play(Create(checkmark), run_time=1)
+        self.wait(2) # Keep the final scene visible for a moment
+
+```

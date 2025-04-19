@@ -1,0 +1,50 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        mcp_color = "#00FFFF"  # CYAN
+        mods_color = "#00FF00"  # GREEN
+        server_color = "#FFFFFF" # WHITE
+
+        # Create Text objects
+        mcp_tools_text = Text('MCP Tools', color=mcp_color)
+        mods_text = Text('Mods', color=mods_color)
+        server_label_text = Text('Server', color=server_color, font_size=24)
+
+        # Position MCP Tools text
+        mcp_tools_text.shift(LEFT * 3.5)
+
+        # Create Rectangle for Server
+        # Position Mods text first to determine rectangle size
+        mods_text.shift(RIGHT * 2.5)
+        server_rect = Rectangle(
+            height=mods_text.height + 0.5,
+            width=mods_text.width + 1.0,
+            color=server_color
+        )
+        server_rect.move_to(mods_text.get_center())
+
+        # Position Server label below the rectangle
+        server_label_text.next_to(server_rect, DOWN, buff=0.2)
+
+        # Group the server elements
+        server_group = VGroup(mods_text, server_rect, server_label_text)
+
+        # Create the Arrow
+        arrow = Arrow(
+            start=mcp_tools_text.get_right() + RIGHT * 0.2,
+            end=server_rect.get_left() + LEFT * 0.2,
+            buff=0.1,
+            color=WHITE
+        )
+
+        # Animate the scene
+        self.play(Write(mcp_tools_text))
+        self.wait(0.5)
+        self.play(Create(server_rect), Write(mods_text), Write(server_label_text))
+        self.wait(0.5)
+        self.play(GrowArrow(arrow))
+        self.wait(2) # Keep final frame visible
+```

@@ -1,0 +1,43 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        title_color = "#FFFFFF" # White
+        subtitle_color = "#CCCCCC" # Light Gray
+        background_color = "#1E1E1E" # Dark Gray
+
+        # Set background color
+        self.camera.background_color = background_color
+
+        # Create title text
+        title = Text("MCP Server:", color=title_color, weight=BOLD)
+        title.scale(1.1)
+
+        # Create subtitle text, breaking it into two lines for readability
+        subtitle_line1 = Text("Unofficial, Community-Made,", color=subtitle_color)
+        subtitle_line2 = Text("Custom Servers for Legacy Minecraft", color=subtitle_color)
+
+        # Group subtitle lines
+        subtitle = VGroup(subtitle_line1, subtitle_line2).arrange(DOWN, buff=0.2)
+        subtitle.scale(0.8) # Scale the entire subtitle group
+
+        # Group title and subtitle
+        text_group = VGroup(title, subtitle)
+        text_group.arrange(DOWN, buff=0.4) # Arrange title and subtitle vertically
+
+        # Position the group slightly above the center to feel balanced
+        text_group.move_to(ORIGIN)
+
+        # Animate the appearance of the title first
+        self.play(Write(title), run_time=1.5)
+        self.wait(0.5)
+
+        # Animate the appearance of the subtitle lines
+        self.play(Write(subtitle_line1), run_time=1.5)
+        self.play(Write(subtitle_line2), run_time=1.5)
+
+        # Hold the final text on screen
+        self.wait(3)
+```

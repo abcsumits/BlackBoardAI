@@ -1,0 +1,73 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        RED_X_COLOR = "#FF0000"
+        LOGO_FADE_COLOR = "#808080" # Gray
+        TEXT_COLOR = "#FFFFFF" # White
+        LOGO_OPACITY = 0.4 # Faded appearance
+
+        # Create 'Unofficial' text
+        unofficial_text = Text("Unofficial", font_size=96, color=TEXT_COLOR, weight=BOLD)
+        unofficial_text.move_to(UP * 2.2) # Position above center
+
+        # Create Mojang shape (Simple Creeper Face)
+        face = Rectangle(width=1.0, height=1.0, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        eye1 = Square(side_length=0.2, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        eye2 = Square(side_length=0.2, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        mouth = Rectangle(width=0.2, height=0.4, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        # Position eyes and mouth relative to face center before grouping
+        eye1.move_to(face.get_center() + np.array([-0.25, 0.15, 0]))
+        eye2.move_to(face.get_center() + np.array([0.25, 0.15, 0]))
+        mouth.move_to(face.get_center() + np.array([0, -0.2, 0]))
+        mojang_logo = VGroup(face, eye1, eye2, mouth)
+        mojang_logo.scale(0.9) # Adjust overall size
+
+        # Create Microsoft shape (2x2 grid)
+        ms_square_size = 0.4
+        ms_buff = 0.05
+        ms_square_tl = Square(side_length=ms_square_size, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        ms_square_tr = Square(side_length=ms_square_size, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        ms_square_bl = Square(side_length=ms_square_size, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        ms_square_br = Square(side_length=ms_square_size, fill_color=LOGO_FADE_COLOR, fill_opacity=LOGO_OPACITY, stroke_width=0)
+        microsoft_logo = VGroup(
+            VGroup(ms_square_tl, ms_square_tr).arrange(RIGHT, buff=ms_buff),
+            VGroup(ms_square_bl, ms_square_br).arrange(RIGHT, buff=ms_buff)
+        ).arrange(DOWN, buff=ms_buff)
+        microsoft_logo.scale(1.1) # Adjust overall size
+
+        # Group and Position logos
+        logos_group = VGroup(mojang_logo, microsoft_logo).arrange(RIGHT, buff=2.5) # Space them out
+        logos_group.move_to(DOWN * 0.5) # Position below 'Unofficial' text
+
+        # Create Red X Polygon
+        x_center = logos_group.get_center()
+        x_height = logos_group.height * 1.4 # Make X larger than logos
+        x_width = logos_group.width * 1.1
+        x_stroke_width = 20 # Make X thick
+
+        diag1 = Line(
+            x_center + np.array([-x_width / 2, x_height / 2, 0]),
+            x_center + np.array([x_width / 2, -x_height / 2, 0]),
+            stroke_color=RED_X_COLOR,
+            stroke_width=x_stroke_width
+        )
+        diag2 = Line(
+            x_center + np.array([-x_width / 2, -x_height / 2, 0]),
+            x_center + np.array([x_width / 2, x_height / 2, 0]),
+            stroke_color=RED_X_COLOR,
+            stroke_width=x_stroke_width
+        )
+        red_x = VGroup(diag1, diag2)
+
+        # Animation sequence
+        self.play(FadeIn(logos_group, scale=0.8), run_time=1.0) # Fade in logos
+        self.play(Create(red_x), run_time=1.0) # Draw the X over logos
+        self.play(Write(unofficial_text), run_time=1.5) # Write 'Unofficial' text
+
+        # Keep final frame visible
+        self.wait(2)
+```

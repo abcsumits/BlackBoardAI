@@ -1,0 +1,41 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Configuration
+        icon_color = "#6E4A29"  # Brown
+        icon_fill_color = "#A0764E" # Lighter Brown
+        code_color = "#E0E0E0" # Light Gray
+        line_color = "#FFD700" # Gold
+        icon_size = 1.8
+        num_lines = 10
+        line_length = 2.5
+        line_start_offset = 1.1 # Start lines slightly outside the square
+
+        # Central Icon: Square with code symbols
+        square = Square(side_length=icon_size, color=icon_color, fill_color=icon_fill_color, fill_opacity=0.7, stroke_width=5)
+        code_symbol = Text("{;}", color=code_color, font_size=60).scale(0.8) # Slightly smaller code symbol
+        icon = VGroup(square, code_symbol).move_to(ORIGIN)
+
+        # Create the icon
+        self.play(Create(square), Write(code_symbol), run_time=1.5)
+        self.wait(0.5)
+
+        # Radiating Lines
+        lines = VGroup()
+        icon_radius = icon_size / 2
+        for i in range(num_lines):
+            angle = i * (TAU / num_lines) # TAU is 2*PI
+            start_point = icon.get_center() + icon_radius * line_start_offset * np.array([np.cos(angle), np.sin(angle), 0])
+            end_point = icon.get_center() + (icon_radius * line_start_offset + line_length) * np.array([np.cos(angle), np.sin(angle), 0])
+            line = Line(start_point, end_point, color=line_color, stroke_width=4)
+            lines.add(line)
+
+        # Animate the lines radiating outwards
+        self.play(LaggedStart(*[GrowFromPoint(line, icon.get_center()) for line in lines], lag_ratio=0.1, run_time=2.5))
+
+        # Hold the final scene
+        self.wait(2)
+```

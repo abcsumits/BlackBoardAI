@@ -1,0 +1,82 @@
+```python
+from manim import *
+import math
+
+class Frame(Scene):
+    def construct(self):
+        # Define Colors
+        pc_border_color = "#808080"  # Grey
+        pc_fill_color = "#303030" # Dark Grey
+        gear_color = "#B0B0B0" # Light Grey/Silver
+        text_color = "#FFFFFF" # White
+        label_color = "#FFFFFF" # White
+
+        # Create PC Rectangle
+        pc_rect = Rectangle(
+            width=5.0,
+            height=3.5,
+            color=pc_border_color,
+            fill_color=pc_fill_color,
+            fill_opacity=0.3
+        )
+        pc_label = Text("PC", color=label_color, font_size=36)
+        pc_label.next_to(pc_rect, DOWN, buff=0.3)
+        pc_group = VGroup(pc_rect, pc_label).move_to([0, 0.5, 0]) # Shift up slightly
+
+        # Create Gears (simplified representation)
+        gear1 = RegularPolygon(n=8, radius=0.35, color=gear_color, fill_opacity=0.9)
+        gear2 = RegularPolygon(n=8, radius=0.35, color=gear_color, fill_opacity=0.9)
+        gear3 = RegularPolygon(n=8, radius=0.35, color=gear_color, fill_opacity=0.9)
+
+        # Position gears inside the rectangle
+        gear_y_pos = pc_rect.get_center()[1] + 0.7
+        gear1.move_to([pc_rect.get_center()[0] - 1.0, gear_y_pos, 0])
+        gear2.move_to([pc_rect.get_center()[0], gear_y_pos, 0])
+        gear3.move_to([pc_rect.get_center()[0] + 1.0, gear_y_pos, 0])
+
+        # Create Software Label
+        software_label = Text(
+            "MCP Server Software",
+            color=text_color,
+            font_size=28
+        )
+        # Position label inside the rectangle, below gears
+        software_label.move_to(pc_rect.get_center() + [0, -0.5, 0])
+        # Ensure label fits width-wise
+        if software_label.width > pc_rect.width * 0.9:
+            software_label.scale_to_fit_width(pc_rect.width * 0.9)
+
+
+        software_components = VGroup(gear1, gear2, gear3, software_label)
+
+        # --- Animations ---
+
+        # 1. Appear PC rectangle and label
+        self.play(
+            DrawBorderThenFill(pc_rect),
+            Write(pc_label),
+            run_time=1.5
+        )
+        self.wait(0.5)
+
+        # 2. Appear Gears and Software Label inside PC
+        self.play(
+            FadeIn(gear1, shift=UP*0.2),
+            FadeIn(gear2, shift=UP*0.2),
+            FadeIn(gear3, shift=UP*0.2),
+            Write(software_label),
+            run_time=1.5
+        )
+        self.wait(0.5)
+
+        # 3. Rotate Gears
+        self.play(
+            Rotate(gear1, angle=math.pi * 1, axis=OUT, rate_func=linear),
+            Rotate(gear2, angle=-math.pi * 1, axis=OUT, rate_func=linear),
+            Rotate(gear3, angle=math.pi * 1, axis=OUT, rate_func=linear),
+            run_time=3 # Duration of rotation
+        )
+
+        # Keep the final scene visible for a moment
+        self.wait(1.5)
+```
