@@ -31,14 +31,14 @@ class AI:
             exit(1)
         return file
     
-    def send_prompt1(self, prompt: str):
+    def send_prompt(self, prompt: str):
         filename = self.__get_next_file()
         print(f"[INFO] Using file: {filename}")
         with open(os.path.join(RESPONSE_BPATH, filename), "r", encoding="utf-8") as f:
             response = f.read()
             return response
 
-    def send_prompt(self, prompt: str):
+    def send_prompt1(self, prompt: str):
         try:
             print("[INFO] Generating response for prompt...")
 

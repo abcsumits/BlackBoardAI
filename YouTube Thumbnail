@@ -52,8 +52,8 @@
   </defs>
   <rect id="Background_Gradient" data-name="Background Gradient" class="cls-4" x="0" width="1280" height="720"/>
   <g id="Text">
-    <text id="Subtitle" class="cls-3" transform="translate(121.49 508.87)"><tspan x="0" y="0">Explained Simply!</tspan></text>
     <text id="Title" class="cls-1" transform="translate(112 314.44)"><tspan class="cls-6" x="0" y="0">What is</tspan><tspan class="cls-5" x="488.78" y="0"> </tspan><tspan class="cls-5"><tspan x="0" y="144.71">NLP?</tspan></tspan></text>
+    <text id="Subtitle" class="cls-3" transform="translate(121.49 508.87)"><tspan x="0" y="0">Explained Simply!</tspan></text>
   </g>
   <g id="Logo">
     <text class="cls-2" transform="translate(1065.29 687.68)"><tspan x="0" y="0">Blackboard AI</tspan></text>
