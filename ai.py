@@ -12,8 +12,8 @@ os.makedirs("prompts", exist_ok=True)
 os.makedirs("responses", exist_ok=True)
 
 import os
-PROMPT_BPATH = './prompts/58cead66-01da-4dc0-8162-354dfbb54a49'
-RESPONSE_BPATH = './responses/58cead66-01da-4dc0-8162-354dfbb54a49'
+PROMPT_BPATH = './prompts/sample'
+RESPONSE_BPATH = './responses/sample'
 
 files = os.listdir(RESPONSE_BPATH)
 files.sort()

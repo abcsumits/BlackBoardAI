@@ -12,4 +12,4 @@ services:
       bash -c "python main.py --input_prompt \"$${PROMPT}\" > output/app.log"
 
 volumes:
-  output_data:
+  output:
