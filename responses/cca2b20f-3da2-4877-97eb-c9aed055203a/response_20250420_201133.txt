@@ -1,0 +1,120 @@
+```python
+from manim import *
+import random
+import numpy as np
+
+class Frame(Scene):
+    def _create_book_icon(self, size=0.5, color="#A0522D", line_color="#FFFFFF"):
+        height = size
+        width = height * 0.7
+        cover = Rectangle(width=width, height=height, color=color, fill_color=color, fill_opacity=1.0, stroke_width=2)
+        lines = VGroup()
+        num_lines = 3
+        line_height_scale = 0.8
+        for i in range(num_lines):
+            x_pos = -width / 2 + (i + 1) * width / (num_lines + 1)
+            line = Line(
+                start=np.array([x_pos, -height / 2 * line_height_scale, 0]),
+                end=np.array([x_pos, height / 2 * line_height_scale, 0]),
+                stroke_color=line_color,
+                stroke_width=1.5
+            )
+            lines.add(line)
+        icon = VGroup(cover, lines)
+        return icon
+
+    def _create_website_icon(self, size=0.5, color="#4682B4", grid_color="#FFFFFF"):
+        radius = size / 2
+        circle = Circle(radius=radius, color=color, fill_color=color, fill_opacity=1.0, stroke_width=2)
+        grid = VGroup()
+        line_scale = 0.7 # How much of the radius the lines span
+        h_line = Line(LEFT * radius * line_scale, RIGHT * radius * line_scale, stroke_color=grid_color, stroke_width=1.5)
+        v_line = Line(DOWN * radius * line_scale, UP * radius * line_scale, stroke_color=grid_color, stroke_width=1.5)
+        grid.add(h_line, v_line)
+        icon = VGroup(circle, grid)
+        return icon
+
+    def construct(self):
+        self.camera.background_color = "#1E1E1E" # Dark background
+
+        # Central glowing object
+        center_object = Dot(radius=0.3, color="#FFD700") # Gold color for glow
+        center_glow = Dot(radius=0.6, color="#FFD700", fill_opacity=0.3)
+        central_model = VGroup(center_glow, center_object).move_to(ORIGIN)
+
+        # Create icons
+        num_icons = 24
+        icons = VGroup()
+        icon_types = ["book", "website"]
+        icon_size = 0.4
+
+        # Distribute icons around the periphery
+        angles = np.linspace(0, 2 * PI, num_icons, endpoint=False)
+        radius_x = config.frame_width / 2 - 1.5 # Elliptical distribution
+        radius_y = config.frame_height / 2 - 1.0
+
+        for i in range(num_icons):
+            icon_type = random.choice(icon_types)
+            if icon_type == "book":
+                icon = self._create_book_icon(size=icon_size, color="#A0522D", line_color="#FFFFFF")
+            else: # website
+                icon = self._create_website_icon(size=icon_size, color="#4682B4", grid_color="#FFFFFF")
+
+            angle = angles[i]
+            # Add jitter to position and radius
+            r_jitter = 1 + random.uniform(-0.15, 0.15)
+            a_jitter = random.uniform(-PI / num_icons * 0.4, PI / num_icons * 0.4)
+            pos = np.array([radius_x * r_jitter * np.cos(angle + a_jitter),
+                            radius_y * r_jitter * np.sin(angle + a_jitter),
+                            0])
+
+            icon.move_to(pos)
+            icons.add(icon)
+
+        # --- Animation ---
+
+        # 1. Show central model
+        self.play(FadeIn(central_model, scale=0.5))
+        self.wait(0.2)
+
+        # 2. Show icons appearing
+        self.play(LaggedStart(*[FadeIn(icon, scale=0.5) for icon in icons], lag_ratio=0.08, run_time=2))
+        self.wait(0.5)
+
+        # 3. Icons flow towards the center
+        move_animations = []
+        target_radius = 1.0 # How close icons get before fading
+
+        for icon in icons:
+            target_pos = central_model.get_center()
+            current_pos = icon.get_center()
+            direction = target_pos - current_pos
+            distance = np.linalg.norm(direction)
+            unit_direction = direction / distance if distance > 0 else ORIGIN
+
+            # Calculate the position near the center
+            move_target_pos = target_pos - unit_direction * target_radius
+
+            # Create animation: move towards center, slightly shrink
+            anim = ApplyMethod(
+                icon.move_to, move_target_pos,
+                rate_func=rate_functions.ease_in_out_sine, # Smoother movement
+                run_time=random.uniform(2.5, 4.0) # Varied duration
+            )
+            scale_anim = ApplyMethod(icon.scale, 0.5, run_time=random.uniform(2.5, 4.0)) # Shrink slightly during move
+
+            move_animations.append(AnimationGroup(anim,scale_anim))
+
+        # Play movement animations with lag
+        self.play(LaggedStart(*move_animations, lag_ratio=0.06)) # Use AnimationGroup here if needed
+        self.wait(0.2)
+
+        # 4. Icons fade out as they are "absorbed"
+        fade_animations = [
+             FadeOut(icon, scale=0.1) for icon in icons
+        ]
+        self.play(LaggedStart(*fade_animations, lag_ratio=0.05, run_time=1.5))
+
+        # 5. Keep central model visible at the end
+        self.wait(1)
+```

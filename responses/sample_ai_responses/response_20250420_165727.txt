@@ -1,0 +1,37 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        white_color = "#FFFFFF"
+        black_color = "#000000"
+        border_color = "#CCCCCC" # Light gray for border
+
+        # Create the comment box rectangle
+        comment_box = Rectangle(
+            width=8.0,
+            height=1.5,
+            color=border_color,
+            fill_color=white_color,
+            fill_opacity=1.0,
+            stroke_width=2
+        )
+        comment_box.move_to([0, 0, 0]) # Position the box at the center
+
+        # Create the placeholder text
+        placeholder_text = Text(
+            'Your Memory?',
+            color=black_color,
+            font_size=36
+        )
+        # Position text inside the box, aligned left with some padding
+        placeholder_text.next_to(comment_box.get_left(), RIGHT, buff=0.3)
+
+        # Animation: Create the box first, then write the text inside
+        self.play(Create(comment_box), run_time=1.0)
+        self.play(Write(placeholder_text), run_time=1.5)
+
+        # Hold the final scene for a moment
+        self.wait(2)
+```

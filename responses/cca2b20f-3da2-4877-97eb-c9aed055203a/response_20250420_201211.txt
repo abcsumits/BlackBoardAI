@@ -1,0 +1,79 @@
+```python
+from manim import *
+import random
+
+class Frame(Scene):
+    def construct(self):
+        # Define grid parameters
+        dot_radius = 0.025
+        grid_rows = 45 # Increased density
+        grid_cols = 70 # Increased density
+        grid_spacing = 0.18 # Adjusted spacing for density
+        dot_color = "#444444" # Darker grey for contrast with flash
+        flash_color = "#FFFFFF" # Bright white
+
+        # Create the grid of dots
+        dots = VGroup()
+        dots_list = [] # Keep a list for easier random access
+
+        # Calculate grid boundaries to keep it within frame
+        # Use approximate calculation based on spacing and count
+        total_grid_width = (grid_cols -1) * grid_spacing
+        total_grid_height = (grid_rows -1) * grid_spacing
+        start_x = -total_grid_width / 2
+        start_y = total_grid_height / 2
+
+        for i in range(grid_rows):
+            for j in range(grid_cols):
+                # Calculate position
+                x_pos = start_x + j * grid_spacing
+                y_pos = start_y - i * grid_spacing
+                # Create and add dot
+                dot = Dot(point=[x_pos, y_pos, 0], radius=dot_radius, color=dot_color, fill_opacity=0.8)
+                dots.add(dot)
+                dots_list.append(dot)
+
+        # Display the grid
+        self.play(FadeIn(dots, scale=0.5), run_time=1.5)
+
+        # Simulate random parameter flashing
+        num_flash_cycles = 8  # Number of times a batch of dots flashes
+        dots_per_flash = 40 # Number of dots flashing simultaneously
+        flash_duration = 0.4 # Total duration for a flash animation cycle
+
+        if not dots_list: # Prevent error if no dots were created
+            self.wait(1)
+            return
+
+        # Run flashing cycles
+        for _ in range(num_flash_cycles):
+            # Select random dots to flash
+            flashing_dots = random.sample(dots_list, min(dots_per_flash, len(dots_list)))
+
+            # Create flash animations
+            flash_anims = []
+            for dot in flashing_dots:
+                 # Use Flash animation which handles color change and revert
+                 flash_anims.append(
+                     Flash(
+                         dot,
+                         color=flash_color,
+                         flash_radius=dot_radius * 2.5, # Make flash slightly larger than dot
+                         line_length=0.0, # No line, just color flash
+                         time_width=flash_duration, # Controls how long the flash peak lasts
+                         run_time=flash_duration # Duration of the flash effect itself
+                     )
+                 )
+
+            # Play the flash animations concurrently for the selected dots
+            if flash_anims:
+                 self.play(AnimationGroup(*flash_anims, lag_ratio=0.0), run_time=flash_duration) # Play all flashes in this batch together
+            else:
+                 self.wait(flash_duration) # Wait if no dots selected somehow
+
+            # Add a small pause between flash cycles
+            self.wait(0.1)
+
+        # Keep the final grid visible
+        self.wait(1.5)
+```

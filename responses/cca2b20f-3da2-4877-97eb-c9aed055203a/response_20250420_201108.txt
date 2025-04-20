@@ -1,0 +1,44 @@
+```json
+{
+"segment1": [
+"A stylized brain icon made of light blue interconnected Dot() objects pulses gently. An Arrow() points from the brain to a document icon made from a white Rectangle() and lines.",
+"large language models or llms are a type of artificial intelligence trained to understand human language."
+],
+"segment2": [
+"A vast collection of stylized book icons (Rectangle() with lines) and website icons (Circle() with grids) animates flowing into a central glowing Sphere() representing the model.",
+"they are called large because they learn from massive amounts of text from books websites and articles."
+],
+"segment3": [
+"Text 'the cat sat on the' appears character by character. An Arrow() points from the end of the text towards the word 'mat' which appears highlighted in yellow.",
+"the core job of these models is surprisingly simple predict the next word in a sequence."
+],
+"segment4": [
+"An abstract neural network graphic, composed of interconnected white Dot() objects and grey Line() segments, shows pulses of light (yellow color animation) moving through the connections.",
+"during training the llm analyzes data learning grammar rules facts context and word relationships."
+],
+"segment5": [
+"A central word 'sky' appears as a Text() object. Multiple Arrow() objects radiate outwards pointing to other Text() objects: 'blue' (with a large green bar graph beside it), 'high' (medium orange bar), 'cloudy' (small red bar).",
+"it predicts the next word using probability calculating the likelihood of every possible option."
+],
+"segment6": [
+"A grid of billions of tiny grey Dot() objects fills the screen. Some dots randomly flash bright white briefly, simulating parameter adjustment.",
+"millions or billions of internal parameters tuned during training guide these complex calculations."
+],
+"segment7": [
+"Text() object displays 'the bank robber'. An animated Arrow(start=bank, end=robber) highlights the connection. Another Text() object appears: 'went to the river bank'. A different Arrow(start=bank, end=river) highlights this context.",
+"a key technology called the transformer architecture helps the model weigh word importance."
+],
+"segment8": [
+"Zoom in on the sentence from segment 7. Glowing highlight effect focuses strongly on 'river' and 'bank' in 'river bank', less strongly on other words when predicting the next word.",
+"this attention mechanism allows the model to understand context by focusing on the most relevant words."
+],
+"segment9": [
+"A Text() object 'prompt:' appears followed by 'write a story'. An Arrow() points this text into a black Box(). Text() objects 'once', 'upon', 'a', 'time' appear sequentially word by word from the box.",
+"when given a prompt the llm uses its learning to generate text one word at a time."
+],
+"segment10": [
+"Four icons appear sequentially with FadeIn animation: a speech bubble (Circle() with tail), code brackets (Text('<>')), translation symbols (Text('A文')), and a document summary icon (Rectangle() with shrinking lines).",
+"this powerful process enables llms to chat code translate summarize articles and much more."
+]
+}
+```

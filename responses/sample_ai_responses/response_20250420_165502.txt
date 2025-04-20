@@ -1,0 +1,48 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        yellow_hex = "#FFFF00"
+        gold_hex = "#FFD700"
+
+        # Create the first coin (yellow circle)
+        # Position it slightly to the left and up from the center
+        first_coin = Circle(radius=0.4, color=yellow_hex, fill_opacity=1.0)
+        first_coin.move_to(LEFT * 2.5 + UP * 1.0)
+
+        # Create the text object
+        pay_text = Text('Pay Once, Play Forever', color=gold_hex).scale(0.7)
+        # Position the text below the area where coins will appear
+        pay_text.move_to(DOWN * 1.5)
+
+        # Animation for the first coin appearing
+        self.play(Create(first_coin), run_time=0.5)
+        self.wait(0.2)
+
+        # Create copies of the coin for the animation
+        coin_copies = VGroup()
+        num_copies = 6
+        for i in range(num_copies):
+            # Create a copy slightly offset from the previous one
+            copy = first_coin.copy()
+            copy.shift(RIGHT * 0.15 * (i + 1) + DOWN * 0.1 * (i + 1))
+            coin_copies.add(copy)
+
+        # Animate the copies appearing quickly in succession
+        self.play(
+            LaggedStart(
+                *[Create(coin) for coin in coin_copies],
+                lag_ratio=0.15,
+                run_time=1.2
+            )
+        )
+        self.wait(0.3)
+
+        # Animate the text fading in
+        self.play(FadeIn(pay_text), run_time=1.0)
+
+        # Keep the final scene visible for a moment
+        self.wait(2)
+```

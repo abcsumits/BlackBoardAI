@@ -1,0 +1,111 @@
+```python
+from manim import *
+
+# Define hex colors
+STRONG_HIGHLIGHT_COLOR = "#FFD700"  # Gold
+WEAK_HIGHLIGHT_COLOR = "#FFFFE0"   # Light Yellow
+TEXT_COLOR = "#FFFFFF"             # White
+
+class Frame(Scene):
+    def construct(self):
+
+        # 1. Context Text explaining the attention mechanism
+        context_text = Text(
+            "This attention mechanism allows the model to understand context",
+            font_size=28,
+            color=TEXT_COLOR
+        ).to_edge(UP, buff=0.5)
+        context_text_2 = Text(
+             "by focusing on the most relevant words.",
+            font_size=28,
+            color=TEXT_COLOR
+        ).next_to(context_text, DOWN, buff=0.2)
+        context_group = VGroup(context_text, context_text_2)
+        self.play(Write(context_group))
+        self.wait(1)
+
+        # 2. Sample Sentence using MarkupText for easy selection of parts
+        # Using unique attribute names (tags) for each word/part
+        sentence = MarkupText(
+            f'<span s1="1" foreground="{TEXT_COLOR}">The</span> <span s2="1" foreground="{TEXT_COLOR}">man</span> <span s3="1" foreground="{TEXT_COLOR}">sat</span> <span s4="1" foreground="{TEXT_COLOR}">on</span> <span s5="1" foreground="{TEXT_COLOR}">the</span> <span river_tag="1" foreground="{TEXT_COLOR}">river</span> <span bank_tag="1" foreground="{TEXT_COLOR}">bank</span> <span s8="1" foreground="{TEXT_COLOR}">and</span> <span s9="1" foreground="{TEXT_COLOR}">watched</span> <span s10="1" foreground="{TEXT_COLOR}">the</span> <span s11="1" foreground="{TEXT_COLOR}">boats.</span>',
+            font_size=40
+        )
+        # Position sentence below context text, centered horizontally
+        sentence.move_to(ORIGIN).shift(DOWN*0.5)
+
+        self.play(Write(sentence))
+        self.wait(1)
+
+        # 3. Zoom In on the sentence to focus attention
+        self.play(
+            self.camera.frame.animate.scale(0.6).move_to(sentence.get_center()),
+            run_time=1.5
+        )
+        self.wait(0.5)
+
+        # 4. Highlighting words to simulate attention focus
+        # Select the specific words for strong highlight using their unique tags
+        river_word = sentence.select_part("river_tag")
+        bank_word = sentence.select_part("bank_tag")
+
+        # Create surrounding rectangles for strong highlights ('glowing' effect via color/stroke)
+        rect_river = SurroundingRectangle(
+            river_word,
+            color=STRONG_HIGHLIGHT_COLOR,
+            buff=0.05, # Buffer space around the word
+            corner_radius=0.1, # Rounded corners
+            stroke_width=6 # Thicker stroke for emphasis
+        )
+        rect_bank = SurroundingRectangle(
+            bank_word,
+            color=STRONG_HIGHLIGHT_COLOR,
+            buff=0.05,
+            corner_radius=0.1,
+            stroke_width=6 # Thicker stroke for emphasis
+        )
+
+        # Create surrounding rectangles for weak highlights for other words
+        weak_highlights = VGroup()
+        # Group the mobjects that are strongly highlighted for easy comparison
+        strong_target_mobjects = VGroup(river_word, bank_word)
+
+        # Iterate through the submobjects created by MarkupText (each tagged span)
+        for submobject in sentence.submobjects:
+            # Check if the submobject is a word (has dimensions > 0)
+            if submobject.get_width() > 0.01 and submobject.get_height() > 0.01:
+                # Check if this submobject is one of the strong targets using identity check
+                is_strong_target = any(submobject is target for target in strong_target_mobjects)
+
+                # If it's not a strongly highlighted word, create a weak highlight
+                if not is_strong_target:
+                    rect = SurroundingRectangle(
+                        submobject,
+                        color=WEAK_HIGHLIGHT_COLOR,
+                        buff=0.05, # Consistent buffer
+                        corner_radius=0.1, # Consistent corner radius
+                        stroke_width=3 # Thinner stroke for weaker emphasis
+                    )
+                    weak_highlights.add(rect)
+
+        # Animate highlights appearing
+        # Play strong highlights first for emphasis
+        self.play(
+            AnimationGroup(
+                GrowFromCenter(rect_river),
+                GrowFromCenter(rect_bank),
+                lag_ratio=0.1 # Small delay between the two strong highlights appearing
+            ),
+            run_time=0.75 # Make strong highlights appear relatively quickly
+        )
+        # Then play weak highlights
+        self.play(
+            AnimationGroup(
+                *[GrowFromCenter(rect) for rect in weak_highlights],
+                lag_ratio=0.05 # Very short delay between weak highlights appearing
+            ),
+            run_time=1.0 # Allow weak highlights a bit more time to appear
+        )
+
+        # Hold the final frame with context, sentence, and all highlights visible
+        self.wait(2.5)
+```

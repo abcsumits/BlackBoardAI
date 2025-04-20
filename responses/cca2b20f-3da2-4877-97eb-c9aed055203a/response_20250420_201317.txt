@@ -1,0 +1,59 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        speech_color = "#4CAF50"
+        code_color = "#2196F3"
+        translate_color = "#FFC107"
+        summary_color = "#E91E63"
+        icon_scale_factor = 0.8 # Adjust scale if needed
+
+        # 1. Speech Bubble Icon (Chat)
+        speech_circle = Circle(radius=0.6, color=speech_color, fill_opacity=1, fill_color=speech_color)
+        speech_tail = Polygon(
+            np.array([-0.25, -0.55, 0]),
+            np.array([0.25, -0.55, 0]),
+            np.array([0.0, -0.9, 0]),
+            color=speech_color, fill_opacity=1, fill_color=speech_color
+        )
+        speech_bubble = VGroup(speech_circle, speech_tail).scale(icon_scale_factor)
+
+        # 2. Code Brackets Icon
+        code_brackets = Text('<>', font_size=60, color=code_color).scale(icon_scale_factor)
+
+        # 3. Translation Symbols Icon
+        translation_symbols = Text('A文', font_size=60, color=translate_color).scale(icon_scale_factor)
+
+        # 4. Document Summary Icon
+        doc_rect = Rectangle(width=1.0, height=1.2, color=summary_color, stroke_width=5)
+        line_start_x = -0.4
+        line_end_x = 0.4
+        line_width = line_end_x - line_start_x
+        summary_line1 = Line(start=doc_rect.get_center()+np.array([line_start_x, 0.4, 0]), end=doc_rect.get_center()+np.array([line_end_x, 0.4, 0]), color=summary_color, stroke_width=4)
+        summary_line2 = Line(start=doc_rect.get_center()+np.array([line_start_x, 0.15, 0]), end=doc_rect.get_center()+np.array([line_end_x, 0.15, 0]), color=summary_color, stroke_width=4)
+        summary_line3 = Line(start=doc_rect.get_center()+np.array([line_start_x, -0.1, 0]), end=doc_rect.get_center()+np.array([line_end_x, -0.1, 0]), color=summary_color, stroke_width=4)
+        summary_line4 = Line(start=doc_rect.get_center()+np.array([line_start_x, -0.35, 0]), end=doc_rect.get_center()+np.array([line_start_x + line_width * 0.7, -0.35, 0]), color=summary_color, stroke_width=4) # Shorter line
+        summary_icon = VGroup(doc_rect, summary_line1, summary_line2, summary_line3, summary_line4).scale(icon_scale_factor)
+
+
+        # Group and arrange icons horizontally
+        icons_group = VGroup(speech_bubble, code_brackets, translation_symbols, summary_icon)
+        icons_group.arrange(RIGHT, buff=1.2) # Arrange with buffer space
+        icons_group.move_to(ORIGIN) # Center the group on the screen
+
+        # Animate icons appearing sequentially with FadeIn
+        self.play(FadeIn(icons_group[0]), run_time=0.6)
+        self.wait(0.2)
+        self.play(FadeIn(icons_group[1]), run_time=0.6)
+        self.wait(0.2)
+        self.play(FadeIn(icons_group[2]), run_time=0.6)
+        self.wait(0.2)
+        self.play(FadeIn(icons_group[3]), run_time=0.6)
+
+        # Keep the final scene on screen for a moment
+        self.wait(2)
+
+```

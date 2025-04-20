@@ -1,0 +1,54 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        ms_blue = "#00A4EF"
+        ms_red = "#F25022"
+        ms_green = "#7FBA00"
+        ms_yellow = "#FFB900"
+        text_green = "#00FF00"
+        mojang_red = "#FF0000"
+
+        # Create the text object
+        billion_text = Text('$2.5 Billion', color=text_green, weight=BOLD)
+        billion_text.scale(1.5) # Make text larger
+
+        # Create a simple polygon representation for Mojang
+        # Using an irregular polygon to suggest the Mojang logo shape
+        mojang_logo = Polygon(
+            [-0.5, 0.8, 0], [0.5, 0.8, 0], [0.8, -0.2, 0],
+            [0.0, -0.8, 0], [-0.8, -0.2, 0],
+            color=mojang_red, fill_color=mojang_red, fill_opacity=1
+        )
+        mojang_logo.scale(1.2) # Scale Mojang logo
+
+        # Create the Microsoft logo representation (four colored squares)
+        quadrant_size = 0.8
+        top_left = Square(side_length=quadrant_size, color=ms_red, fill_color=ms_red, fill_opacity=1)
+        top_right = Square(side_length=quadrant_size, color=ms_green, fill_color=ms_green, fill_opacity=1)
+        bottom_left = Square(side_length=quadrant_size, color=ms_blue, fill_color=ms_blue, fill_opacity=1)
+        bottom_right = Square(side_length=quadrant_size, color=ms_yellow, fill_color=ms_yellow, fill_opacity=1)
+
+        ms_logo = VGroup(top_left, top_right, bottom_left, bottom_right)
+        ms_logo.arrange_in_grid(rows=2, cols=2, buff=0.05) # Arrange quadrants with slight buffer
+
+        # Position the elements
+        billion_text.to_edge(UP, buff=1) # Place text at the top
+        mojang_logo.next_to(billion_text, DOWN, buff=1).shift(LEFT*2) # Mojang logo below text, shifted left
+        ms_logo.next_to(mojang_logo, RIGHT, buff=0.7) # Microsoft logo next to Mojang logo
+
+        # Group the logos for potential centering or further manipulation if needed
+        logos_group = VGroup(mojang_logo, ms_logo)
+        # logos_group.center() # Center the group horizontally if needed
+        # logos_group.next_to(billion_text, DOWN, buff=1) # Reposition below text after centering
+
+        # Animation sequence
+        self.play(Write(billion_text))
+        self.wait(0.5)
+        self.play(FadeIn(mojang_logo))
+        self.wait(0.5)
+        self.play(FadeIn(ms_logo))
+        self.wait(2) # Hold the final frame
+```

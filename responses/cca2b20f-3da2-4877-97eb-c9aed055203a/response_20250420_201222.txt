@@ -1,0 +1,66 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Set background color to black
+        self.camera.background_color = "#000000"
+
+        # Define the sentence using MarkupText
+        # Added unique tags to the words 'river' and 'bank' for strong highlighting
+        sentence_markup = (
+            "<span foreground='#FFFFFF'>The</span> <span foreground='#FFFFFF'>Thames</span> <span foreground='#FFFFFF'>is</span> "
+            "<span foreground='#FFFFFF'>a</span> <span tag='focus_river1' foreground='#FFFFFF'>river</span> <span foreground='#FFFFFF'>that</span> "
+            "<span foreground='#FFFFFF'>flows</span> <span foreground='#FFFFFF'>through</span> <span foreground='#FFFFFF'>London,</span> "
+            "<span foreground='#FFFFFF'>and</span> <span foreground='#FFFFFF'>the</span> <span foreground='#FFFFFF'>place</span> "
+            "<span foreground='#FFFFFF'>where</span> <span foreground='#FFFFFF'>the</span> <span foreground='#FFFFFF'>land</span> "
+            "<span foreground='#FFFFFF'>meets</span> <span foreground='#FFFFFF'>the</span> <span foreground='#FFFFFF'>water</span> "
+            "<span foreground='#FFFFFF'>is</span> <span foreground='#FFFFFF'>called</span> <span foreground='#FFFFFF'>the</span> "
+            "<span tag='focus_river2' foreground='#FFFFFF'>river</span> <span tag='focus_bank' foreground='#FFFFFF'>bank</span><span foreground='#FFFFFF'>.</span>"
+        )
+
+        # Create the MarkupText mobject
+        # Scale it appropriately and center it
+        sentence = MarkupText(sentence_markup, justify=False).scale(0.8)
+        sentence.move_to(ORIGIN)
+
+        # Animate the appearance of the sentence
+        self.play(Write(sentence), run_time=3)
+        self.wait(1) # Pause after writing
+
+        # Animate the camera zooming in on the sentence
+        # Scale the camera frame down (zoom in) and center it on the sentence
+        self.play(self.camera.frame.animate.scale(0.7).move_to(sentence.get_center()), run_time=1.5)
+        self.wait(0.5) # Pause after zooming
+
+        # Define colors for highlighting effects using hex codes
+        weak_highlight_color = "#CCCCCC"   # Light grey for less relevant words (context)
+        strong_highlight_color = "#FFFF00" # Bright yellow for strongly relevant words ('river', 'bank')
+
+        # Get the specific parts (spans) of the MarkupText to be highlighted strongly using their tags
+        river1_part = sentence.get_part_by_tag("focus_river1")
+        river2_part = sentence.get_part_by_tag("focus_river2")
+        bank_part = sentence.get_part_by_tag("focus_bank")
+
+        # Group the parts that need strong highlighting into a VGroup
+        strong_focus_parts = VGroup(river1_part, river2_part, bank_part)
+
+        # Group the remaining parts for weak highlighting
+        # Start with a VGroup containing all parts (spans) of the sentence
+        weak_focus_parts = VGroup(*sentence)
+        # Remove the parts that will be strongly highlighted from this group
+        weak_focus_parts.remove(*strong_focus_parts)
+
+        # Create animations for changing the colors of the respective groups
+        # Animate the color of weakly focused parts
+        anim_weak_highlight = weak_focus_parts.animate.set_color(weak_highlight_color)
+        # Animate the color of strongly focused parts
+        anim_strong_highlight = strong_focus_parts.animate.set_color(strong_highlight_color)
+
+        # Play the highlighting animations simultaneously using AnimationGroup
+        # A small lag_ratio introduces a subtle sequential effect
+        self.play(AnimationGroup(anim_weak_highlight, anim_strong_highlight, lag_ratio=0.05), run_time=1.5)
+
+        # Hold the final state with highlighted text visible for a few seconds
+        self.wait(3)
+```

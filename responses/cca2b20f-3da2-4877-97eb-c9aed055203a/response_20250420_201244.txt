@@ -1,0 +1,71 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        text_color = "#FFFFFF"
+        box_fill_color = "#000000"
+        box_stroke_color = "#FFFFFF"
+        arrow_color = "#FFFFFF"
+
+        # Create prompt text
+        prompt_label = Text("prompt:", font_size=36, color=text_color)
+        prompt_content = Text("write a story", font_size=36, color=text_color)
+        prompt_group = VGroup(prompt_label, prompt_content).arrange(RIGHT, buff=0.2)
+        prompt_group.move_to(3 * LEFT + 1.5 * UP)
+
+        # Create the black box (LLM representation)
+        llm_box = Rectangle(
+            width=3.0,
+            height=2.0,
+            color=box_stroke_color,
+            fill_color=box_fill_color,
+            fill_opacity=1.0
+        )
+        llm_box.move_to(1.5 * RIGHT + 1.5 * UP) # Position slightly right and up
+
+        # Create the arrow
+        arrow = Arrow(
+            prompt_group.get_right(),
+            llm_box.get_left(),
+            buff=0.2,
+            color=arrow_color
+        )
+
+        # Animate prompt appearance
+        self.play(Write(prompt_label))
+        self.play(Write(prompt_content))
+        self.wait(0.5)
+
+        # Animate box and arrow
+        self.play(FadeIn(llm_box), GrowArrow(arrow))
+        self.wait(0.5)
+
+        # Define output words
+        output_words = ["once", "upon", "a", "time"]
+        output_texts = VGroup()
+        output_start_point = llm_box.get_center() # Words appear from the center of the box
+        output_area_start = llm_box.get_bottom() + 1.5 * DOWN # Position the words below the box
+
+        # Animate sequential word generation
+        for i, word in enumerate(output_words):
+            word_text = Text(word, font_size=36, color=text_color)
+            if i == 0:
+                word_text.move_to(output_area_start)
+            else:
+                word_text.next_to(output_texts, RIGHT, buff=0.2)
+
+            # Animation: Grow from box center, then move to final position
+            temp_word = word_text.copy().move_to(output_start_point)
+            self.play(Transform(temp_word, word_text, path_arc=-PI/4), run_time=0.6) # Use Transform for smooth move
+            # We keep the transformed word (word_text) and remove the temporary one
+            self.remove(temp_word)
+            self.add(word_text) # Add the final positioned word
+
+            output_texts.add(word_text)
+            self.wait(0.3)
+
+        # Keep final scene visible
+        self.wait(2)
+```

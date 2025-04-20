@@ -1,0 +1,48 @@
+```python
+from manim import *
+import numpy as np
+import math
+
+class Frame(Scene):
+    def construct(self):
+        # Configure the background color slightly off-black for better visibility if needed
+        # self.camera.background_color = "#111111"
+
+        # Create the cube with a suitable color and appearance
+        cube = Cube(side_length=1.5, fill_color="#8B4513", fill_opacity=0.9, stroke_color="#000000", stroke_width=2)
+        # Position the cube slightly below the center to leave space for text above
+        cube.move_to(DOWN * 1.0)
+
+        # Apply initial static rotation to view multiple faces
+        cube.rotate(np.pi/5, axis=UP)
+        cube.rotate(np.pi/7, axis=RIGHT)
+
+        # Display the cube initially
+        self.play(Create(cube), run_time=1)
+        # Pause briefly after the cube appears
+        self.wait(0.5)
+
+        # Create the "Success!" text in Gold color
+        success_text = Text('Success!', color="#FFD700") # Hex for GOLD
+        success_text.scale(1.1)
+        # Position the text above the cube
+        success_text.next_to(cube, UP, buff=0.4)
+
+        # Define the glow properties
+        glow_color = "#FFFF00" # Bright Yellow for glow effect
+        glow_stroke_width = 6
+
+        # Animate the cube glowing and the text appearing simultaneously
+        self.play(
+            # Animate the cube's stroke to create a glowing effect
+            cube.animate.set_stroke(color=glow_color, width=glow_stroke_width),
+            # Optionally, slightly increase fill opacity for emphasis
+            # cube.animate.set_fill(opacity=1.0),
+            # Write the "Success!" text
+            Write(success_text),
+            run_time=1.2 # Duration for the glow and text animation
+        )
+
+        # Hold the final frame with the glowing cube and text visible
+        self.wait(2.5)
+```

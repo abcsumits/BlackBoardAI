@@ -1,3 +1,6 @@
+def ask_for_story(input_prompt):
+    return f'strictly answer to this query in a way that youtube video can be created using it: {input_prompt}'
+
 def dialogue_prompt(Story):
     prompt='''Your task is to convert narrative input into timed 5-15 second multimedia segments(Strictly each segment should have its own independent meaning,so that if  segment is missing it should not effect the whole video)..Most important and strictly All dialogues should be carry meaning together as well as alone. For each segment provide:
     

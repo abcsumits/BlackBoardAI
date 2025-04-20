@@ -1,0 +1,15 @@
+services:
+  python-runner:
+    build: .
+    volumes:
+      - output:/app/output
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      - PROMPT
+    command: >
+      bash -c "python main.py --input_prompt \"$${PROMPT}\" > output/app.log"
+
+volumes:
+  output_data:

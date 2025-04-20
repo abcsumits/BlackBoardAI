@@ -1,0 +1,32 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define vertices for the stylized Mojang logo shape
+        # These vertices approximate the angular shape
+        vertices = [
+            [-1.5, -1, 0],  # Bottom-left
+            [-1.5, 0.5, 0],  # Mid-left-up
+            [-0.5, 1.5, 0],  # Top-left-peak
+            [0.5, 1.5, 0],   # Top-right-peak
+            [1.5, 0.5, 0],   # Mid-right-up
+            [1.5, -1, 0],   # Bottom-right
+            [0.5, -1, 0],   # Inner-bottom-right
+            [0.5, 0, 0],    # Inner-mid-right
+            [-0.5, 0, 0],   # Inner-mid-left
+            [-0.5, -1, 0]   # Inner-bottom-left
+        ]
+
+        # Create the polygon
+        mojang_logo = Polygon(*vertices, color="#FF0000", fill_opacity=1, stroke_width=0)
+
+        # Scale and position the logo
+        mojang_logo.scale(1.5).move_to([0, 0, 0])
+
+        # Animate the logo fading in
+        self.play(FadeIn(mojang_logo))
+
+        # Keep the logo on screen for a moment
+        self.wait(2)
+```

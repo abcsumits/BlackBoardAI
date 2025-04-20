@@ -1,0 +1,59 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Set background color
+        self.camera.background_color = "#000000"
+
+        # Create the first text phrase
+        phrase1 = Text("the bank robber", color="#FFFFFF").scale(0.9)
+        phrase1.move_to(UP * 1.5)
+
+        # Create the second text phrase
+        phrase2 = Text("went to the river bank", color="#FFFFFF").scale(0.9)
+        phrase2.move_to(DOWN * 1.5)
+
+        # Animate the first phrase
+        self.play(Write(phrase1))
+        self.wait(0.5)
+
+        # Define parts of the first phrase for the arrow
+        bank1 = phrase1[4:8] # "bank"
+        robber1 = phrase1[9:15] # "robber"
+
+        # Create the first arrow
+        arrow1 = Arrow(
+            start=bank1.get_bottom() + DOWN * 0.1,
+            end=robber1.get_bottom() + DOWN * 0.1,
+            color="#33FF57", # Light Green
+            buff=0.2
+        )
+
+        # Animate the first arrow
+        self.play(Create(arrow1))
+        self.wait(1.5)
+
+        # Animate the second phrase
+        self.play(Write(phrase2))
+        self.wait(0.5)
+
+        # Define parts of the second phrase for the arrow
+        river2 = phrase2[12:17] # "river"
+        bank2 = phrase2[17:21] # "bank"
+
+
+        # Create the second arrow
+        arrow2 = Arrow(
+            start=bank2.get_top() + UP * 0.1,
+            end=river2.get_top() + UP * 0.1,
+            color="#57A0FF", # Light Blue
+            buff=0.2
+        )
+
+        # Animate the second arrow
+        self.play(Create(arrow2))
+
+        # Hold the final frame
+        self.wait(3)
+```

@@ -1,0 +1,62 @@
+```python
+from manim import *
+
+class Frame(ThreeDScene):
+    def construct(self):
+        # Set camera orientation for 3D view
+        # phi is the polar angle (from the Z-axis)
+        # theta is the azimuthal angle (around the Z-axis)
+        self.set_camera_orientation(phi=70 * DEGREES, theta=-45 * DEGREES, distance=6)
+
+        # Define colors using hex codes
+        green_color = "#228B22" # ForestGreen for top face
+        brown_color = "#A0522D" # Sienna for side and bottom faces
+
+        # Create the cube with specified side length and opacity
+        cube = Cube(side_length=2, fill_opacity=1.0, stroke_width=0.5, stroke_color="#FFFFFF")
+
+        # Color the faces of the cube
+        # The default order of faces in Cube's submobjects is:
+        # 0: Right face (+X)
+        # 1: Left face (-X)
+        # 2: Top face (+Z)
+        # 3: Bottom face (-Z)
+        # 4: Front face (+Y)
+        # 5: Back face (-Y)
+
+        # Set side faces to brown
+        cube.submobjects[0].set_color(brown_color) # Right
+        cube.submobjects[1].set_color(brown_color) # Left
+        cube.submobjects[4].set_color(brown_color) # Front
+        cube.submobjects[5].set_color(brown_color) # Back
+
+        # Set top face to green
+        cube.submobjects[2].set_color(green_color)
+
+        # Set bottom face to brown
+        cube.submobjects[3].set_color(brown_color)
+
+        # Position the cube at the origin (center of the screen in 3D space)
+        # Cube is created at the origin by default, move_to(ORIGIN) is explicit confirmation
+        cube.move_to(ORIGIN)
+
+        # Add the cube to the scene initially
+        self.add(cube)
+        # Small pause before starting animation
+        self.wait(0.5)
+
+        # Animate the cube rotating slowly around the vertical axis (UP vector)
+        # Use Rotate animation for smooth rotation over a duration
+        self.play(
+            Rotate(
+                cube,
+                angle=2 * PI,      # Rotate a full 360 degrees (2 * PI radians)
+                axis=UP,           # Axis of rotation is the Z-axis (vertical)
+                run_time=12,       # Duration of the rotation in seconds (slow rotation)
+                rate_func=linear   # Constant speed of rotation
+            )
+        )
+
+        # Hold the final state for a short duration before the scene ends
+        self.wait(1)
+```

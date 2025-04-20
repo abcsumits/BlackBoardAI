@@ -1,0 +1,53 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        creeper_green = "#00FF00" # Standard Green
+        cube_brown = "#A0522D" # Sienna Brown
+
+        # Define Creeper face using Polygon with specified vertices
+        creeper_face = Polygon(
+            [0, 1, 0], [-0.5, 0.5, 0], [-0.2, 0.5, 0],
+            [-0.2, -0.5, 0], [0.2, -0.5, 0], [0.2, 0.5, 0],
+            [0.5, 0.5, 0],
+            color=creeper_green,
+            fill_opacity=1.0 # Make it fully opaque
+        )
+        # Position Creeper face to the left
+        creeper_face.shift(LEFT * 3)
+
+        # Define Cube
+        cube = Cube(
+            side_length=1.5, # Adjusted size for visual balance
+            fill_color=cube_brown,
+            fill_opacity=1.0, # Make it fully opaque
+            stroke_color="#000000", # Black stroke for definition
+            stroke_width=2
+         )
+        # Position Cube to the right
+        cube.shift(RIGHT * 3)
+
+        # Define large Question Mark Text
+        question_mark = Text("?", font_size=160) # Large font size
+        # Position Question Mark in the center
+        question_mark.move_to(ORIGIN)
+
+        # Animate the appearance of the elements simultaneously
+        self.play(
+            FadeIn(creeper_face),
+            Create(cube),
+            Write(question_mark),
+            run_time=2 # Duration for appearance animations
+        )
+
+        # Animate the Cube rotation
+        # Rotate 360 degrees (TAU radians) around an axis for visual interest
+        self.play(
+            Rotate(cube, angle=TAU, axis=UP + RIGHT, run_time=5) # Rotate for 5 seconds
+        )
+
+        # Hold the final frame for a moment before ending
+        self.wait(1)
+```

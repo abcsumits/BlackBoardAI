@@ -1,0 +1,60 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        square_color_1 = "#4285F4"  # Blue-ish
+        square_color_2 = "#757575"  # Gray
+        square_color_3 = "#34A853"  # Green
+        cube_color = "#FFA500"      # Orange
+        arrow_color = "#FFFFFF"     # White
+        text_color = "#FFFFFF"      # White
+
+        # Create the three source squares
+        square1 = Square(color=square_color_1, fill_opacity=0.7, side_length=1.2)
+        square2 = Square(color=square_color_2, fill_opacity=0.7, side_length=1.2)
+        square3 = Square(color=square_color_3, fill_opacity=0.7, side_length=1.2)
+
+        # Position the squares around the center
+        square1.move_to(np.array([-3, 1.5, 0]))
+        square2.move_to(np.array([3, 1.5, 0]))
+        square3.move_to(np.array([0, -2.5, 0]))
+
+        # Create the central cube
+        center_point = np.array([0, 0, 0])
+        cube = Cube(color=cube_color, fill_opacity=0.8, side_length=1.5)
+        cube.move_to(center_point)
+
+        # Create arrows pointing from squares to the cube
+        # Use buff to prevent overlap with the shapes
+        arrow_buff = 0.7 # Adjust based on square/cube size
+        arrow1 = Arrow(square1.get_center(), cube.get_center(), buff=arrow_buff, color=arrow_color)
+        arrow2 = Arrow(square2.get_center(), cube.get_center(), buff=arrow_buff, color=arrow_color)
+        arrow3 = Arrow(square3.get_center(), cube.get_center(), buff=arrow_buff, color=arrow_color)
+
+        # Create the text label
+        idea_text = Text("Minecraft Idea", color=text_color).scale(0.7)
+        idea_text.next_to(cube, DOWN, buff=0.5)
+
+        # Animations
+        self.play(
+            Create(square1),
+            Create(square2),
+            Create(square3),
+            run_time=1.5
+        )
+        self.play(Create(cube), run_time=1.5)
+        self.wait(0.5)
+        self.play(
+            GrowArrow(arrow1),
+            GrowArrow(arrow2),
+            GrowArrow(arrow3),
+            run_time=2
+        )
+        self.play(Write(idea_text), run_time=1)
+
+        # Keep the final scene visible
+        self.wait(2)
+```

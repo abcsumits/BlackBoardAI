@@ -1,0 +1,72 @@
+```python
+from manim import *
+import random
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Create the initial castle shape
+        castle_points = [
+            [-2, -1.5, 0], [-2, 0, 0], [-1.5, 0, 0], [-1.5, 1, 0], [-1, 1, 0],
+            [-1, 0.5, 0], [0, 1.5, 0], # Central peak
+            [1, 0.5, 0], [1, 1, 0], [1.5, 1, 0], [1.5, 0, 0],
+            [2, 0, 0], [2, -1.5, 0], [-2, -1.5, 0]
+        ]
+        castle = Polygon(*castle_points, color="#808080", fill_opacity=0.6)
+        castle.scale(1.2).move_to(ORIGIN)
+
+        self.play(Create(castle), run_time=1.5)
+        self.wait(0.5)
+
+        # 2. Define target dots and arrows
+        dot_positions = [
+            np.array([-2, 1, 0]),
+            np.array([0, 1.5, 0]),
+            np.array([2, 1, 0]),
+            np.array([-1, -1, 0]),
+            np.array([1, -1, 0]),
+             np.array([0, -0.5, 0])
+        ]
+        dots = VGroup(*[Dot(pos, color="#FF0000", radius=0.1) for pos in dot_positions])
+
+        arrows = VGroup(
+            Arrow(dots[0].get_center(), dots[1].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15),
+            Arrow(dots[2].get_center(), dots[1].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15),
+            Arrow(dots[3].get_center(), dots[0].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15),
+            Arrow(dots[4].get_center(), dots[2].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15),
+            Arrow(dots[3].get_center(), dots[5].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15),
+            Arrow(dots[4].get_center(), dots[5].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15),
+            Arrow(dots[5].get_center(), dots[1].get_center(), buff=0.15, color="#FF0000", stroke_width=3, max_tip_length_to_length_ratio=0.15)
+        )
+
+        dots_and_arrows = VGroup(dots, arrows).scale(1.1).move_to(ORIGIN)
+
+        # 3. Morph castle into dots and arrows
+        self.play(Transform(castle, dots_and_arrows), run_time=2)
+        self.wait(0.5)
+
+        # 4. Define target grid of squares
+        grid_dim = 3
+        square_size = 0.7
+        spacing = 0.15
+        total_squares = grid_dim * grid_dim
+        colors = ["#DC143C", "#00BFFF", "#32CD32", "#FFD700", "#FF69B4", "#BA55D3", "#FFA500", "#4682B4", "#9ACD32"] # Crimson, DeepSkyBlue, LimeGreen, Gold, HotPink, MediumOrchid, Orange, SteelBlue, YellowGreen
+        random.shuffle(colors)
+
+        squares = VGroup()
+        for i in range(grid_dim):
+            for j in range(grid_dim):
+                color_index = (i * grid_dim + j) % len(colors)
+                square = Square(side_length=square_size, color=colors[color_index], fill_opacity=0.8)
+                # Calculate position: center grid at ORIGIN
+                x_pos = (j - (grid_dim - 1) / 2) * (square_size + spacing)
+                y_pos = (i - (grid_dim - 1) / 2) * (square_size + spacing)
+                square.move_to(np.array([x_pos, y_pos, 0]))
+                squares.add(square)
+
+        squares.move_to(ORIGIN) # Ensure final grid is centered
+
+        # 5. Morph dots and arrows into the grid
+        # Note: 'castle' variable now holds the transformed dots_and_arrows Mobject
+        self.play(Transform(castle, squares), run_time=2.5)
+        self.wait(2) # Keep the final grid visible
+```

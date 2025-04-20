@@ -1,0 +1,52 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Configure axes
+        axes = Axes(
+            x_range=[0, 5, 1],
+            y_range=[0, 10, 2],
+            x_length=7,
+            y_length=5,
+            axis_config={"color": "#BDC3C7"}, # Silver color
+            tips=False
+        ).shift(DOWN * 0.5)
+
+        # Define the exponential growth function
+        graph_func = lambda x: 0.3 * np.exp(x * 1.1)
+
+        # Create the graph line
+        graph = axes.plot(graph_func, color="#2ECC71", x_range=[0.1, 4.5]) # Emerald color
+
+        # Create small rectangles (thumbnails) near the line
+        num_thumbnails = 6
+        thumbnail_group = VGroup()
+        for i in range(num_thumbnails):
+            x_val = 0.5 + i * (4.0 / num_thumbnails) # Distribute along x-axis
+            y_val = graph_func(x_val)
+            if y_val < 10: # Ensure thumbnails stay within y-range
+                point_on_graph = axes.coords_to_point(x_val, y_val)
+                # Position slightly above the line
+                thumb_pos = point_on_graph + UP * 0.3 + RIGHT * np.random.uniform(-0.1, 0.1)
+                thumbnail = Rectangle(
+                    width=0.35,
+                    height=0.2,
+                    color="#E74C3C", # Alizarin color
+                    fill_opacity=0.7,
+                    stroke_width=1
+                ).move_to(thumb_pos)
+                thumbnail_group.add(thumbnail)
+
+        # Animation sequence
+        self.play(Create(axes), run_time=1.5)
+        self.play(Create(graph), run_time=2)
+
+        # Animate thumbnails appearing sequentially
+        thumbnail_animations = [FadeIn(thumb, scale=0.7) for thumb in thumbnail_group]
+        self.play(LaggedStart(*thumbnail_animations, lag_ratio=0.25), run_time=2.5)
+
+        # Hold the final scene
+        self.wait(2)
+```

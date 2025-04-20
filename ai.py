@@ -12,8 +12,8 @@ os.makedirs("prompts", exist_ok=True)
 os.makedirs("responses", exist_ok=True)
 
 import os
-PROMPT_BPATH = './prompts/5bca9088-4266-4233-9074-5d685c2ebe98'
-RESPONSE_BPATH = './responses/5bca9088-4266-4233-9074-5d685c2ebe98'
+PROMPT_BPATH = './prompts/58cead66-01da-4dc0-8162-354dfbb54a49'
+RESPONSE_BPATH = './responses/58cead66-01da-4dc0-8162-354dfbb54a49'
 
 files = os.listdir(RESPONSE_BPATH)
 files.sort()
@@ -31,14 +31,14 @@ class AI:
             exit(1)
         return file
     
-    def send_prompt(self, prompt: str):
+    def send_prompt1(self, prompt: str):
         filename = self.__get_next_file()
         print(f"[INFO] Using file: {filename}")
         with open(os.path.join(RESPONSE_BPATH, filename), "r", encoding="utf-8") as f:
             response = f.read()
             return response
 
-    def send_prompt1(self, prompt: str):
+    def send_prompt(self, prompt: str):
         try:
             print("[INFO] Generating response for prompt...")
 
