@@ -41,5 +41,5 @@ def create_video(Total_frames,uid):
 
     
     final_video.write_videofile("combined_video"+uid+".mp4", codec="libx264", audio_codec="aac")
-    # for i in range(1,Total_frames+1):
-    #     delete_file("combined"+str(i)+uid+".mp4")
+    for i in range(1,Total_frames+1):
+        delete_file("combined"+str(i)+uid+".mp4")
