@@ -7,8 +7,8 @@ You are working in backend system of a video editing tool. Your task is to gener
     -Strictly do  not use any image in the code 
 
     2. **Visual Requirements**  
-    {Text() object displays 'the bank robber'. An animated Arrow(start=bank, end=robber) highlights the connection. Another Text() object appears: 'went to the river bank'. A different Arrow(start=bank, end=river) highlights this context. this are sub visuals of the following prompt: Explain how large language models works}  
-    - context for the visuals: {a key technology called the transformer architecture helps the model weigh word importance.}
+    {The remaining list ['twenty three', 'thirty eight', 'fifty six'] centres itself. The Dot highlights the new middle 'thirty eight'. this are sub visuals of the following prompt: Explain binary search algorithm in short}  
+    - context for the visuals: {now repeat the steps find the middle of the remaining smaller list.}
     - Allow elements ONLY if they:  
         a) Strictly Don't overlap  content  
         b) Strictly Don't exceed  frame space 

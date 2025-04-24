@@ -7,13 +7,14 @@ import uuid
 
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Ensure directories exist
-os.makedirs("prompts", exist_ok=True)
-os.makedirs("responses", exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "prompts"), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "responses"), exist_ok=True)
 
 import os
-PROMPT_BPATH = './prompts/sample'
-RESPONSE_BPATH = './responses/sample'
+PROMPT_BPATH = os.path.join(BASE_DIR, 'prompts','sample')
+RESPONSE_BPATH = os.path.join(BASE_DIR, 'responses', 'sample')
 
 files = os.listdir(RESPONSE_BPATH)
 files.sort()
@@ -31,23 +32,23 @@ class AI:
             exit(1)
         return file
     
-    def send_prompt1(self, prompt: str):
+    def send_prompt(self, prompt: str):
         filename = self.__get_next_file()
         print(f"[INFO] Using file: {filename}")
         with open(os.path.join(RESPONSE_BPATH, filename), "r", encoding="utf-8") as f:
             response = f.read()
             return response
 
-    def send_prompt(self, prompt: str):
+    def send_prompt1(self, prompt: str):
         try:
             print("[INFO] Generating response for prompt...")
 
             # Generate timestamped filenames
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            os.makedirs(f"prompts/{self.session_id}", exist_ok=True)
-            os.makedirs(f"responses/{self.session_id}", exist_ok=True)
-            prompt_filename = f"prompts/{self.session_id}/prompt_{timestamp}.txt"
-            response_filename = f"responses/{self.session_id}/response_{timestamp}.txt"
+            os.makedirs(os.path.join(BASE_DIR, f"prompts/{self.session_id}"), exist_ok=True)
+            os.makedirs(os.path.join(BASE_DIR, f"responses/{self.session_id}"), exist_ok=True)
+            prompt_filename = os.path.join(BASE_DIR, f"prompts/{self.session_id}/prompt_{timestamp}.txt")
+            response_filename = os.path.join(BASE_DIR, f"responses/{self.session_id}/response_{timestamp}.txt")
 
             # Save prompt to file
             with open(prompt_filename, "w", encoding="utf-8") as f:

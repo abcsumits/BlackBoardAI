@@ -1,0 +1,50 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors using hex codes
+        text_color = "#FFFFFF"  # White
+        arrow_color = "#FF0000" # Red
+        compare_color = "#FFFF00" # Yellow
+
+        # Create text elements
+        twenty_three = Text("twenty three", color=text_color).scale(0.7)
+        thirty_eight = Text("thirty eight", color=text_color).scale(0.7)
+        fifty_six = Text("fifty six", color=text_color).scale(0.7)
+
+        # Position elements horizontally
+        elements_group = VGroup(twenty_three, thirty_eight, fifty_six).arrange(RIGHT, buff=1.5)
+        elements_group.move_to(ORIGIN) # Center the group on screen
+
+        # Create the 'high' arrow pointing to fifty_six
+        # Position arrow above fifty_six
+        arrow_start_point = fifty_six.get_center() + UP * 1.5
+        arrow_end_point = fifty_six.get_top() + UP * 0.2
+        high_arrow = Arrow(start=arrow_start_point, end=arrow_end_point, color=arrow_color, buff=0.1)
+        high_label = Text("high", color=arrow_color).scale(0.5).next_to(high_arrow, UP, buff=0.1)
+        high_group = VGroup(high_arrow, high_label)
+
+        # Add initial elements to the scene (assuming they exist from a previous step)
+        # Using Create instead of Add for a smoother entry if this were the first scene part
+        # Since the prompt focuses on the transition, we'll make them appear instantly
+        self.add(twenty_three, thirty_eight, fifty_six, high_group)
+        self.wait(0.5) # Short pause to show initial state
+
+        # Create and place the LessThan sign
+        less_than_sign = MathTex("<", color=compare_color).scale(1.2)
+        # Position between twenty_three and thirty_eight
+        less_than_sign.move_to( (twenty_three.get_right() + thirty_eight.get_left()) / 2 )
+
+        # Animate the appearance of the LessThan sign
+        self.play(Write(less_than_sign))
+        self.wait(1) # Pause after comparison sign appears
+
+        # Animate the fade out of elements on the right side
+        self.play(
+            FadeOut(thirty_eight),
+            FadeOut(fifty_six),
+            FadeOut(high_group)
+        )
+        self.wait(1.5) # Hold the final state for a moment
+```

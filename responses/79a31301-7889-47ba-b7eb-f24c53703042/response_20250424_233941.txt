@@ -1,0 +1,52 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Color definitions
+        text_color = "#FFFFFF"
+        highlight_color = "#FFFF00"
+        success_color = "#00FF00"
+
+        # 1. Create the final list element 'twenty three'
+        final_element = Text("twenty three", color=text_color).scale(0.9)
+        self.play(Write(final_element))
+        self.wait(0.5)
+
+        # 2. Highlight 'twenty three' with a Dot
+        highlight_dot = Dot(color=highlight_color).next_to(final_element, DOWN, buff=0.15)
+        self.play(FadeIn(highlight_dot, scale=0.5))
+        # Use Indicate animation for better highlighting effect
+        self.play(Indicate(final_element, color=highlight_color))
+        self.wait(0.5)
+
+        # 3. Create the equals sign
+        equals_sign = Text("=", color=text_color).scale(0.9)
+
+        # 4. Create the target 'twenty three'
+        target_element = Text("twenty three", color=text_color).scale(0.9)
+
+        # Group the equation parts and position them
+        equation = VGroup(final_element, equals_sign, target_element)
+        equation.arrange(RIGHT, buff=0.3)
+        equation.move_to(ORIGIN) # Center the equation
+
+        # Animate the formation of the equation
+        self.play(
+            FadeOut(highlight_dot), # Remove the highlight dot
+            # Move the first 'twenty three' to its final position in the equation
+            final_element.animate.move_to(equation[0].get_center()),
+            # Write the equals sign and the second 'twenty three'
+            Write(equals_sign.move_to(equation[1].get_center())),
+            Write(target_element.move_to(equation[2].get_center()))
+        )
+        self.wait(1)
+
+        # 5. Show the large green checkmark
+        checkmark = Checkmark(color=success_color).scale(1.5)
+        # Position the checkmark below the equation
+        checkmark.next_to(equation, DOWN, buff=0.7)
+
+        self.play(Write(checkmark))
+        self.wait(2) # Keep the final scene visible
+```

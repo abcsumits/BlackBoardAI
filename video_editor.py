@@ -7,9 +7,13 @@ import os
 import math
 import time
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Create directories if they don't exist
-os.makedirs("output", exist_ok=True)
-os.makedirs("temp/ffmpeg", exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "output"), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "temp/ffmpeg"), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "temp/combined"), exist_ok=True)
+
 
 def combine_audio(video_path, audio_path, output_path):
     """Combine video and audio with smart speed adjustment and handling duration mismatches."""
@@ -66,12 +70,12 @@ def combine_audio(video_path, audio_path, output_path):
                 ).run(**ffmpeg_kwargs)
                 return output_path
 
-            adjusted_video_path = f'./temp/ffmpeg/temp_adjusted_{uuid}.mp4'
+            adjusted_video_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_adjusted_{uuid}.mp4')
             print(f"[INFO] Creating adjusted speed video")
             ffmpeg.output(video_stream, adjusted_video_path, vcodec='libx264').run(**ffmpeg_kwargs)
             temp_files.append(adjusted_video_path)
 
-            last_frame_path = f'./temp/ffmpeg/temp_last_frame_{uuid}.png'
+            last_frame_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_last_frame_{uuid}.png')
             frame_time = max(0, round(new_video_duration - 0.05, 2))
             try:
                 print(f"[INFO] Extracting last frame for freeze")
@@ -85,15 +89,15 @@ def combine_audio(video_path, audio_path, output_path):
                 ).run(**ffmpeg_kwargs)
             temp_files.append(last_frame_path)
 
-            freeze_path = f'./temp/ffmpeg/temp_freeze_{uuid}.mp4'
+            freeze_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_freeze_{uuid}.mp4')
             print(f"[INFO] Creating freeze frame video of {freeze_duration:.2f}s")
             ffmpeg.input(last_frame_path, loop=1, t=round(freeze_duration, 2)).output(
                 freeze_path, c='libx264', pix_fmt='yuv420p'
             ).run(**ffmpeg_kwargs)
             temp_files.append(freeze_path)
 
-            final_video_path = f'./temp/ffmpeg/temp_final_video_{uuid}.mp4'
-            concat_list = f'./temp/ffmpeg/temp_concat_{uuid}.txt'
+            final_video_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_final_video_{uuid}.mp4')
+            concat_list = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_concat_{uuid}.txt')
             with open(concat_list, 'w') as f:
                 f.write(f"file '{os.path.abspath(adjusted_video_path)}'\nfile '{os.path.abspath(freeze_path)}'")
             
@@ -137,7 +141,7 @@ def combine_audio(video_path, audio_path, output_path):
             channels = audio_stream.get('channels', 2)
 
             # Generate silence in MP3 format
-            silence_path = f'./temp/ffmpeg/temp_silence_{uuid}.mp3'
+            silence_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_silence_{uuid}.mp3')
             print(f"[INFO] Generating {silence_duration:.2f}s of silence")
             ffmpeg.input(
                 'anullsrc',
@@ -152,8 +156,8 @@ def combine_audio(video_path, audio_path, output_path):
             temp_files.append(silence_path)
 
             # Concatenate audio files
-            extended_audio_path = f'./temp/ffmpeg/temp_extended_{uuid}.mp3'
-            audio_concat_list = f'./temp/ffmpeg/temp_audio_concat_{uuid}.txt'
+            extended_audio_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_extended_{uuid}.mp3')
+            audio_concat_list = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_audio_concat_{uuid}.txt')
             with open(audio_concat_list, 'w') as f:
                 f.write(f"file '{os.path.abspath(audio_path)}'\nfile '{os.path.abspath(silence_path)}'")
             
@@ -169,7 +173,7 @@ def combine_audio(video_path, audio_path, output_path):
             temp_files.extend([audio_concat_list, extended_audio_path])
 
             # Merge with adjusted video
-            adjusted_video_path = f'./temp/ffmpeg/temp_adjusted_{uuid}.mp4'
+            adjusted_video_path = os.path.join(BASE_DIR, f'temp/ffmpeg/temp_adjusted_{uuid}.mp4')
             print(f"[INFO] Creating adjusted speed video")
             ffmpeg.output(video_stream, adjusted_video_path, vcodec='libx264').run(**ffmpeg_kwargs)
             temp_files.append(adjusted_video_path)
@@ -207,6 +211,11 @@ def combine_audio(video_path, audio_path, output_path):
                 print(f"[WARNING] Could not delete temporary file {f}: {str(e)}")
 
     elapsed_time = time.time() - start_time
+
+    if not os.path.exists(output_path):
+        print(f"[ERROR] Output video was not created!")
+        exit(1)
+
     print(f"[SUCCESS] Created {output_path} in {elapsed_time:.2f}s")
     
     # Return basic file info
@@ -218,7 +227,7 @@ def combine_audio(video_path, audio_path, output_path):
         print(f"[INFO] Output: {output_path}, Size: {file_size:.2f}MB, Duration: {final_duration:.2f}s, Bitrate: {bitrate:.1f}kbps")
     except Exception as e:
         print(f"[WARNING] Could not get final file info: {str(e)}")
-    
+
     return output_path
 
 def concatenate_frames(Total_frames, uid):
@@ -227,14 +236,14 @@ def concatenate_frames(Total_frames, uid):
     start_time = time.time()
     
     # Create list file for FFmpeg concat
-    list_path = f"./temp/concat_list_{uid}.txt"
+    list_path = os.path.join(BASE_DIR, "temp/concat_list_{uid}.txt")
     frame_count = 0
     
     with open(list_path, "w") as f:
         for i in range(1, Total_frames+1):
-            frame_path = f"./temp/combined/{i}_{uid}.mp4"
+            frame_path = os.path.join(BASE_DIR, f"temp/combined/{i}_{uid}.mp4")
             if os.path.exists(frame_path):
-                f.write(f"file './combined/{i}_{uid}.mp4'\n")
+                f.write(f"file '{frame_path}'\n")
                 frame_count += 1
     
     if frame_count == 0:
@@ -245,7 +254,7 @@ def concatenate_frames(Total_frames, uid):
     print(f"[INFO] Found {frame_count}/{Total_frames} frames to concatenate")
 
     # FFmpeg direct concatenation (no re-encoding)
-    output_path = f"./output/RESULT_{uid}.mp4"
+    output_path = os.path.join(BASE_DIR, f"output/RESULT_{uid}.mp4")
     ffmpeg_bin = get_setting("FFMPEG_BINARY")
     
     print(f"[INFO] Concatenating video segments to {output_path}")

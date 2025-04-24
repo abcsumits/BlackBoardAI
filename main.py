@@ -1,9 +1,7 @@
 import argparse
 import uuid
 from ai import AI
-from trash.screen_writer import write_video_script
 from writer import Writer
-from prompt import ask_for_story
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description="Generate video script from prompt")

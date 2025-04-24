@@ -1,0 +1,78 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define Colors
+        text_color = "#FFFFFF" # White
+        target_color = "#FFFF00" # Yellow
+        highlight_color = "#00FFFF" # Cyan
+        flash_color = "#FF00FF" # Magenta
+        neq_color = "#FF0000" # Red
+
+        # 1. Create the list
+        list_elements_str = ["two", "five", "eight", "twelve", "sixteen", "nineteen", "twenty three", "twenty seven", "thirty"]
+        list_elements = VGroup(*[Text(s, color=text_color) for s in list_elements_str])
+        list_elements.arrange(RIGHT, buff=0.4) # Arrange horizontally
+        list_elements.scale(0.7) # Scale down to fit
+        list_elements.move_to(ORIGIN + DOWN * 1.0) # Position lower part of the screen
+
+        # Animate list creation
+        self.play(Write(list_elements))
+        self.wait(0.5)
+
+        # Identify middle element ('sixteen')
+        middle_index = len(list_elements) // 2
+        middle_element = list_elements[middle_index]
+
+        # 2. Target Text 'find twenty three'
+        target_value_str = "twenty three"
+        target_text_display = Text(f"find {target_value_str}", color=target_color)
+        target_text_display.scale(0.8)
+        target_text_display.next_to(list_elements, UP, buff=1.2) # Position above the list
+
+        # Animate target text appearance
+        self.play(Write(target_text_display))
+        self.wait(0.5)
+
+        # 3. Highlight Middle Element ('sixteen')
+        highlight_box = SurroundingRectangle(middle_element, color=highlight_color, buff=0.1)
+        self.play(Create(highlight_box))
+        self.wait(0.5)
+
+        # 4. Flash Middle Element ('sixteen')
+        self.play(Flash(middle_element, color=flash_color, flash_radius=0.6, line_length=0.2, num_lines=12, run_time=0.8))
+        self.wait(0.5)
+
+        # 5. Create and Position Unequal Sign (≠) using Lines
+        line_len = 0.25
+        line_sep = 0.12
+        stroke_w = 5
+
+        # Create two parallel horizontal lines
+        line1 = Line(LEFT * line_len / 2, RIGHT * line_len / 2, color=neq_color, stroke_width=stroke_w)
+        line2 = Line(LEFT * line_len / 2, RIGHT * line_len / 2, color=neq_color, stroke_width=stroke_w).shift(UP * line_sep)
+        h_lines = VGroup(line1, line2) # Group horizontal lines for easier manipulation
+
+        # Create the slanted crossing line (slash) based on horizontal lines' bounds
+        slash = Line(h_lines.get_corner(DL), h_lines.get_corner(UR), color=neq_color, stroke_width=stroke_w)
+
+        # Group all parts of the unequal sign
+        unequal_sign = VGroup(h_lines, slash)
+        unequal_sign.scale(1.8) # Make the sign visually clear
+
+        # Position the unequal sign between the middle element and the target text
+        # Calculate midpoint y-coordinate for vertical centering
+        mid_y = (middle_element.get_center()[1] + target_text_display.get_center()[1]) / 2
+        # Place it horizontally closer to the middle element
+        unequal_sign.move_to(middle_element.get_right() + RIGHT * 0.8)
+        unequal_sign.move_to([unequal_sign.get_center()[0], mid_y, 0]) # Adjust vertical position
+
+        # Animate the appearance of the unequal sign
+        self.play(Create(unequal_sign))
+        self.wait(1)
+
+        # Hold the final scene for a moment
+        self.wait(2)
+
+```

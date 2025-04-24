@@ -1,0 +1,73 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Configuration for page appearance
+        page_kwargs = {
+            "x_range": (-4, 4, 2),
+            "y_range": (-3, 3, 2),
+            "x_length": 5,
+            "y_length": 4,
+            "axis_config": {"stroke_width": 1, "include_tip": False, "color": "#444444"},
+            "background_line_style": {
+                "stroke_color": "#CCCCCC", # Light Gray
+                "stroke_width": 1,
+                "stroke_opacity": 0.6,
+            },
+        }
+
+        # Create multiple NumberPlanes slightly offset to simulate pages
+        num_pages_to_show = 5
+        pages = VGroup(*[
+            NumberPlane(**page_kwargs).move_to(ORIGIN + i*0.03*LEFT + i*0.01*DOWN)
+            for i in range(num_pages_to_show)
+        ])
+        pages.shift(UP * 0.5) # Move the book slightly up
+
+        # Simulate rapid flipping
+        # Show initial stack briefly
+        self.play(FadeIn(pages, lag_ratio=0.1, run_time=0.5))
+        self.wait(0.2)
+
+        # Animate "flipping" by replacing pages quickly
+        final_page = NumberPlane(**page_kwargs).move_to(pages[-1].get_center())
+        self.play(
+            LaggedStart(
+                *[FadeOut(pages[i], shift=RIGHT*0.5, run_time=0.1) for i in range(num_pages_to_show - 1)],
+                lag_ratio=0.05
+            ),
+            ReplacementTransform(pages[-1], final_page, run_time=0.3, replace_mobject_with_target_in_scene=True)
+        )
+        self.wait(0.5)
+
+        # Fade out the final page
+        self.play(FadeOut(final_page, run_time=0.5))
+        self.wait(0.2)
+
+        # Create the list of numbers
+        number_strings = ['two', 'five', 'eight', 'twelve', 'sixteen', 'twenty three', 'thirty eight', 'fifty six']
+        number_texts = VGroup(*[Text(s, color="#FFFFFF", font_size=36) for s in number_strings]) # White text
+        number_texts.arrange(RIGHT, buff=0.3) # Arrange horizontally
+
+        # Create brackets
+        left_bracket = Text("[", color="#FFFFFF", font_size=48)
+        right_bracket = Text("]", color="#FFFFFF", font_size=48)
+
+        # Group numbers and brackets
+        list_group = VGroup(left_bracket, number_texts, right_bracket)
+        list_group.arrange(RIGHT, buff=0.2) # Arrange the full group
+
+        # Position the list in the center
+        list_group.move_to(ORIGIN)
+
+        # Ensure list fits within frame width, scale if necessary
+        if list_group.width > self.camera.frame_width - 1:
+             list_group.scale_to_fit_width(self.camera.frame_width - 1.5)
+
+        # Fade in the list
+        self.play(FadeIn(list_group, run_time=1.0))
+
+        # Hold the final frame
+        self.wait(3)
+```

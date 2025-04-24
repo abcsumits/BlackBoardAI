@@ -1,0 +1,33 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define Text objects with specific colors
+        title = Text('binary search', color='#FFFFFF').scale(1.2)
+        fast_text = Text('fast', color='#4CAF50') # Green
+        efficient_text = Text('efficient', color='#2196F3') # Blue
+        sorted_text = Text('requires sorted data', color='#FFC107') # Amber
+
+        # Position objects vertically, ensuring no overlap
+        title.move_to(UP * 2.5)
+        fast_text.next_to(title, DOWN, buff=0.7)
+        efficient_text.next_to(fast_text, DOWN, buff=0.5)
+        sorted_text.next_to(efficient_text, DOWN, buff=0.5)
+
+        # Ensure all text is centered horizontally by default
+        # Manim Text objects are centered by default, so explicit centering isn't usually needed
+        # unless grouping and moving the group. The current positioning keeps them centered.
+
+        # Animate the appearance of the text objects
+        self.play(Write(title))
+        self.wait(0.5)
+        self.play(FadeIn(fast_text, shift=DOWN*0.3))
+        self.wait(0.4)
+        self.play(FadeIn(efficient_text, shift=DOWN*0.3))
+        self.wait(0.4)
+        self.play(FadeIn(sorted_text, shift=DOWN*0.3))
+
+        # Hold the final arrangement on screen
+        self.wait(2)
+```

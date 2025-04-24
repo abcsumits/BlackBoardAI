@@ -7,8 +7,8 @@ You are working in backend system of a video editing tool. Your task is to gener
     -Strictly do  not use any image in the code 
 
     2. **Visual Requirements**  
-    {A Text() object 'prompt:' appears followed by 'write a story'. An Arrow() points this text into a black Box(). Text() objects 'once', 'upon', 'a', 'time' appear sequentially word by word from the box. this are sub visuals of the following prompt: Explain how large language models works}  
-    - context for the visuals: {when given a prompt the llm uses its learning to generate text one word at a time.}
+    {The list of numbers glows slightly. A large green Checkmark object animates appearing over the list with a slight bounce. this are sub visuals of the following prompt: Explain binary search algorithm in short}  
+    - context for the visuals: {binary search is great for this. but remember the key rule your list must be sorted first.}
     - Allow elements ONLY if they:  
         a) Strictly Don't overlap  content  
         b) Strictly Don't exceed  frame space 
@@ -40,5 +40,5 @@ class  Frame(Scene):
        text = Text('Hello').to_edge(CENTER)
       self.play(Write(text))"}  
 
-    
+    Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: 'str' object has no attribute 'send_prompt'}
     

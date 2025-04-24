@@ -7,8 +7,8 @@ You are working in backend system of a video editing tool. Your task is to gener
     -Strictly do  not use any image in the code 
 
     2. **Visual Requirements**  
-    {Zoom in on the sentence from segment 7. Glowing highlight effect focuses strongly on 'river' and 'bank' in 'river bank', less strongly on other words when predicting the next word. this are sub visuals of the following prompt: Explain how large language models works}  
-    - context for the visuals: {this attention mechanism allows the model to understand context by focusing on the most relevant words.}
+    {The Unequal sign fades. A GreaterThan sign made from Line objects appears: 'twenty three' > 'sixteen'. The Text 'twenty three' pulses slightly. this are sub visuals of the following prompt: Explain binary search algorithm in short}  
+    - context for the visuals: {if not ask is your target smaller, or larger than the middle element.}
     - Allow elements ONLY if they:  
         a) Strictly Don't overlap  content  
         b) Strictly Don't exceed  frame space 

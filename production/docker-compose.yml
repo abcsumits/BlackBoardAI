@@ -2,9 +2,12 @@ services:
   python-runner:
     build: .
     volumes:
-      - ./output:/app/output
-      - ./temp:/app/temp
+      - output:/app/output
+    working_dir: /app
     env_file:
       - .env
     environment:
-      - PROMPT=${PROMPT}
+      - PROMPT
+
+volumes:
+  output:

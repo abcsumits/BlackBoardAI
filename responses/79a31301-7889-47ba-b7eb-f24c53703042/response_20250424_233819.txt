@@ -1,0 +1,53 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        text_color = "#FFFFFF" # White
+        sign_color = "#FFFFFF" # White
+        pulse_color = "#FFFF00" # Yellow
+
+        # Create text objects
+        text_twenty_three = Text("twenty three", color=text_color)
+        text_sixteen = Text("sixteen", color=text_color)
+
+        # Create initial unequal sign
+        unequal_sign = MathTex(r"\neq", color=sign_color)
+
+        # Group and position initial elements
+        # Using ORIGIN and manual positioning instead of CENTER
+        initial_group = VGroup(text_twenty_three, unequal_sign, text_sixteen).arrange(RIGHT, buff=0.5)
+        initial_group.move_to(np.array([0, 0, 0])) # Equivalent to move_to(ORIGIN)
+
+        # Display initial elements
+        self.play(Write(text_twenty_three), Write(text_sixteen), Write(unequal_sign))
+        self.wait(0.5)
+
+        # Store position of the unequal sign
+        sign_position = unequal_sign.get_center()
+
+        # Fade out the unequal sign
+        self.play(FadeOut(unequal_sign))
+        self.wait(0.2)
+
+        # Create GreaterThan sign using Line objects
+        line1 = Line(start=np.array([-0.2, 0.2, 0]), end=np.array([0.1, 0, 0]), color=sign_color, stroke_width=6)
+        line2 = Line(start=np.array([-0.2, -0.2, 0]), end=np.array([0.1, 0, 0]), color=sign_color, stroke_width=6)
+        greater_than_sign = VGroup(line1, line2)
+
+        # Position the GreaterThan sign where the unequal sign was
+        greater_than_sign.move_to(sign_position)
+
+        # Create the GreaterThan sign
+        self.play(Create(greater_than_sign))
+        self.wait(0.5)
+
+        # Pulse the 'twenty three' text
+        self.play(Indicate(text_twenty_three, color=pulse_color, scale_factor=1.15))
+        self.wait(1) # Hold the final frame for a second
+
+        # Ensure elements remain on screen at the end
+        self.wait(0.1)
+```

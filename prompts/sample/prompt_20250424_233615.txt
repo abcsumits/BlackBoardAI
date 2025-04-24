@@ -7,8 +7,8 @@ You are working in backend system of a video editing tool. Your task is to gener
     -Strictly do  not use any image in the code 
 
     2. **Visual Requirements**  
-    {Four icons appear sequentially with FadeIn animation: a speech bubble (Circle() with tail), code brackets (Text('<>')), translation symbols (Text('A文')), and a document summary icon (Rectangle() with shrinking lines). this are sub visuals of the following prompt: Explain how large language models works}  
-    - context for the visuals: {this powerful process enables llms to chat code translate summarize articles and much more.}
+    {A VGroup of NumberPlane objects representing book pages flip rapidly, settling on one page. This fades, replaced by a horizontal list of Text objects: 'two', 'five', 'eight', 'twelve', 'sixteen', 'twenty three', 'thirty eight', 'fifty six', enclosed in Square brackets. this are sub visuals of the following prompt: Explain binary search algorithm in short}  
+    - context for the visuals: {think finding a name in a phone book, or a word in a dictionary quickly.}
     - Allow elements ONLY if they:  
         a) Strictly Don't overlap  content  
         b) Strictly Don't exceed  frame space 

@@ -1,0 +1,111 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Configuration
+        list_font_size = 48
+        label_font_size = 32
+        context_font_size = 36
+        arrow_color_low = "#FF8C00" # DarkOrange
+        arrow_color_high = "#1E90FF" # DodgerBlue
+        highlight_color = "#32CD32" # LimeGreen
+        dot_color = "#FFFF00" # Yellow
+
+        # 1. Context Text
+        context_text = Text(
+            "First, find the middle element of your list.",
+            font_size=context_font_size
+        ).to_edge(UP, buff=0.7)
+        self.play(Write(context_text))
+        self.wait(0.5)
+
+        # 2. List Elements
+        elements_data = ["2", "4", "8", "16", "32", "56"]
+        element_mobjects = VGroup(*[Text(t, font_size=list_font_size) for t in elements_data])
+        element_mobjects.arrange(RIGHT, buff=1.0)
+        element_mobjects.move_to(ORIGIN) # Center the list group
+        self.play(FadeIn(element_mobjects, shift=UP*0.5))
+        self.wait(0.5)
+
+        # 3. Low and High Pointers (Arrows and Labels)
+        low_index = 0
+        high_index = len(elements_data) - 1
+        middle_index = (low_index + high_index) // 2
+
+        low_element = element_mobjects[low_index]
+        high_element = element_mobjects[high_index]
+        middle_element = element_mobjects[middle_index]
+
+        # Position arrows slightly below the elements
+        low_arrow_start_point = low_element.get_bottom() + DOWN * 1.0
+        low_arrow = Arrow(
+            start=low_arrow_start_point,
+            end=low_element.get_bottom(),
+            buff=0.1,
+            color=arrow_color_low,
+            stroke_width=6,
+            max_tip_length_to_length_ratio=0.25
+        )
+        low_label = Text("low", font_size=label_font_size, color=arrow_color_low)
+        low_label.next_to(low_arrow.get_start(), DOWN, buff=0.2)
+
+        high_arrow_start_point = high_element.get_bottom() + DOWN * 1.0
+        high_arrow = Arrow(
+            start=high_arrow_start_point,
+            end=high_element.get_bottom(),
+            buff=0.1,
+            color=arrow_color_high,
+            stroke_width=6,
+            max_tip_length_to_length_ratio=0.25
+        )
+        high_label = Text("high", font_size=label_font_size, color=arrow_color_high)
+        high_label.next_to(high_arrow.get_start(), DOWN, buff=0.2)
+
+        self.play(
+            GrowArrow(low_arrow), Write(low_label),
+            GrowArrow(high_arrow), Write(high_label)
+        )
+        self.wait(0.5)
+
+        # 4. Dot Movement and Highlight
+        # Start dot near the 'low' label
+        search_dot_start_pos = low_label.get_center() + DOWN * 0.5
+        search_dot = Dot(point=search_dot_start_pos, color=dot_color, radius=0.12)
+
+        # Target position slightly above the middle element for visibility
+        middle_element_target_pos = middle_element.get_center() + UP * 0.8
+
+        self.play(FadeIn(search_dot, scale=0.5))
+        self.wait(0.2)
+
+        # Animate dot moving to the middle element's vertical position
+        # Path: Move horizontally first, then vertically up to the target
+        intermediate_pos = Dot(point=middle_element.get_center() + DOWN * 2.0) # Point below middle element
+        search_dot.generate_target()
+        search_dot.target.move_to(intermediate_pos.get_center())
+        # Move dot horizontally from low label vertical level to middle element vertical level
+        self.play(MoveToTarget(search_dot, path_arc=0), run_time=1.0) # Straight line move
+
+        search_dot.generate_target()
+        search_dot.target.move_to(middle_element_target_pos)
+        # Move dot vertically to above the middle element
+        self.play(MoveToTarget(search_dot), run_time=0.7)
+        self.wait(0.3)
+
+
+        # Highlight the middle element
+        highlight_rect = SurroundingRectangle(middle_element, color=highlight_color, buff=0.15, corner_radius=0.1)
+        middle_element_copy = middle_element.copy() # To potentially revert color if needed elsewhere
+
+        self.play(
+            Create(highlight_rect),
+            middle_element.animate.set_color(highlight_color),
+            search_dot.animate.scale(1.2) # Pulse the dot
+        )
+        self.play(search_dot.animate.scale(1/1.2)) # Return dot to normal size
+
+
+        # Hold the final scene
+        self.wait(2.5)
+```

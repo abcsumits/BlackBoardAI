@@ -10,7 +10,7 @@ def delete_file(file_to_delete):
             os.remove(file_to_delete)
             print(f"{file_to_delete} has been deleted.")
         except Exception as e:
-            pass
+            print(f"ERROR: {file_to_delete} could not be deleted. Error: {e}")
 
 def move_file(source_path,destination_directory):
     print("INFO: Moving file from", source_path, "to", destination_directory)

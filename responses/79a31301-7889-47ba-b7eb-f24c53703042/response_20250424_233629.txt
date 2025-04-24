@@ -1,0 +1,39 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # 1. Create the sorted list
+        # Using MathTex for better number spacing and appearance
+        sorted_list = MathTex("[2, 5, 7, 8, 11, 12]", font_size=72)
+        # Position the list slightly below the center to make space for the checkmark
+        sorted_list.move_to(ORIGIN + DOWN * 0.5)
+
+        # 2. Display the list
+        self.play(Write(sorted_list), run_time=1)
+        self.wait(0.5)
+
+        # 3. Make the list "glow" slightly using Indicate
+        # Indicate provides a temporary emphasis effect
+        self.play(Indicate(sorted_list, color="#FFFF99", scale_factor=1.1), run_time=1) # Light yellow glow
+        self.wait(0.5)
+
+        # 4. Create the large green checkmark
+        checkmark = MathTex(r"\checkmark", color="#34A853", font_size=160) # Green color
+        # Position the checkmark above the list
+        checkmark.next_to(sorted_list, UP, buff=0.6)
+
+        # 5. Animate the checkmark appearing with a bounce
+        # Scale the checkmark initially to be small for the Grow effect
+        checkmark_start_scale = 0.1
+        checkmark.scale(checkmark_start_scale)
+        # Use ApplyMethod with elastic_out rate function for a bouncy growth animation
+        self.play(
+            checkmark.animate.scale(1 / checkmark_start_scale).set_rate_func(elastic_out),
+            run_time=1.5 # Duration of the bounce animation
+        )
+
+        # Keep the final visuals on screen for a moment
+        self.wait(2)
+
+```

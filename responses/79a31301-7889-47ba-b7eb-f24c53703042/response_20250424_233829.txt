@@ -1,0 +1,55 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Define colors
+        text_color = "#FFFFFF" # White
+        arrow_color = "#ADD8E6" # Light Blue
+
+        # 1. Create number elements
+        num_strs = ["2", "5", "8", "12", "16", "23"]
+        num_mobs = VGroup(*[Text(n, color=text_color) for n in num_strs])
+        num_mobs.arrange(RIGHT, buff=0.75)
+        num_mobs.move_to(ORIGIN) # Position the group at the center
+
+        # Get references to individual number Mobjects for animation
+        num_2 = num_mobs[0]
+        num_5 = num_mobs[1]
+        num_8 = num_mobs[2]
+        num_12 = num_mobs[3]
+        num_16 = num_mobs[4]
+        num_23 = num_mobs[5]
+
+        # 2. Create the initial 'low' arrow pointing at '2'
+        low_arrow_start_pos = num_2.get_bottom() + DOWN * 0.5
+        low_arrow_end_pos = num_2.get_top() # Point directly at the number
+        initial_low_arrow = Arrow(low_arrow_start_pos, low_arrow_end_pos, buff=0.1, color=arrow_color, stroke_width=5, max_tip_length_to_length_ratio=0.15)
+        initial_low_label = Text("low", font_size=24, color=arrow_color).next_to(initial_low_arrow, DOWN, buff=0.1)
+        initial_low_pointer_group = VGroup(initial_low_arrow, initial_low_label)
+
+        # 3. Show the initial state
+        self.play(Write(num_mobs), Create(initial_low_pointer_group))
+        self.wait(1)
+
+        # 4. Fade out the elements '2', '5', '8', '12', '16' and the initial 'low' arrow
+        elements_to_fade = VGroup(num_2, num_5, num_8, num_12, num_16)
+        self.play(
+            FadeOut(elements_to_fade),
+            FadeOut(initial_low_pointer_group)
+        )
+        self.wait(0.5) # Brief pause after fading out
+
+        # 5. Create the new 'low' arrow pointing at '23'
+        new_low_arrow_start_pos = num_23.get_bottom() + DOWN * 0.5
+        new_low_arrow_end_pos = num_23.get_top() # Point directly at the number
+        new_low_arrow = Arrow(new_low_arrow_start_pos, new_low_arrow_end_pos, buff=0.1, color=arrow_color, stroke_width=5, max_tip_length_to_length_ratio=0.15)
+        new_low_label = Text("low", font_size=24, color=arrow_color).next_to(new_low_arrow, DOWN, buff=0.1)
+        new_low_pointer_group = VGroup(new_low_arrow, new_low_label)
+
+        # 6. Fade in the new 'low' arrow
+        self.play(FadeIn(new_low_pointer_group))
+
+        # 7. Hold the final state
+        self.wait(2)
+```

@@ -23,4 +23,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project code
 COPY . .
 
-CMD ["python", "-u", "main.py"]
+CMD ["python", "-u", "main.py", ">", "/app/output/app.log", "2>&1"]

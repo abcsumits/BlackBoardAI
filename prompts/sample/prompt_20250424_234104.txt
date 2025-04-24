@@ -7,8 +7,8 @@ You are working in backend system of a video editing tool. Your task is to gener
     -Strictly do  not use any image in the code 
 
     2. **Visual Requirements**  
-    {An abstract neural network graphic, composed of interconnected white Dot() objects and grey Line() segments, shows pulses of light (yellow color animation) moving through the connections. this are sub visuals of the following prompt: Explain how large language models works}  
-    - context for the visuals: {during training the llm analyzes data learning grammar rules facts context and word relationships.}
+    {A stylized animation shows a horizontal bar repeatedly being cut in half. Alongside, a simple graph appears with a steep Line labelled 'linear search' and a flattening Curve labelled 'binary search'. this are sub visuals of the following prompt: Explain binary search algorithm in short}  
+    - context for the visuals: {you keep cutting the search area in half. this makes binary search incredibly efficient for huge datasets.}
     - Allow elements ONLY if they:  
         a) Strictly Don't overlap  content  
         b) Strictly Don't exceed  frame space 
@@ -40,8 +40,5 @@ class  Frame(Scene):
        text = Text('Hello').to_edge(CENTER)
       self.play(Write(text))"}  
 
-    
-     self.play(Write(text))"}  
-
-    
+    Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: 'str' object has no attribute 'send_prompt'}
     

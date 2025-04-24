@@ -10,14 +10,16 @@ import os
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 class Writer:
-    def __init__(self, ai: AI, user_prompt: str, uuid: str, MAX_WORKERS: int = 5):
+    def __init__(self, ai: AI, user_prompt: str, uuid: str, MAX_THREADS: int = int(os.getenv("MAX_THREADS", 4))):
         self.ai = ai
         self.story = None
         self.user_prompt = user_prompt
         self.uuid = uuid
         self.segments = None
-        self.MAX_WORKERS = MAX_WORKERS
+        self.MAX_THREADS = MAX_THREADS
     
     def create_video(self):
         self.story = self.ai.send_prompt(ask_for_story(self.user_prompt))
@@ -41,19 +43,19 @@ class Writer:
             segments = json.loads(segments)
             for i in range(1, len(segments) + 1):
                 if "segment" + str(i) not in segments:
-                    self.generate_segments(retry-1)
+                    self.__generate_segments(retry-1)
                     return
                 else:
                     if len(segments["segment" + str(i)]) != 2:
-                        self.generate_segments(retry-1)
+                        self.__generate_segments(retry-1)
                         return
         except Exception as e:
             self.story += f" your last response raised this exception make sure not to repeat this mistake again: {str(e)}"
-            self.generate_segments(retry-1)
+            self.__generate_segments(retry-1)
         
         print("INFO: Number of segments received from AI:", len(segments))
 
-        with open(f"./temp/segments_{self.uuid}.json", "w") as f:
+        with open(os.path.join(BASE_DIR, f"temp/segments_{self.uuid}.json"), "w") as f:
             json.dump(segments, f, indent=4)
 
         print("INFO: Segments saved to file")
@@ -64,7 +66,7 @@ class Writer:
         if self.segments is None:
             raise AIError("Segments not generated. Call generate_segments() first.", error_type="SegmentError")
         print("INFO: Shooting video segments")
-        with ThreadPoolExecutor(max_workers=self.MAX_WORKERS) as executor:
+        with ThreadPoolExecutor(max_workers=self.MAX_THREADS) as executor:
             futures = []
             for i in range(1, len(self.segments) + 1):
                 text = self.segments["segment" + str(i)][0] + ' this are sub visuals of the following prompt: ' + self.user_prompt
@@ -84,16 +86,16 @@ class Writer:
             
 
 # Ensure directories exist
-os.makedirs("temp/videos", exist_ok=True)
-os.makedirs("temp/audios", exist_ok=True)
-os.makedirs("temp/combined", exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'temp/videos'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'temp/audios'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'temp/combined'), exist_ok=True)
 
 def write_manim(ai: AI, task, frame_no, text, uid, error='', cnt = 2):
     if cnt == 0:
         return
     print("INFO: Generating code for frame", frame_no)
     frame_no = f"{frame_no}_{uid}"
-    file_name=f"./temp/{frame_no}.py"
+    file_name=os.path.join(BASE_DIR, f"temp/{frame_no}.py")
     code_str=ai.send_prompt(manim_code_prompt(task,text,error))
     print("INFO: Response received from AI for code generation")
     print("INFO: Cleaning code")
@@ -111,17 +113,28 @@ def write_manim(ai: AI, task, frame_no, text, uid, error='', cnt = 2):
         subprocess.run('manim -qh '+file_name+' Frame', shell=True, text=True, capture_output=True,timeout=600 )
         delete_file(file_name)
         print("INFO: Manim code executed successfully")
-        if not move_file('./media/videos/'+frame_no+'/1080p60/'+'Frame'+'.mp4', './temp/videos/'+frame_no+'.mp4'):
+        if not move_file(
+                os.path.join(BASE_DIR, f'media/videos/{frame_no}/1080p60/Frame.mp4'),
+                os.path.join(BASE_DIR, f'temp/videos/{frame_no}.mp4')):
             print("WARNING: Multiple videos generated, only one needs to be processed. Deleting the extra video files")
-            delete_file('./media/videos/'+frame_no)
+            delete_file(os.path.join(BASE_DIR, f'media/videos/{frame_no}'))
             print("INFO: Sending for regenerating the manim code")
-            write_manim(task,frame_no,text,"",'''Strictly fix theError: Your last  code generated multiple video , only single video will get processed '''+'''Your last Code : '''+code_str,cnt-1)
+            write_manim(task,
+                        frame_no,
+                        text,
+                        "",
+                        f'''Strictly fix theError: Your last  code generated multiple video , only single video will get processed '''+'''Your last Code : '''+code_str,
+                        cnt-1)
         else:
             print("SUCCESS: Manim code executed successfully in a single video")
-            texttospeech(text,f"temp/audios/{frame_no}.mp3")
+            texttospeech(text, os.path.join(BASE_DIR, f"temp/audios/{frame_no}.mp3"))
             print("INFO: Audio generated successfully")
             print("INFO: Combining audio and video")
-            combine_audio(f'./temp/videos/{frame_no}.mp4', './temp/audios/'+frame_no+'.mp3', './temp/combined/'+frame_no+'.mp4')
+            combine_audio(
+                os.path.join(BASE_DIR, f'temp/videos/{frame_no}.mp4'), 
+                os.path.join(BASE_DIR, f'temp/audios/{frame_no}.mp3'), 
+                os.path.join(BASE_DIR, f'temp/combined/{frame_no}.mp4')
+            )
             print("INFO: Audio and video combined successfully")
             # print("INFO: Deleting the extra video files")
             # delete_file('./temp/videos/'+frame_no+'.mp4')
@@ -133,16 +146,19 @@ def write_manim(ai: AI, task, frame_no, text, uid, error='', cnt = 2):
         print("ERROR: Manim code execution failed")
         print("INFO: Error message:", e.stderr)
         print("INFO: Sending for regenerating the manim code")
-        delete_file(file_name)
-        delete_file('./media/videos/'+frame_no)
-        write_manim(ai, task,frame_no,text,"",'''Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: '''+e.stderr+"}"+"Strictly make the code error less",cnt-1)
+        if os.path.exists(file_name):
+            delete_file(file_name)
+        delete_file(os.path.join(BASE_DIR, f'media/videos/{frame_no}.mp4'))
+        write_manim(ai, task, frame_no, text,"",'''Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: '''+e.stderr+"}"+"Strictly make the code error less",cnt-1)
         return
     except Exception as e:
         print("ERROR: Manim code execution failed")
         print("INFO: Error message:", str(e))
         print("INFO: Sending for regenerating the manim code")
         print("INFO: Deleting the extra video files")
+        if os.path.exists(file_name):
+            delete_file(file_name)
         delete_file(file_name)
-        delete_file('./media/videos/'+frame_no)
-        write_manim(ai, task,frame_no,text,"",'''Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: '''+str(e)+"}",cnt-1)
+        delete_file(os.path.join(BASE_DIR, f'media/videos/{frame_no}.mp4'))
+        write_manim(ai, task, frame_no,text, "" ,'''Your last CODE  generated ERROR , DONOT REPEAT SAME MISTAKE AGAIN{Error: '''+str(e)+"}",cnt-1)
         return

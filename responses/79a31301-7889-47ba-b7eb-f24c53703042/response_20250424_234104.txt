@@ -1,0 +1,125 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Define Colors
+        bar_color = "#2196F3" # Blue
+        cut_color = "#FF0000" # Red
+        linear_color = "#F44336" # Red
+        binary_color = "#4CAF50" # Green
+        axis_color = "#FFFFFF" # White
+        text_color = "#FFFFFF" # White
+
+        # --- Bar Cutting Animation ---
+        bar_group = VGroup() # Group for bar elements
+
+        # Initial Bar
+        bar_width = 6.0
+        bar_height = 0.5
+        current_bar = Rectangle(width=bar_width, height=bar_height, color=bar_color, fill_opacity=0.8)
+        current_bar.move_to(2 * UP + 3 * LEFT)
+        bar_group.add(current_bar)
+
+        self.play(FadeIn(current_bar))
+        self.wait(0.5)
+
+        # Cutting loop
+        cuts = 3
+        for i in range(cuts):
+            # Calculate cut position (vertical line at the middle of the current bar's right half)
+            cut_x = current_bar.get_center()[0] + current_bar.width / 4
+            cut_start = current_bar.get_top()
+            cut_end = current_bar.get_bottom()
+            
+            # Adjust points slightly if needed
+            cut_start[0] = cut_x
+            cut_end[0] = cut_x
+
+            # Create cutting line
+            cut_line = Line(cut_start, cut_end, color=cut_color, stroke_width=6)
+            bar_group.add(cut_line)
+            
+            self.play(Create(cut_line), run_time=0.5)
+            self.wait(0.1)
+            self.play(FadeOut(cut_line), run_time=0.3)
+            bar_group.remove(cut_line) # remove from group after fade out
+
+            # New bar (left half)
+            new_width = current_bar.width / 2
+            new_bar = Rectangle(width=new_width, height=bar_height, color=bar_color, fill_opacity=0.8)
+            # Position the new bar where the left half of the old bar was
+            new_bar.move_to(current_bar.get_center() + LEFT * current_bar.width / 4)
+
+            # Animate transformation
+            self.play(Transform(current_bar, new_bar), run_time=0.7)
+            self.wait(0.3)
+            # Note: current_bar is now transformed into new_bar visually
+
+        # --- Graph Animation ---
+        graph_origin_shift = 1.5 * UP + 2.5 * RIGHT
+        axes = Axes(
+            x_range=[0, 10, 2],
+            y_range=[0, 10, 2],
+            x_length=4,
+            y_length=3,
+            axis_config={"color": axis_color, "include_tip": False},
+            x_axis_config={"numbers_to_include": np.arange(2, 11, 2)},
+            y_axis_config={"numbers_to_include": np.arange(2, 11, 2)},
+        ).scale(0.9).shift(graph_origin_shift)
+
+        # Labels for axes (optional, can keep simple)
+        # x_label = axes.get_x_axis_label("Size", edge=DOWN, direction=DOWN)
+        # y_label = axes.get_y_axis_label("Time", edge=LEFT, direction=LEFT)
+        # graph_labels = VGroup(x_label, y_label)
+
+        # Define functions
+        # Scale functions to fit the y_range [0, 10] when x is in [0, 10]
+        linear_func = lambda x: x * 0.8  # Scaled linear
+        binary_func = lambda x: np.log2(x + 1) * 1.5 if x > 0 else 0 # Scaled log
+
+        # Create graph lines
+        linear_graph = axes.plot(linear_func, color=linear_color, x_range=[0.1, 10])
+        binary_graph = axes.plot(binary_func, color=binary_color, x_range=[0.1, 10])
+
+        # Create graph labels
+        linear_label = axes.get_graph_label(linear_graph, "Linear Search", x_val=7, direction=UP+RIGHT, color=linear_color).scale(0.5)
+        binary_label = axes.get_graph_label(binary_graph, "Binary Search", x_val=8, direction=DOWN+RIGHT, color=binary_color).scale(0.5)
+
+        graph_group = VGroup(axes, linear_graph, binary_graph, linear_label, binary_label)
+
+        self.play(
+            Create(axes),
+            run_time=1
+        )
+        self.play(
+            Create(linear_graph),
+            Write(linear_label),
+            run_time=1
+        )
+        self.play(
+            Create(binary_graph),
+            Write(binary_label),
+            run_time=1
+        )
+        self.wait(0.5)
+
+        # --- Explanatory Text ---
+        explanation_text = Text(
+            "Cutting the search area in half repeatedly makes binary search\n very efficient for large datasets.",
+            font_size=28,
+            color=text_color,
+            line_spacing=0.8
+        )
+        explanation_text.shift(2.5 * DOWN)
+
+        self.play(Write(explanation_text), run_time=2)
+
+        # Keep final elements on screen
+        self.wait(3)
+
+        # Explicitly keep elements if needed, though wait should suffice
+        self.add(bar_group, graph_group, explanation_text)
+
+```

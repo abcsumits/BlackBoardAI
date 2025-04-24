@@ -1,0 +1,116 @@
+Your task is to convert narrative input into timed 5-15 second multimedia segments(Strictly each segment should have its own independent meaning,so that if  segment is missing it should not effect the whole video)..Most important and strictly All dialogues should be carry meaning together as well as alone. For each segment provide:
+    
+   
+     
+    Visual description: Manim-compatible scene description (geometric primitives, mobjects, animations)(No constraints on visual description use whatever suits fine for the story)
+
+    Speech text:  Strictly contains words to be spoken only in lower case latin letters words and "," or "." or "?",(if you want to use numbers or mathematical operation use words only example five plus two equals seven,use phi or theta etc for their symbols etc ),strictly no symbols or special characters
+
+    Format strictly as plain-text JSON:
+    {"segment1": ["visual description", "speech text"], "segment2": ["...", "..."], ...}
+
+    Requirements:
+
+    Use ONLY segment1, segment2 sequential numbering
+
+    Visuals must use explicit Manim elements:
+    ✓ Parametric shapes (Polygon, Arrow, Dot)
+    ✓ Mathematical surfaces (Surface, 3DAxes)
+    ✓ Color codes (HEX/RGB)
+    ✓ Transform animations (Create, FadeIn, Rotate)
+    ✓ No mention about commands or actions just the text that is to be spoken
+    ✓ No mention of the audio or the flow
+    Striclty do not add any code in visuals or audio(you can ignore that part of story)
+
+    Speech text requirements:
+    ✓ No contractions ("do not" not "don't")
+    ✓ Max 1 comma per sentence
+    ✓ Oxford comma usage
+    ✓ Terminal punctuation only (.?!)
+    ✓ No mention about commands or actions just the text that is to be spoken
+    ✓ No mention of the visuals or the flow
+
+    JSON must be:
+    ✓ Wrapped in {} with double-quoted strings
+    ✓ Proper comma placement
+    ✓ No trailing commas
+    ✓ Escape characters as " if needed
+
+    Example:
+    {"segment1": ["A blue RegularPolygon(5) rotates clockwise on an orange background", "The ancient symbol begins to glow with pentagonal symmetry."]}
+
+    Input Story:
+    {Okay, here's a script-like explanation of Binary Search, formatted for a short YouTube video:
+
+**(Intro Music Fades)**
+
+**[SCENE START]**
+
+**[VISUAL]** Title Card: "Binary Search Explained in 60 Seconds!" or similar. Maybe a quick animation of numbers being searched quickly.
+
+**[VOICEOVER (Energetic, Clear)]**
+"Ever needed to find something *really* fast in a long, sorted list? Like finding a name in a phone book or a word in a dictionary?"
+
+**[VISUAL]** Quick shot of a dictionary or phone book being opened roughly in the middle. Transition to an animated sorted list of numbers on screen (e.g., [2, 5, 8, 12, 16, 23, 38, 56]). Highlight the whole list.
+
+**[VOICEOVER]**
+"That's where Binary Search shines! But remember the **KEY RULE**: Your list *must* be sorted first!"
+
+**[VISUAL]** Add a big "SORTED!" stamp or checkmark over the list.
+
+**[VOICEOVER]**
+"Here's how it works:
+
+1.  **Find the Middle:** Look right at the middle element of your list."
+
+**[VISUAL]** Animate pointers showing the start (low) and end (high) of the list. Calculate and highlight the middle element. Show the target value we're looking for (e.g., "Find: 23").
+
+**[VOICEOVER]**
+"2. **Compare:** Is the middle element your target? If yes, you're done! Found it!"
+
+**[VISUAL]** Show a comparison: Middle (e.g., 16) vs. Target (23). Show a "❌" (Not equal).
+
+**[VOICEOVER]**
+"If not, ask: Is your target *smaller* or *larger* than the middle element?"
+
+**[VISUAL]** Show the comparison again: Target (23) > Middle (16).
+
+**[VOICEOVER]**
+"3. **Discard Half:**
+    *   If your target is *smaller*, ignore the middle element and everything *after* it.
+    *   If your target is *larger* (like ours!), ignore the middle element and everything *before* it."
+
+**[VISUAL]** Animate crossing out or fading out the left half of the list (including the middle element 16). The remaining list is [23, 38, 56].
+
+**[VOICEOVER]**
+"4. **Repeat:** Now, just repeat steps 1 to 3 on the *remaining* smaller list."
+
+**[VISUAL]** Show the new smaller list [23, 38, 56]. Animate finding the new middle (38). Compare Target (23) < Middle (38). Cross out the right half [38, 56]. Remaining list: [23].
+
+**[VISUAL]** Final step: New list [23]. Middle is 23. Compare Target (23) == Middle (23). Show a big "✅ FOUND!" animation.
+
+**[VOICEOVER]**
+"You keep cutting the search area in half until you find your item or run out of list to search!"
+
+**[SCENE END]**
+
+**[SCENE START]**
+
+**[VISUAL]** Simple graphic showing a list being halved repeatedly. Maybe a comparison graph: Linear Search (slow straight line) vs. Binary Search (fast flattening curve).
+
+**[VOICEOVER]**
+"Why use it? It's incredibly EFFICIENT! Especially for huge datasets. It dramatically cuts down search time."
+
+**[VISUAL]** Text overlay: "Binary Search: Fast, Efficient, Requires Sorted Data!"
+
+**[VOICEOVER]**
+"So, that's Binary Search! The super-fast way to find items in a sorted list by repeatedly dividing your search space in half."
+
+**(Outro Music Starts)**
+
+**[VISUAL]** End screen with channel logo, subscribe button, maybe a link to a video on sorting algorithms.
+
+**[VOICEOVER]**
+"If this helped, give us a like! Subscribe for more coding concepts explained simply. Thanks for watching!"
+
+**(Music Fades Out)**}

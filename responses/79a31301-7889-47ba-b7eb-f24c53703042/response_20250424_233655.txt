@@ -1,0 +1,43 @@
+```python
+from manim import *
+
+class Frame(Scene):
+    def construct(self):
+        # Create the sorted list text
+        number_list_text = "[2, 5, 7, 8, 11, 12]"
+        number_list = Text(number_list_text, font_size=60, color="#FFFFFF")
+        number_list.move_to(ORIGIN + DOWN * 1.0) # Position slightly down from center
+
+        # Display the list
+        self.play(Write(number_list))
+        self.wait(0.5)
+
+        # Make the list glow slightly using ApplyWave
+        self.play(ApplyWave(number_list, amplitude=0.1, run_time=1.5, time_width=0.5, color="#FFFF00")) # Yellow glow wave
+        self.wait(0.5)
+
+        # Create a large green checkmark
+        checkmark = Checkmark(stroke_width=10)
+        checkmark.set_color("#00FF00") # Bright Green
+        checkmark.scale(2) # Make it large
+        # Position it above the list, ensuring no overlap
+        checkmark.move_to(number_list.get_center() + UP * 2.0)
+
+        # Animate the checkmark appearing with a bounce effect
+        # 1. Grow the checkmark from its center
+        self.play(GrowFromCenter(checkmark), run_time=0.7)
+        # 2. Simulate bounce: shift down quickly, then shift back up smoothly
+        self.play(
+            checkmark.animate.shift(DOWN * 0.4),
+            rate_func=linear, # Quick downward motion
+            run_time=0.15
+        )
+        self.play(
+            checkmark.animate.shift(UP * 0.4),
+            rate_func=smooth, # Smooth upward motion (settling)
+            run_time=0.3
+        )
+
+        # Keep the final visual on screen for a moment
+        self.wait(2)
+```

@@ -7,8 +7,8 @@ You are working in backend system of a video editing tool. Your task is to gener
     -Strictly do  not use any image in the code 
 
     2. **Visual Requirements**  
-    {A grid of billions of tiny grey Dot() objects fills the screen. Some dots randomly flash bright white briefly, simulating parameter adjustment. this are sub visuals of the following prompt: Explain how large language models works}  
-    - context for the visuals: {millions or billions of internal parameters tuned during training guide these complex calculations.}
+    {The elements 'two', 'five', 'eight', 'twelve', and 'sixteen' fade out along with the 'low' Arrow. The 'low' Arrow reappears pointing at 'twenty three'. this are sub visuals of the following prompt: Explain binary search algorithm in short}  
+    - context for the visuals: {if your target is larger, ignore the middle element and everything before it.}
     - Allow elements ONLY if they:  
         a) Strictly Don't overlap  content  
         b) Strictly Don't exceed  frame space 

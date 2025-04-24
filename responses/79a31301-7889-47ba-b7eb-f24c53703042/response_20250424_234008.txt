@@ -1,0 +1,144 @@
+```python
+from manim import *
+import numpy as np
+
+class Frame(Scene):
+    def construct(self):
+        # Colors
+        bar_color = "#44CCFF"
+        cut_color = "#FFFFFF"
+        discard_color = "#FF6666"
+        linear_color = "#FF0000" # Red
+        binary_color = "#00FF00" # Green
+        axes_color = "#DDDDDD"
+        label_color = "#FFFFFF"
+
+        # Bar Animation Setup
+        bar_width = 6.0
+        bar_height = 0.5
+        initial_bar = Rectangle(
+            width=bar_width,
+            height=bar_height,
+            color=bar_color,
+            fill_opacity=0.8,
+            stroke_width=1
+        ).move_to(UP * 2.5)
+
+        self.play(Create(initial_bar))
+        self.wait(0.5)
+
+        current_bar = initial_bar
+        cuts = 3 # Number of cuts
+
+        for i in range(cuts):
+            # Calculate center for the cut line based on the current bar
+            center_x = current_bar.get_center()[0]
+            cut_line = Line(
+                start=current_bar.get_top(),
+                end=current_bar.get_bottom(),
+                color=cut_color,
+                stroke_width=3
+            )
+            # Adjust position if width is very small to avoid visual glitch
+            if current_bar.width < 0.1:
+                 cut_line.move_to(current_bar.get_center())
+            else:
+                 cut_line.move_to(current_bar.get_center())
+
+
+            # Highlight the right half to be discarded
+            right_half_width = current_bar.width / 2
+            right_half = Rectangle(
+                width=right_half_width,
+                height=current_bar.height,
+                stroke_width=0, # No border
+                fill_color=discard_color,
+                fill_opacity=0.6
+            ).move_to(current_bar.get_right() + LEFT * right_half_width / 2)
+
+
+            # Create the new left half (visual representation of the remaining bar)
+            new_bar = Rectangle(
+                width=current_bar.width / 2,
+                height=current_bar.height,
+                color=bar_color,
+                fill_opacity=0.8,
+                stroke_width=1
+            ).move_to(current_bar.get_left() + RIGHT * right_half_width / 2)
+
+            self.play(Create(cut_line), run_time=0.3)
+            self.play(FadeIn(right_half, shift=RIGHT*0.1), run_time=0.4)
+            self.wait(0.3)
+            # Fade out cut line and discarded part, replace old bar with new bar
+            self.play(
+                FadeOut(cut_line),
+                FadeOut(right_half),
+                ReplacementTransform(current_bar, new_bar),
+                run_time=0.6
+            )
+            current_bar = new_bar # Update reference to the current bar
+            self.wait(0.5)
+
+
+        # Graph Setup
+        axes = Axes(
+            x_range=[1, 101, 20], # Start from 1 for log N
+            y_range=[0, 101, 20], # Y range to accomodate N and log N scaled
+            x_length=7,          # Width of the graph
+            y_length=4,          # Height of the graph
+            axis_config={"color": axes_color, "include_tip": False},
+            x_axis_config={"numbers_to_include": np.arange(20, 101, 20)},
+            y_axis_config={"numbers_to_include": np.arange(20, 101, 20)},
+        ).move_to(DOWN * 1.0) # Position below the bar animation
+
+        x_label = axes.get_x_axis_label(
+            Text("Dataset Size (N)", font_size=24, color=label_color),
+            edge=DOWN, direction=DOWN, buff=0.4
+        )
+        y_label = axes.get_y_axis_label(
+            Text("Operations", font_size=24, color=label_color).rotate(90 * DEGREES),
+            edge=LEFT, direction=LEFT, buff=0.5
+        )
+        graph_labels = VGroup(x_label, y_label)
+
+        # Functions
+        # Define a safe log2 function to handle x=1 gracefully
+        def safe_log2(x):
+             # Small epsilon to avoid log2(1) exactly if axes starts at 1
+             epsilon = 0.001
+             return np.log2(x) if x > 1 else 0
+
+        linear_func = lambda x: x
+        # Scale log function (e.g., by 10) to make it visually distinct on the graph
+        binary_func = lambda x: 10 * safe_log2(x)
+
+        # Plots
+        # Plot starting slightly above 1 to avoid potential issues at the boundary
+        plot_x_range = [1.01, 100]
+        linear_graph = axes.plot(linear_func, x_range=plot_x_range, color=linear_color, stroke_width=3)
+        binary_graph = axes.plot(binary_func, x_range=plot_x_range, color=binary_color, stroke_width=3)
+
+
+        # Labels for plots
+        linear_text = Text("Linear Search (N)", font_size=20, color=linear_color)
+        binary_text = Text("Binary Search (log N)", font_size=20, color=binary_color)
+
+        # Position labels relative to the graph using axes coordinates
+        # Place linear label near the end of the linear line
+        linear_label_pos = axes.c2p(90, 90) # Coordinates on the axes
+        linear_text.next_to(linear_label_pos, UP + RIGHT, buff=0.1)
+
+        # Place binary label near the end of the binary line
+        binary_label_pos = axes.c2p(90, 10 * safe_log2(90)) # Coordinates on the axes
+        binary_text.next_to(binary_label_pos, DOWN + RIGHT, buff=0.1)
+
+        plot_labels = VGroup(linear_text, binary_text)
+
+        # Animation of Graph
+        self.play(Create(axes), Write(graph_labels), run_time=1.5)
+        self.play(Create(linear_graph), Create(binary_graph), run_time=2)
+        self.play(Write(plot_labels), run_time=1)
+
+        # Hold the final frame clearly showing both animations
+        self.wait(4)
+```
