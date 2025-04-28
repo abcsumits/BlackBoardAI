@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Writer:
-    def __init__(self, ai: AI, user_prompt: str, uuid: str, MAX_THREADS: int = int(os.getenv("MAX_THREADS", 4))):
+    def __init__(self, ai: AI, user_prompt: str, uuid: str, MAX_THREADS: int = int(os.getenv("MAX_THREADS", 1))):
         self.ai = ai
         self.story = None
         self.user_prompt = user_prompt
@@ -126,8 +126,15 @@ def write_manim(ai: AI, task, frame_no, text, uid, error='', cnt = 2):
                         f'''Strictly fix theError: Your last  code generated multiple video , only single video will get processed '''+'''Your last Code : '''+code_str,
                         cnt-1)
         else:
-            print("SUCCESS: Manim code executed successfully in a single video")
+            if os.path.exists(os.path.join(BASE_DIR, f'temp/videos/{frame_no}.mp4')):
+                print("SUCCESS: Manim code executed successfully in a single video")
+            else:
+                print("ERROR: Manim code execution FAILED")
+
             texttospeech(text, os.path.join(BASE_DIR, f"temp/audios/{frame_no}.mp3"))
+            if not os.path.exists(os.path.join(BASE_DIR, f'temp/audios/{frame_no}.mp3')):
+                print("ERROR: Audio generation FAILED")
+
             print("INFO: Audio generated successfully")
             print("INFO: Combining audio and video")
             combine_audio(
