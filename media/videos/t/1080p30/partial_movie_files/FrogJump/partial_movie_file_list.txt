@@ -1,4 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/Users/sumit/codes/BlackBoardAI/video-creator/media/videos/t/1080p30/partial_movie_files/FrogJump/1553824589_3385903945_3385706759.mp4'
-file 'file:/Users/sumit/codes/BlackBoardAI/video-creator/media/videos/t/1080p30/partial_movie_files/FrogJump/1466811629_1690498408_1641555937.mp4'
-file 'file:/Users/sumit/codes/BlackBoardAI/video-creator/media/videos/t/1080p30/partial_movie_files/FrogJump/1466811629_2872842549_4205901351.mp4'
