@@ -3,16 +3,19 @@ def d_prompt(Story):
     
    
      
-    Visual description: Manim-compatible scene description (geometric primitives, mobjects, animations)(No constraints on visual description use whatever suits fine for the story)
+    Visual description: Manim-compatible scene description , example:("frog jumping in 8X8 matrix diagonally from 0,0 to 7,7, use dark and light grey for grid colors with white lines for grid structure and use black background, frog should be green with white eye and frog structure " ),("create isaac newton seating under tree , draw its actual face and apple should fall on him , make it funny"),  Be as sepecific as possible, mention eye smoothing and realistic
 
-    Speech text:  Strictly contains words to be spoken only in lower case latin letters words and "," or "." or "?",(if you want to use numbers or mathematical operation use words only example five plus two equals seven,use phi or theta etc for their symbols etc ),strictly no symbols or special characters
-
+    Speech text:  Strictly contains words to be spoken only in lower case latin letters words and punctuations where needed (use it one at a time),(if you want to use numbers or mathematical operation use words only example five plus two equals seven,use phi or theta etc for their symbols etc ),strictly no symbols or special characters, also text like umm , meow etc. are allowed too, Short form must be sperated by space example :(use "U P I" instead of "UPI", execption": for "AI" use "AI" only)
+   
+    **use proper breaks in Speech**
     Format strictly as plain-text JSON:
     {"segment1": ["visual description", "speech text"], "segment2": ["...", "..."], ...}
 
+    **Visual description do not have any description, do not use any rules of speech on visuals**
+    **use as many objects and scenes description as possible it should be visually appealing the visual will be directly passed to manim writer agent to convert it into video**
     Requirements:
 
-    Use ONLY segment1, segment2 sequential numbering
+    Use ONLY segment1, segment2 sequential numberings
 
     Visuals must use explicit Manim elements:
     ✓ Parametric shapes (Polygon, Arrow, Dot)

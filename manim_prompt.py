@@ -1,12 +1,17 @@
-def m_prompt(visuals,text,error=''):
+def m_prompt(visuals,text):
     prompt='''You are working in backend system of a video editing tool. Your task is to generate Manim code( version Manim Community v0.19.0) for a given set of visuals and text.
     Generate Manim code as simple text with proper indentations adhering to:  
+     **visuals should make sense with context and should be apealing,use good colours and diagram**
+    **text should be clear and easy to read**
+    **text or structures should not overlap**
+    **Strictly do not write subtitle in the video**
+    **First decide which Manim Objects you need. Then write each call in order. Finally, combine them in a Group if needed.**
     1. **Mandatory Structure**  
     - Class name: `class Frame(Scene):`  
     - Strictly Do not create  or use any files
     -strictly Do not use or create any audio files
     -Strictly do  not use any image in the code 
-
+    -Strictly do not write text explaining the visuals
     2. **Visual Requirements**  
     {''' + visuals + '''}  
     - context for the visuals: {'''+text+ '''}
@@ -34,9 +39,12 @@ def m_prompt(visuals,text,error=''):
     Strictly do not fade that's not have been created in codes.
     Check thoroughly everything works correctly with  Manim Community v0.19.0.
     Make  it natural 
+    
+    **MAKE SMART USE OF SHAPES AND COLOURS**
+    **MAKE changes if needed (without changing the context)**
+    **use eye smoothing colours**
     Example response for "Hello":  
     "from manim import *\nclass  Frame(Scene):\n    def construct(self):\n       text = Text('Hello').to_edge(CENTER)\n      self.play(Write(text))"}  
 
-    '''+error+'''
     '''
     return prompt

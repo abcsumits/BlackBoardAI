@@ -7,7 +7,7 @@ load_dotenv()
 def openapi(prompt):
     try:
         print('inside llm ')
-        client = genai.Client(api_key=os.getenv("API_KEY"+str(random.randint(1,10))))
+        client = genai.Client(api_key=os.getenv("API_KEY"+str(random.randint(1,12))))
         response = client.models.generate_content(
             model="gemini-2.5-pro-exp-03-25", contents=prompt)
         print(response)
