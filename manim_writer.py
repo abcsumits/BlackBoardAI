@@ -8,14 +8,17 @@ import json
 import re
 from delete_file import delete_file , move_file
 from openAIapi import openapi
-def write_manim(task,frame_no,text,uid,error='',cnt=7,code=''):
+from svg_video import svg_video
+def write_manim(task,frame_no,text,uid,error='',cnt=3,code=''):
     if cnt==0:
+        svg_video(task,frame_no,text,uid)
         return
     print("code no.",frame_no)
     frame_no+=uid
     file_name=frame_no+'.py'
-    if error=='' or cnt==3 or cnt==1:
+    if error=='' or cnt==1:
         code_str=openapi(m_prompt(task,text))
+    
     else:
         code_str=openapi(debug_prompt(code,error))
     if code_str.startswith('```'):

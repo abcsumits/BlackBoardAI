@@ -8,18 +8,18 @@ import math
 import ffmpeg
 import os
 import math
+def get_duration(path):
+        try:
+            return float(ffmpeg.probe(path)['format']['duration'])
+        except Exception as e:
+            raise ValueError(f"Could not get duration for {path}: {str(e)}")
 
 def combine_audio(num):
     video_path = f"{num}.mp4"
     audio_path = f"{num}.mp3"
     output_path = f"combined{num}.mp4"
     
-    def get_duration(path):
-        try:
-            return float(ffmpeg.probe(path)['format']['duration'])
-        except Exception as e:
-            raise ValueError(f"Could not get duration for {path}: {str(e)}")
-
+    
     try:
         video_duration = get_duration(video_path)
         audio_duration = get_duration(audio_path)
@@ -178,31 +178,44 @@ def combine_audio(num):
 
     return output_path
 
-def create_video(Total_frames, uid):
-    # Create list file for FFmpeg concat
-    list_path = f"concat_list_{uid}.txt"
-    with open(list_path, "w") as f:
-        for i in range(1, Total_frames+1):
-            if os.path.exists(f"combined{i}{uid}.mp4"):
-                f.write(f"file 'combined{i}{uid}.mp4'\n")
 
-    # FFmpeg direct concatenation (no re-encoding)
+
+
+def create_video(total_frames, uid):
+    ffmpeg_bin  = get_setting("FFMPEG_BINARY")
     output_path = f"combined_video{uid}.mp4"
-    ffmpeg_bin = get_setting("FFMPEG_BINARY")
-    
-    cmd = [
-        ffmpeg_bin,
-        "-y",  # overwrite
-        "-f", "concat",
-        "-safe", "0",
-        "-i", list_path,
-        "-c", "copy",  # stream copy (no re-encode)
+
+    # 1) Gather all existing MP4 segments
+    inputs = []
+    for i in range(1, total_frames + 1):
+        fn = f"combined{i}{uid}.mp4"
+        if os.path.exists(fn):
+            inputs.append(fn)
+        else:
+            print(f"Warning: {fn} missing, skipping.")
+
+    if not inputs:
+        raise RuntimeError("No input segments found!")
+
+    # 2) Build ffmpeg command with one -i per file
+    cmd = [ffmpeg_bin, "-y"]
+    for fn in inputs:
+        cmd += ["-i", fn]
+
+    # 3) Build the filter_complex string: "[0:v][0:a][1:v][1:a]...concat=n=N:v=1:a=1[v][a]"
+    N = len(inputs)
+    spec = []
+    for idx in range(N):
+        spec += [f"[{idx}:v:0]", f"[{idx}:a:0]"]
+    filter_complex = "".join(spec) + f"concat=n={N}:v=1:a=1[v][a]"
+
+    cmd += [
+        "-filter_complex", filter_complex,
+        "-map", "[v]", "-map", "[a]",
         output_path
     ]
-    
+
+    # 4) Run it
     subprocess.run(cmd, check=True)
-    
-    # Cleanup
-    os.remove(list_path)
-    for i in range(1, Total_frames+1):
+    for i in range(1, total_frames+1):
         delete_file(f"combined{i}{uid}.mp4")
