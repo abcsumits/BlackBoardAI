@@ -10,7 +10,7 @@ def openapi(prompt):
         print('inside llm ')
         client = genai.Client(api_key=os.getenv("API_KEY"+str(random.randint(1,21))))
         response = client.models.generate_content(
-            model="gemini-2.5-flash-preview-05-20", contents=prompt,
+            model="gemini-2.5-pro", contents=prompt,
             config=types.GenerateContentConfig(
         thinking_config=types.ThinkingConfig(thinking_budget=24576)
     ))

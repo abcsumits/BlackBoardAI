@@ -14,7 +14,7 @@ def svg_video(task,frame_no,text,uid):
     code_str=openapi(prompt)
     if code_str.startswith('```'):
         code_str = code_str[3:].strip()
-    if code_str.startswith('svg'):
+    if code_str.startswith('svg') or code_str.startswith('xml'):
         code_str = code_str[3:].strip()
     if code_str.startswith('"'):
         code_str = code_str[1:].strip()
