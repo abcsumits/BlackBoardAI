@@ -1,81 +1,72 @@
 import os
 import random
+import uuid
+import hashlib
 from datetime import datetime
 from dotenv import load_dotenv
 from google import genai
-import uuid
 
+# Load environment variables
 load_dotenv()
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Ensure directories exist
-os.makedirs(os.path.join(BASE_DIR, "prompts"), exist_ok=True)
-os.makedirs(os.path.join(BASE_DIR, "responses"), exist_ok=True)
-
-import os
-PROMPT_BPATH = os.path.join(BASE_DIR, 'prompts','sample')
-RESPONSE_BPATH = os.path.join(BASE_DIR, 'responses', 'sample')
-
-files = os.listdir(RESPONSE_BPATH)
-files.sort()
+# Base path for hash-based storage
+def sha256_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 class AI:
-    def __init__(self, session_id=str(uuid.uuid4())):
-        self.session_id: str = session_id
-        self.count: int = 0
+    def __init__(self, session_id: str, api_count: int = 11):
+        self.session_id = session_id
+        self.PROMPT_BPATH = f"./prompts/{session_id}"
+        self.RESPONSE_BPATH = f"./responses/{session_id}"
+        self.api_count = api_count
+        os.makedirs(self.PROMPT_BPATH, exist_ok=True)
+        os.makedirs(self.RESPONSE_BPATH, exist_ok=True)
 
-    def __get_next_file(self):
+    def send_prompt(self, prompt: str, depth: int = 10) -> str:
+        if depth <= 0:
+            print("[ERROR] Maximum recursion depth reached.")
+            return ""
         try:
-            file = files.pop(self.count)
-        except IndexError:
-            print("[INFO] No more files to process.")
-            exit(1)
-        return file
-    
-    def send_prompt(self, prompt: str):
-        filename = self.__get_next_file()
-        print(f"[INFO] Using file: {filename}")
-        with open(os.path.join(RESPONSE_BPATH, filename), "r", encoding="utf-8") as f:
-            response = f.read()
-            return response
+            hash_name = sha256_hash(prompt)
+            prompt_path = os.path.join(self.PROMPT_BPATH, f"{hash_name}.txt")
+            response_path = os.path.join(self.RESPONSE_BPATH, f"{hash_name}.txt")
 
-    def send_prompt1(self, prompt: str):
-        try:
+            # Check if response already exists
+            if os.path.exists(response_path):
+                print(f"[INFO] Cached response exists. Reading from {response_path}")
+                with open(response_path, "r", encoding="utf-8") as f:
+                    return f.read()
+
             print("[INFO] Generating response for prompt...")
 
-            # Generate timestamped filenames
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            os.makedirs(os.path.join(BASE_DIR, f"prompts/{self.session_id}"), exist_ok=True)
-            os.makedirs(os.path.join(BASE_DIR, f"responses/{self.session_id}"), exist_ok=True)
-            prompt_filename = os.path.join(BASE_DIR, f"prompts/{self.session_id}/prompt_{timestamp}.txt")
-            response_filename = os.path.join(BASE_DIR, f"responses/{self.session_id}/response_{timestamp}.txt")
-
-            # Save prompt to file
-            with open(prompt_filename, "w", encoding="utf-8") as f:
+            # Save prompt
+            with open(prompt_path, "w", encoding="utf-8") as f:
                 f.write(prompt)
-            print(f"[INFO] Prompt saved to {prompt_filename}")
+            print(f"[INFO] Prompt saved to {prompt_path}")
 
-            # Pick a random API key (if multiple are defined)
-            api_key = os.getenv("API_KEY" + str(random.randint(1, 11)))
+            # Load API key
+            api_key = os.getenv("API_KEY" + str(random.randint(1, self.api_count)))
             client = genai.Client(api_key=api_key)
 
-            # Make the request
+            # Generate response
             response = client.models.generate_content(
-                model="gemini-2.5-pro-exp-03-25",
-                contents=prompt
+                model="gemini-2.5-pro", contents=prompt,
+                config=genai.types.GenerateContentConfig(
+                    thinking_config=genai.types.ThinkingConfig(thinking_budget=24576)
+                )
             )
 
-            # Save response if available
-            if response.text:
-                with open(response_filename, "w", encoding="utf-8") as f:
-                    f.write(response.text)
-                print(f"[INFO] Response saved to {response_filename}")
-                return response.text
-            else:
-                print("[WARNING] Empty response, retrying...")
-                return self.send_prompt(prompt)
+            # Save response
+            with open(response_path, "w", encoding="utf-8") as f:
+                f.write(response.text)
+            print(f"[INFO] Response saved to {response_path}")
+
+            if not response.text:
+                print("[WARNING] Empty response received, retrying...")
+                return self.send_prompt(prompt, depth - 1)
+            return response.text
 
         except Exception as e:
             print(f"[ERROR] API call failed: {e}")
             print("[INFO] Retrying...")
-            return self.send_prompt(prompt)
+            return self.send_prompt(prompt, depth - 1)

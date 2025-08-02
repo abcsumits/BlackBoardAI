@@ -1,11 +1,12 @@
 __pycache__/
 /.env
-/env
+env/
 /token.json
 /media
 /output/
-# /prompts/
-# /responses/
+/prompts/
+/responses/
 /trash/
 /temp/
 /debug/
+*.json

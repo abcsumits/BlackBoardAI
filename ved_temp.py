@@ -1,24 +1,27 @@
 from common import delete_file
+import numpy as np
 from moviepy.config import get_setting
 import subprocess
 import ffmpeg
 import os
 import ffmpeg
+import os
 
-def get_media_duration(path):
+def get_duration(path):
         try:
             return float(ffmpeg.probe(path)['format']['duration'])
         except Exception as e:
             raise ValueError(f"Could not get duration for {path}: {str(e)}")
 
-def combine_audio(uid):
-    video_path = f"./temp/videos/{uid}.mp4"
-    audio_path = f"./temp/audios/{uid}.mp3"
-    output_path = f"./temp/combined/{uid}.mp4"
+def combine_audio(num):
+    video_path = f"./temp/videos/{num}.mp4"
+    audio_path = f"./temp/audios/{num}.mp3"
+    output_path = f"./temp/combined/{num}.mp4"
+    
     
     try:
-        video_duration = get_media_duration(video_path)
-        audio_duration = get_media_duration(audio_path)
+        video_duration = get_duration(video_path)
+        audio_duration = get_duration(audio_path)
     except ValueError as e:
         print(f"Error: {str(e)}")
         return None
@@ -48,11 +51,11 @@ def combine_audio(uid):
                 ).run(overwrite_output=True)
                 return output_path
 
-            adjusted_video_path = f'./temp/ffmpeg/adjusted_{uid}.mp4'
+            adjusted_video_path = f'./temp/ffmpeg/adjusted_{num}.mp4'
             ffmpeg.output(video_stream, adjusted_video_path, vcodec='libx264').run(overwrite_output=True)
             temp_files.append(adjusted_video_path)
 
-            last_frame_path = f'./temp/ffmpeg/last_frame_{uid}.png'
+            last_frame_path = f'./temp/ffmpeg/last_frame_{num}.png'
             frame_time = max(0, round(new_video_duration - 0.05, 2))
             try:
                 ffmpeg.input(adjusted_video_path, ss=frame_time).output(
@@ -64,14 +67,14 @@ def combine_audio(uid):
                 ).run(overwrite_output=True)
             temp_files.append(last_frame_path)
 
-            freeze_path = f'./temp/ffmpeg/freeze_{uid}.mp4'
+            freeze_path = f'./temp/ffmpeg/freeze_{num}.mp4'
             ffmpeg.input(last_frame_path, loop=1, t=round(freeze_duration, 2)).output(
                 freeze_path, c='libx264', pix_fmt='yuv420p'
             ).run(overwrite_output=True)
             temp_files.append(freeze_path)
 
-            final_video_path = f'./temp/combined/combined_{uid}.mp4'
-            concat_list = f'./temp/ffmpeg/concat_{uid}.txt'
+            final_video_path = f'./temp/combined/combined_{num}.mp4'
+            concat_list = f'./temp/ffmpeg/concat_{num}.txt'
             with open(concat_list, 'w') as f:
                 f.write(f"file '{os.path.abspath(adjusted_video_path)}'\nfile '{os.path.abspath(freeze_path)}'")
             ffmpeg.input(concat_list, format='concat', safe=0).output(
@@ -110,7 +113,7 @@ def combine_audio(uid):
             channels = audio_stream.get('channels', 2)
 
             # Generate silence in MP3 format
-            silence_path = f'./temp/ffmpeg/silence_{uid}.mp3'
+            silence_path = f'./temp/ffmpeg/silence_{num}.mp3'
             ffmpeg.input(
                 'anullsrc',
                 f='lavfi',
@@ -124,8 +127,8 @@ def combine_audio(uid):
             temp_files.append(silence_path)
 
             # Concatenate audio files
-            extended_audio_path = f'./temp/ffmpeg/extended_{uid}.mp3'
-            audio_concat_list = f'./temp/ffmpeg/audio_concat_{uid}.txt'
+            extended_audio_path = f'./temp/ffmpeg/extended_{num}.mp3'
+            audio_concat_list = f'./temp/ffmpeg/audio_concat_{num}.txt'
             with open(audio_concat_list, 'w') as f:
                 f.write(f"file '{os.path.abspath(audio_path)}'\nfile '{os.path.abspath(silence_path)}'")
             
@@ -140,7 +143,7 @@ def combine_audio(uid):
             temp_files.extend([audio_concat_list, extended_audio_path])
 
             # Merge with adjusted video
-            adjusted_video_path = f'./temp/ffmpeg/adjusted_{uid}.mp4'
+            adjusted_video_path = f'./temp/ffmpeg/adjusted_{num}.mp4'
             ffmpeg.output(video_stream, adjusted_video_path, vcodec='libx264').run(overwrite_output=True)
             temp_files.append(adjusted_video_path)
 
@@ -162,7 +165,7 @@ def combine_audio(uid):
             ).run(overwrite_output=True)
 
     except Exception as e:
-        print(f"Error processing {uid}: {str(e)}")
+        print(f"Error processing {num}: {str(e)}")
         return None
     finally:
         for f in temp_files:
@@ -175,7 +178,7 @@ def combine_audio(uid):
     return output_path
 
 
-def concatenate_frames(total_frames, uid):
+def create_video(total_frames, uid):
     ffmpeg_bin  = get_setting("FFMPEG_BINARY")
     output_path = f"./output/video_{uid}.mp4"
 

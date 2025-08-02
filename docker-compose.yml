@@ -6,5 +6,3 @@ services:
       - ./temp:/app/temp
     env_file:
       - .env
-    environment:
-      - PROMPT=${PROMPT}

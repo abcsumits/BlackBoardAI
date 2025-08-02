@@ -1,16 +1,13 @@
-import argparse
 import uuid
 from ai import AI
 from writer import Writer
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-# Set up argument parser
-parser = argparse.ArgumentParser(description="Generate video script from prompt")
-parser.add_argument('--input_prompt', type=str, required=True, help='Prompt for video content')
-
-args = parser.parse_args()
-input_prompt = args.input_prompt
-uid = str(uuid.uuid4())
-
+input_prompt = os.getenv("PROMPT")
+# uid = str(uuid.uuid4())
+uid = '57618eb4-2497-4abb-a2c4-908e7f89569d'
 print("Starting video generation...")
 ai = AI(uid)
 writer = Writer(ai, input_prompt, uid)
