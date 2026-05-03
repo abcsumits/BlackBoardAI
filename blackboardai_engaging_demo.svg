@@ -1,0 +1,71 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1">
+      <stop offset="0%" stop-color="#071428"/>
+      <stop offset="100%" stop-color="#0b2b3a"/>
+    </linearGradient>
+
+    <filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="14" stdDeviation="22" flood-opacity="0.18" />
+    </filter>
+
+    <filter id="tiny-blur">
+      <feGaussianBlur stdDeviation="0.8" />
+    </filter>
+
+    <clipPath id="safe-clip">
+      <rect x="80" y="40" width="1120" height="600" rx="22" />
+    </clipPath>
+  </defs>
+
+  <!-- background -->
+  <rect width="100%" height="100%" fill="url(#bg)" />
+
+  <!-- faint grain texture -->
+  <g opacity="0.04">
+    <rect width="100%" height="100%" fill="#ffffff" filter="url(#tiny-blur)"/>
+  </g>
+
+  <!-- diagonal accent ribbon -->
+  <g transform="translate(-180, -40)">
+    <rect x="260" y="40" width="1000" height="220" rx="20" transform="rotate(-7 760 150)" fill="#FF6B35" opacity="0.95" />
+    <rect x="260" y="46" width="1000" height="220" rx="20" transform="rotate(-7 760 150)" fill="white" opacity="0.06" />
+  </g>
+
+  <!-- main content group clipped to safe area -->
+  <g clip-path="url(#safe-clip)">
+    <!-- left area large title -->
+    <g filter="url(#soft-shadow)">
+      <rect x="360" y="120" width="780" height="420" rx="18" fill="#071724" opacity="0.28" />
+    </g>
+
+    <!-- title text -->
+    <text x="420" y="233" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="800"
+          font-size="86px" fill="#ffffff" letter-spacing="-0.6px">
+<tspan x="420">Transformers: Intuition,</tspan>
+<tspan x="420" dy="79">Not Math — A Friendly</tspan>
+<tspan x="420" dy="79">Guide That Wraps</tspan>
+    </text>
+
+    <text x="420" y="506" font-family="Inter, Arial" font-size="26px" fill="#ffffff" fill-opacity="0.95">Succinct &amp; Visual</text>
+
+    <!-- CTA pill on top-right -->
+    <g transform="translate(980,160)">
+      <rect x="0" y="0" rx="18" ry="18" width="220" height="56" fill="#FF6B35" />
+      <text x="110" y="36" font-family="Inter, Arial" font-weight="700" font-size="20px" text-anchor="middle" fill="#fff">WATCH NOW</text>
+    </g>
+  </g>
+
+  <!-- bottom-left channel badge -->
+  <g transform="translate(88,540)">
+    <rect x="0" y="0" width="420" height="96" rx="16" fill="#000" fill-opacity="0.16" />
+    <circle cx="56" cy="48" r="44" fill="#111" stroke="#ffffff" stroke-opacity="0.08" />
+    <text x="56" y="60" text-anchor="middle" font-family="Inter, Arial" font-weight="800" font-size="34px" fill="#ffffff">B</text>
+    <text x="128" y="62" font-family="Inter, Arial" font-weight="700" font-size="26px" fill="#ffffff">blackboardai</text>
+  </g>
+
+  <!-- subtle watermark on bottom-right -->
+  <text x="1216" y="692" text-anchor="end" font-family="Inter, Arial" font-size="12px" fill="#ffffff" fill-opacity="0.12">blackboardai • explainers</text>
+
+</svg>

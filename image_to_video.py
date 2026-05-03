@@ -3,7 +3,7 @@ from delete_file import delete_file
 def image_to_video(input_image, output_video,duration):
     (
         ffmpeg
-        .input(input_image, loop=1, t=duration)   # loop image, duration 1s
+        .input(input_image, loop=1, t=duration+1)   # loop image, duration 1s
         .output(
             output_video,
             vcodec='libx264',

@@ -14,14 +14,19 @@ if 'youtube_url' not in st.session_state:
     st.session_state.youtube_url = None
 if 'processing' not in st.session_state:
     st.session_state.processing = False
+if 'reel' not in st.session_state:
+    st.session_state.reel = False
 
 # Input section
 with st.form("prompt_form"):
     prompt = st.text_area("Enter your video prompt:", height=150)
+    media_type = st.radio("Choose format:", ("Video", "Reel"))
     submitted = st.form_submit_button("Generate Video")
 
 # Handle form submission
 if submitted and prompt:
+    # store reel choice in session_state so it's available during processing
+    st.session_state.reel = (media_type == "Reel")
     st.session_state.processing = True
     st.session_state.youtube_url = None
 
@@ -40,9 +45,9 @@ if st.session_state.processing:
                 st.write("📹 Rendering video content...")
                 time.sleep(0.5)
             
-            # Call the video generation function
+            # Call the video generation function, passing reel=True/False
             print("🚀 Starting video generation...")
-            st.session_state.youtube_url = start(prompt, st.session_state.session_id)
+            st.session_state.youtube_url = start(prompt, st.session_state.session_id, reel=st.session_state.reel)
             
             # Final processing step
             st.write("📤 Uploading to YouTube...")

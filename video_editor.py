@@ -192,7 +192,8 @@ def create_video(total_frames, uid):
         if os.path.exists(fn):
             inputs.append(fn)
         else:
-            print(f"Warning: {fn} missing, skipping.")
+            raise RuntimeError(f"Missing input segment: {fn}")
+            return False
 
     if not inputs:
         raise RuntimeError("No input segments found!")
@@ -219,3 +220,4 @@ def create_video(total_frames, uid):
     subprocess.run(cmd, check=True)
     for i in range(1, total_frames+1):
         delete_file(f"combined{i}{uid}.mp4")
+    return True

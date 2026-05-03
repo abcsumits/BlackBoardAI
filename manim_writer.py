@@ -9,15 +9,15 @@ import re
 from delete_file import delete_file , move_file
 from openAIapi import openapi
 from svg_video import svg_video
-def write_manim(task,frame_no,text,uid,error='',cnt=3,code=''):
-    if cnt==0:
-        svg_video(task,frame_no,text,uid)
+def write_manim(task,frame_no,text,uid="",width=1920, height=1080,error='',cnt=3,code=''):
+    if cnt==0 or width==1080:
+        svg_video(task,frame_no,text,uid,width,height)
         return
     print("code no.",frame_no)
     frame_no+=uid
     file_name=frame_no+'.py'
     if error=='' or cnt==1:
-        code_str=openapi(m_prompt(task,text))
+        code_str=openapi(m_prompt(task,text,f"{width} X {height}"))
     
     else:
         code_str=openapi(debug_prompt(code,error))
@@ -38,27 +38,23 @@ def write_manim(task,frame_no,text,uid,error='',cnt=3,code=''):
     try:
         writer(code_str,file_name)
         print("runing subprocess")
-        subprocess.run('manim -qh '+file_name+' Frame', shell=True, text=True, capture_output=True,timeout=100 )
+        subprocess.run(f'manim -qh {file_name} Frame -r {width},{height}', shell=True, text=True, capture_output=True,timeout=100 )
         delete_file(file_name)
         print("created filex"+file_name)
         if move_file('./media/videos/'+frame_no+'/1080p60/'+'Frame'+'.mp4','./'+frame_no+'.mp4'):
             delete_file('./media/videos/'+frame_no)
-            write_manim(task,frame_no,text,"","This code doesn't generated the video",cnt-1,code_str)
+            write_manim(task,frame_no,text,"",width,height,"This code doesn't generated the video",cnt-1,code_str)
         else:
-            texttospeech(text,frame_no+".mp3")
-            combine_audio(frame_no)
-            delete_file(frame_no+'.mp4')
-            delete_file(frame_no+'.mp3')
             delete_file('./media/videos/'+frame_no)
             return True
 
     except subprocess.CalledProcessError as e:
         delete_file(file_name)
         delete_file('./media/videos/'+frame_no)
-        write_manim(task,frame_no,text,"",e,cnt-1,code_str)
+        write_manim(task,frame_no,text,"",width,height,e,cnt-1,code_str)
         return
     except Exception as e:
         delete_file(file_name)
         delete_file('./media/videos/'+frame_no)
-        write_manim(task,frame_no,text,"",e,cnt-1,code_str)
+        write_manim(task,frame_no,text,"",width,height,e,cnt-1,code_str)
         return

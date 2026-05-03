@@ -4,6 +4,9 @@ import google_auth_oauthlib
 import googleapiclient.discovery
 import googleapiclient.errors
 import googleapiclient.http
+from thumbnail import generate_thumbnail
+from googleapiclient.http import MediaFileUpload
+from googleapiclient.errors import HttpError
 #while hosting remember to add web server url to https://console.cloud.google.com/auth/clients/create?project=uploader-453023
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 
@@ -30,10 +33,10 @@ def upload_video(description,title,uid):
             "categoryId": "27",
             "title": title,
             "description": description,
-            "tags": ["AI generated" ]
+            "tags": ["AI" ,"Deep Learning", "Technology", "Education"]
         },
         "status":{
-            "privacyStatus": "public"
+            "privacyStatus": "private"
         }
     }
 
@@ -52,7 +55,20 @@ def upload_video(description,title,uid):
         status, response = request.next_chunk()
         if status:
             print(f"Upload {int(status.progress()*100)}%")
-
-        return "https://www.youtube.com/watch?v="+response['id']
+    thumbnail_path="thumbnail_"+uid
+    generate_thumbnail(title, output_filename=thumbnail_path+".svg")
+    thumbnail_path+=".png"
+    if thumbnail_path:
+        try:
+            thumb_req = youtube.thumbnails().set(
+                videoId=response['id'],
+                media_body=MediaFileUpload(thumbnail_path)
+            )
+            thumb_resp = thumb_req.execute()
+            print("Thumbnail uploaded:", thumb_resp)
+        except HttpError as e:
+            # thumbnail upload failed — video was uploaded but thumbnail not set
+            print("Thumbnail upload failed:", e)
+    return "https://www.youtube.com/watch?v="+response['id']
 
 

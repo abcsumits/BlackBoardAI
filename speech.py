@@ -2,9 +2,9 @@ from kokoro import KPipeline
 from IPython.display import display, Audio
 import soundfile as sf
 import torch
-def texttospeech(text,filename):
+def texttospeech(text,filename,voice='am_puck'):
     pipeline = KPipeline(lang_code='a')
-    generator = pipeline(text.strip(), voice='af_heart')
+    generator = pipeline(text.strip(), voice)
     for i, (gs, ps, audio) in enumerate(generator):
         print(i, gs, ps)
         display(Audio(data=audio, rate=24000, autoplay=i==0))

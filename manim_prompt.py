@@ -1,26 +1,17 @@
-def m_prompt(visuals,text):
+def m_prompt(visuals,text,dimension="1920x1080",image={}):
     prompt='''You are working in backend system of a video editing tool. Your task is to generate Manim code( version Manim Community v0.19.0) for a given set of visuals and text.
     Generate Manim code as simple text with proper indentations adhering to:  
      **visuals should make sense with context and should be apealing,use good colours and diagram**
     **text should be clear and easy to read**
     **text or structures should not overlap**
     **Strictly do not write subtitle in the video**
-    -strictly do not use unscesary text in video
-    -strictly do not use unscesary text in video
-    -strictly do not use unscesary text in video
-    -strictly do not use unscesary text in video
-    -strictly do not use unscesary text in video
     **First decide which Manim Objects you need. Then write each call in order. Finally, combine them in a Group if needed.**
     1. **Mandatory Structure**  
     - Class name: `class Frame(Scene):`  
     - Strictly Do not create  or use any files
     -strictly Do not use or create any audio files
-    -Strictly do  not use any image in the code 
+    -Strictly do  not use any image in the code until mentioned in visuals
     -Strictly do not write text explaining the visuals
-    Strictly use dimensions 1920x1080
-    Strictly use dimensions 1920x1080   
-    Strictly use dimensions 1920x1080
-    Strictly use dimensions 1920x1080
     **strictly do not make any run time errors**
     2. **Visual Requirements**  
     {''' + visuals + '''}  
@@ -39,16 +30,13 @@ def m_prompt(visuals,text):
     **Strictly do not write subtitle in the video**
     **Strictly do not write subtitle in the video**
     **Strictly do not write subtitle in the video**
-    Strictly use dimensions 1920x1080
-    Strictly use dimensions 1920x1080   
-    Strictly use dimensions 1920x1080
-    Strictly use dimensions 1920x1080
+    Strictly use dimensions '''+dimension+''', strictly do no make any object outside this camera
     3. **Hard Constraints**  
     - Zero overlap of visuals
     - Zero overlap of text   
     - Single video output 
     _ Strictly use hex color codes for colors 
-
+    -------strictly donot add any config variables for aspect ratio , it will be handled by cli commands by system ----
     -strictly do not use unscesary text in video
     4. **Output Rules**   
     - No markdown/comments/backticks 
@@ -69,4 +57,7 @@ def m_prompt(visuals,text):
 "
 
     '''
+    if image:
+        for key in image:
+            prompt+='\n    - Use the image provided for '+key+' in visuals , the description for this image is : '+image[key] + ". Make sure to integrate it well with the rest of the content."
     return prompt

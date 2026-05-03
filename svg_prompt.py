@@ -1,12 +1,10 @@
-def svg_prompt(visuals,text):
+def svg_prompt(visuals,text,dimension="1920x1080",image={}):
     prompt='''You are working in backend system of a video editing tool. Your task is to generate svg code static one without animation just a single frame for a given set of visuals and text.
     Generate svg code as simple text with proper indentations adhering to:  
      **visuals should make sense with context and should be apealing,use good colours and diagram**
     **text should be clear and easy to read**
     **text or structures should not overlap**
-    Stricly use dimensions 1920x1080
-    Stricly use dimensions 1920x1080
-    Stricly use dimensions 1920x1080
+    Stricly use dimensions '''+dimension+'''
     **Strictly do not write subtitle in the video**
     **First decide which svg Objects you need. Then write each call in order. Finally, combine them in a Group if needed.**
     1. **Mandatory Structure**    
@@ -33,8 +31,7 @@ def svg_prompt(visuals,text):
     - No markdown/comments/backticks 
     - strictly just return the code as string 
     -code should not contain infinte loops
-    Stricly use dimensions 1920x1080
-    Stricly use dimensions 1920x1080
+
     Make it visually appealing and engaging.
     Strictly do not fade that's not have been created in codes.
     Check thoroughly everything works correctly with  svg 
@@ -43,7 +40,7 @@ def svg_prompt(visuals,text):
     **MAKE SMART USE OF SHAPES AND COLOURS**
     **MAKE changes if needed (without changing the context)**
     **use eye smoothing colours**
-    Example response :  
+    Example response :  (here input dimension was 1920 x 1080)
     
     <svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
     <rect width="1920" height="1080" fill="#f0f8ff"/>
@@ -53,4 +50,7 @@ def svg_prompt(visuals,text):
     
 
     '''
+    if image:
+        for key in image:
+            prompt+='\n    - Use the image provided for '+key+' in visuals , the description for this image is : '+image[key] + ". Make sure to integrate it well with the rest of the content."
     return prompt

@@ -3,14 +3,11 @@ from code_writer import writer
 from openAIapi import openapi
 from svgtopng import svg_to_png
 from image_to_video import image_to_video
-from speech import texttospeech
-from video_editor import combine_audio
-from delete_file import delete_file
-from video_editor import get_duration
-def svg_video(task,frame_no,text,uid):
+
+def svg_video(task,frame_no,text,uid,width=1920, height=1080,image={}):
     frame_no+=uid
     file_name=frame_no+'.svg'
-    prompt=svg_prompt(task,text)
+    prompt=svg_prompt(task,text,f"{width} X {height}",image)
     code_str=openapi(prompt)
     if code_str.startswith('```'):
         code_str = code_str[3:].strip()
@@ -24,13 +21,13 @@ def svg_video(task,frame_no,text,uid):
         code_str = code_str[:-1].strip()
     try :
         writer(code_str,file_name)
-        svg_to_png(file_name,frame_no+'.png')
-        texttospeech(text,frame_no+".mp3")
-        image_to_video(frame_no+'.png',frame_no+'.mp4',get_duration(frame_no+'.mp3')+1)
-        combine_audio(frame_no)
-        delete_file(frame_no+'.mp4')
-        delete_file(frame_no+'.mp3')
+        svg_to_png(file_name,frame_no+'.png',width,height)
+        
+        image_to_video(frame_no+'.png',frame_no+'.mp4',4)
+        
+        
 
     except Exception as e:
-        svg_video(task,frame_no,text,uid="")
+        
+        svg_video(task,frame_no,text,uid,width,height,image)
     
