@@ -163,8 +163,4 @@
   (https://console.cloud.google.com/auth/clients).
 
   ---
-  License
   
-  This project is not yet licensed. Contact the repository owner for usage
-  terms.
-  ```
